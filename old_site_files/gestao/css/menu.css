@@ -1,0 +1,76 @@
+/* Inicio Configuração do Menu */
+#menu {
+  height:37px;
+  background:#361510;
+  padding-top:7px;
+}
+ul#lista_menu {
+  width:1003px;
+  margin:0 auto;
+}
+ul#lista_menu li.menu, ul#lista_menu li.menu ul li.submenu {
+  position:relative;
+}
+ul#lista_menu li.menu_div {
+  width:2px;
+}
+ul#lista_menu li.menu, ul#lista_menu li.menu_div {
+  float:left;
+}
+ul#lista_menu li.menu a {
+  display:block;
+  padding:0 20px;
+  height:30px;
+  line-height:30px;
+  text-decoration:none;
+  color:#FFF;
+  font-size:1.6em;
+}
+ul#lista_menu li.menu a:hover {
+  color:#E4A11F;
+}
+ul#lista_menu li.menu ul, ul#lista_menu li.menu ul li.submenu ul {
+  display:none;
+  width:150px;
+  position:absolute;
+  z-index:999;
+  background-color:#CCC;  
+}
+ul#lista_menu li.menu ul {
+  top:30px;
+  left:0;
+}
+ul#lista_menu li.menu ul li.submenu img {
+  position:absolute;
+  top:7px;
+  right:3px;  
+}
+ul#lista_menu li.menu ul li.submenu, ul#lista_menu li.menu ul li.submenu ul li {
+  height:30px;
+}
+ul#lista_menu li.menu ul li.submenu ul li {
+  border-left:solid 1px #FFF;
+}
+ul#lista_menu li.menu ul li.submenu a, ul#lista_menu li.menu ul li.submenu ul li a {
+  border-left:solid 3px #361510;
+  display:block;
+  height:30px;
+  line-height:30px;
+  text-decoration:none;
+  color:#361510;
+  font-size:1.2em;
+  padding:0 20px 0 10px;
+}
+ul#lista_menu li.menu ul li.submenu a:hover, ul#lista_menu li.menu ul li.submenu a.submenuAtivo, 
+  ul#lista_menu li.menu ul li.submenu ul li a:hover {
+  color:#800000;
+  border-left:solid 3px #800000;
+}
+ul#lista_menu li.menu ul li.submenu ul {
+  top:0;
+  left:150px;
+}
+ul#lista_menu li.menu:hover ul, ul#lista_menu li.menu ul li.submenu:hover ul {
+  display:block;
+}
+/* Fim Configuração do Menu */

@@ -1,0 +1,54 @@
+<?php
+$page = "servicos";
+
+$banner = new Banner();
+$bannerServicos = $banner->getBannersByTipo('A', 2, 'posicao');
+
+$servico = new Servico();
+$servicos = $servico->listAll('A');
+
+$str_add_css = array('servicos');
+
+include_once("header.phtml");
+?>
+    <main class="page-services">
+        <?php if ($bannerServicos) { ?>
+        <section class="banner">
+            <picture>
+                <img src="<?php echo UPLOADS_URL . '/banners/' . $bannerServicos[0]->url_imagem ?>" class="img-fluid" alt="<?php echo $bannerServicos[0]->nome_banner ?>">
+            </picture>
+        </section>
+        <?php } ?>
+        <nav aria-label="breadcrumb">
+            <div class="container container-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Serviços</li>
+                </ol>
+            </div>
+        </nav>
+        <section class="services overflow-hidden">
+            <div class="container">
+                <h3 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Conheça nossos serviços</h3>
+                <div class="card-group">
+                    <?php foreach ($servicos as $infoServico) { ?>
+                    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                        <a href="<?php echo BASE_SITE_URL . '/servico/' . $infoServico->url_rewrite ?>" class="stretched-link"></a>
+                        <img src="<?php echo UPLOADS_URL . '/servicos/icones/' . $infoServico->url_icone ?>" class="img-fluid" alt="Icone <?php echo $infoServico->titulo ?>">
+                        <div class="card-title mb-2">
+                            <h4><?php echo $infoServico->titulo ?></h4>
+                        </div>
+                        <div class="card-description">
+                            <span><?php echo $infoServico->subtitulo ?></span>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </section>
+    </main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

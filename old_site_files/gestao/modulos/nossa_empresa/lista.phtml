@@ -1,0 +1,162 @@
+<?php
+    $page_name = "nossa_empresa";
+    $page_title = "Nossa Empresa";
+    $page_id = 32; // salvar na tabela página para gerar o ID
+    
+    //URls
+    $url_listagem   =  BASE_ADMIN_URL.'/'.$page_name.'-lista.html';
+    $url_formulario =  BASE_ADMIN_URL.'/'.$page_name.'-form.html';
+    
+    $title = $page_title." | Painel Administrativo";
+    $str_add_css = array(
+        'bootstrap-table'
+    );
+    $str_add_js = array(
+        'bootstrap-table'
+    );
+    
+    $objeto = new NossaEmpresa(true);
+    
+    //Informações da Página para BreadCrumb
+    $pagina = new Pagina();
+    $pagina->setIdTable($page_id);
+    $pagina->getByCod();
+    
+    $grupo = new Pagina();
+    $grupo->setIdTable($pagina->getIdParent());
+    $grupo->getByCod();
+    //End - Informações da Página para BreadCrumb
+    
+    //BreadCrumb
+    $breadcrumb = array(
+        array(
+            "url" => BASE_ADMIN_URL,
+            "nome" => ' Home',
+            "icon" => '<svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg>'
+        ),
+        array(
+            "url" => "#",
+            "nome" => ' '.$grupo->getTitulo(),
+            "icon" => '<i class="fa '.$grupo->getIcone().'" aria-hidden="true"></i>'
+        ),
+        array(
+            "url" => $url_listagem,
+            "nome" => ' '.$page_title,
+            "icon" => '<i class="fa '.$pagina->getIcone().'" aria-hidden="true"></i>'
+        )
+    );
+    
+    //Colunas da Listagem
+    $sorter_default['field_db'] = 'id_nossa_empresa';
+    $sorter_default['sorter_ini'] = 'desc';
+    $colunas = array(
+        array(
+            'field_db' => 'id_nossa_empresa',
+            'label' => 'ID',
+            'width' => '50',
+            'align' => 'center',
+            'checkbox' => false,
+            'sortable' => true,
+            'visible' => false
+        ),
+        array(
+            'field_db' => 'status',
+            'label' => 'Status',
+            'width' => '50',
+            'align' => 'center',
+            'checkbox' => false,
+            'sortable' => true,
+            'visible' => true
+        ),
+        array(
+            'field_db' => 'foto_nossa_empresa',
+            'label' => 'Foto',
+            'width' => '50',
+            'align' => 'center',
+            'checkbox' => false,
+            'sortable' => true,
+            'visible' => true
+        ),
+        array(
+            'field_db' => 'nome_nossa_empresa',
+            'label' => 'Nome',
+            'width' => '50',
+            'align' => 'center',
+            'checkbox' => false,
+            'sortable' => true,
+            'visible' => true
+        ),
+        array(
+            'field_db' => 'botoes',
+            'label' => 'Editar',
+            'width' => '60',
+            'align' => 'center',
+            'checkbox' => false,
+            'sortable' => true,
+            'visible' => true
+        )
+    );
+    
+    //Add Header
+    include_once('gestao/header.phtml');
+?>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+        <?php
+            //Add BreadCrumb
+            include_once('gestao/breadcrumb.phtml');
+        ?>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="page-header"><?php echo $page_title ?></h1>
+            </div>
+            <div class="col-lg-12">
+                <?php
+                    if (getRequest('del') != "" && getRequest('del') == "ok") {
+                ?>
+                <div class="alert bg-success">
+                    <strong><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Excluido!!!</strong> O registro foi excluído permanentemente!
+                </div>
+                <?php
+                    } 
+                ?>
+                <table id="listagem"
+                    data-url="<?php echo $url_listagem.'?acao=getlistagem' ?>"
+                    data-toggle="table"
+                    data-show-refresh="true" 
+                    data-show-toggle="true" 
+                    data-show-columns="true" 
+                    data-search="true" 
+                    data-pagination="true" 
+                    data-sort-name="<?php echo $sorter_default['field_db'] ?>" 
+                    data-sort-order="<?php echo $sorter_default['sorter_ini'] ?>">
+                    <thead>
+                    <tr>
+                        <?php
+                            foreach($colunas as $coluna) {
+                                $str_column = '<th data-align="'.$coluna['align'].'" ';
+                                if ($coluna['width'])
+                                    $str_column .= 'data-width="'.$coluna['width'].'" ';
+                                if (!$coluna['visible'])
+                                    $str_column .= 'data-visible="false" ';
+                                if ($coluna['checkbox'])
+                                    $str_column .= 'data-checkbox="true" ';
+                                if ($coluna['sortable'])
+                                    $str_column .= 'data-sortable="true" ';
+                                $str_column .= 'data-field="'.$coluna['field_db'].'">';
+                                $str_column .= $coluna['label'];
+                                $str_column .= '</th>';
+                                echo $str_column;
+                            }
+                        ?>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+<?php
+    //Add Footer
+    include_once('gestao/footer.phtml');

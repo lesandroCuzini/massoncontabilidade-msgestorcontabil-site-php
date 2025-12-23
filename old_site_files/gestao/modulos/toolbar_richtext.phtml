@@ -1,0 +1,64 @@
+<div id="alerts"></div>
+<div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor">
+    <div class="btn-group">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
+      <ul class="dropdown-menu">
+      </ul>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li>
+          <a data-edit="fontSize 5">
+            <p style="font-size:17px">Grande</p>
+          </a>
+        </li>
+        <li>
+          <a data-edit="fontSize 3">
+            <p style="font-size:14px">Normal</p>
+          </a>
+        </li>
+        <li>
+          <a data-edit="fontSize 1">
+            <p style="font-size:11px">Pequena</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn" data-edit="bold" title="Negrito (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+      <a class="btn" data-edit="italic" title="Itálico (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+      <a class="btn" data-edit="strikethrough" title="Sobrelinha"><i class="fa fa-strikethrough"></i></a>
+      <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn" data-edit="insertunorderedlist" title="Lista c/ Marcadores"><i class="fa fa-list-ul"></i></a>
+      <a class="btn" data-edit="insertorderedlist" title="Listagem c/ Números"><i class="fa fa-list-ol"></i></a>
+      <a class="btn" data-edit="outdent" title="Remover Indentação (Shift+Tab)"><i class="fa fa-dedent"></i></a>
+      <a class="btn" data-edit="indent" title="Adicionar Indentação (Tab)"><i class="fa fa-indent"></i></a>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn" data-edit="justifyleft" title="Alinhar à Esquerda (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+      <a class="btn" data-edit="justifycenter" title="Centralizar (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+      <a class="btn" data-edit="justifyright" title="Alinhar à Direira (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+      <a class="btn" data-edit="justifyfull" title="Justificado (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+    </div>
+
+    <div class="btn-group">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Adicionar Link"><i class="fa fa-link"></i></a>
+      <div class="dropdown-menu input-append">
+        <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
+        <button class="btn" type="button">Adicionar</button>
+      </div>
+      <a class="btn" data-edit="unlink" title="Remover Link"><i class="fa fa-cut"></i></a>
+    </div>
+
+    <div class="btn-group" style="display: none">
+      <a class="btn" title="Inserir Imagem (ou apenas Arraste & Solte)" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
+      <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
+    </div>
+</div>

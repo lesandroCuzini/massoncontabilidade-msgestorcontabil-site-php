@@ -1,0 +1,179 @@
+@charset "utf-8";
+/* CSS Reset */
+body, h1, h2, h3, h4, p, ul, li {  padding:0;  margin:0;  font-family:Arial; font-weight:normal; font-size:10px; color:#1D376E;}
+img, table { border:0;}
+a, a:hover { text-decoration:none; outline:none; color:#07183C }
+ul { list-style:none;}
+div.clear { clear:both;}
+input, textarea{ outline:0;  resize:none;}
+hr { border:none; border-bottom:solid 1px #CCC; }
+.left { float:left }
+.right { float:right }
+.hidden { display: none }
+
+/* Style Site */
+html, body, #page { height: 100%; }
+body > #page { height: auto; min-height: 100%; }
+#page { margin:0 auto; }
+body:before { content:""; height:100%; float:left; width:0; margin-top:-32767px; } /* Opera Fix */
+
+/* Header */
+#header { 
+  background:url("../images/header_back.jpg") no-repeat left top;
+  position:relative;
+  height:151px;
+}
+#header div.box_header {
+  width:1003px;
+  margin:0 auto;
+}
+#header div.logotipo {
+  margin:35px 0 0 10px;
+}
+#header div.informacoes {
+  margin:20px 10px 0 0;
+}
+#header div.dados_acesso {
+  padding-top:20px;
+}
+#header div.dados_acesso p {
+  font-family:Arial;
+  font-size:1.2em;
+  color:#787676;
+  text-align:right;
+  padding-right:20px;
+}
+#header div.dados_acesso p.nome_usuario {
+  background:url("../images/icn_top_user.gif") no-repeat right;
+}
+#header div.dados_acesso p.email_usuario {
+  background:url("../images/icn_top_mail.gif") no-repeat right;
+}
+#header div.dados_acesso p.ultimo_acesso {
+  margin-top:10px;
+  background:url("../images/icn_top_access.gif") no-repeat right;
+}
+#header div.dados_acesso p.ip_acesso {
+  background:url("../images/icn_top_ip.gif") no-repeat right;
+}
+#header div.botoes_top {
+  margin:0 0 0 10px;
+  padding:15px 0 15px 10px;
+  border-left:solid 1px #B9B9B9;
+}
+
+/* Botões */
+a.btn_sair, a.btn_ver_site {
+  display:block;  
+}
+a.btn_novo, a.btn_excluir, a.btn_cancelar, a.btn_salvar {
+  display:inline-block;  
+  margin:0 3px;
+}
+a.btn_sair, a.btn_ver_site, a.btn_novo, a.btn_excluir, a.btn_cancelar, a.btn_salvar {  
+  overflow:hidden;
+  text-indent:-999px;
+}
+a.btn_sair {
+  width:89px;
+  height:33px;
+  background:url("../images/btn_sair.jpg") no-repeat 0 0;
+}
+a.btn_sair:hover { background-position:0 -33px; }
+a.btn_ver_site {
+  margin-top:5px;
+  width:89px;
+  height:36px;
+  background:url("../images/btn_ver_site.jpg") no-repeat 0 0;
+}
+a.btn_ver_site:hover { background-position:0 -36px; }
+a.btn_novo {
+  width:89px;
+  height:33px;
+  background:url("../images/btn_novo.jpg") no-repeat 0 0;
+}
+a.btn_novo:hover { background-position:0 -33px; }
+a.btn_excluir {
+  width:97px;
+  height:33px;
+  background:url("../images/btn_excluir.jpg") no-repeat 0 0;
+}
+a.btn_excluir:hover { background-position:0 -33px; }
+a.btn_cancelar {
+  width:117px;
+  height:33px;
+  background:url("../images/btn_cancelar.jpg") no-repeat 0 0;
+}
+a.btn_cancelar:hover { background-position:0 -33px; }
+a.btn_salvar {
+  width:97px;
+  height:33px;
+  background:url("../images/btn_salvar.jpg") no-repeat 0 0;
+}
+a.btn_salvar:hover { background-position:0 -33px; }
+
+/* Main */
+#main {
+  width:90%;
+  margin:0 auto;
+  padding:20px 0 100px 0;
+}
+
+/* Footer */
+#footer {
+  clear:both;
+  background:#361510;
+  height:78px;
+  margin-top:-80px; /* Altura da div */
+}
+#footer div.box_footer {
+  background:url("../images/footer_back_effect.png") no-repeat center;
+  width:1003px;
+  height:100%;
+  margin:0 auto;
+  text-align:center;
+}
+#footer div.box_footer p.developer {
+  text-align:center;
+  font-size:1.4em;
+  color:#FFF;
+  padding:15px 0 5px 0;
+}
+#footer div.box_footer a.developer {
+  font-size:1.4em;
+  font-weight:bold;
+  color:#FFF;
+  padding-bottom:10px;
+}
+
+#msg div.erro {
+  background:url("../images/msg_erro.jpg") no-repeat left;
+  height:30px;
+  line-height:30px;
+  padding-left:45px;
+  font-family:Arial;
+  font-size:16px;
+  font-weight:bold;
+  color:#BE0405;
+  border-bottom:solid 3px #BE0405;
+  margin:5px 0;
+}
+
+#msg div.sucesso {
+  background:url("../images/msg_ok.jpg") no-repeat left;
+  height:30px;
+  line-height:30px;
+  padding-left:45px;
+  font-family:Arial;
+  font-size:16px;
+  font-weight:bold;
+  color:#027001;
+  border-bottom:solid 3px #027001;
+  margin:5px 0;
+}
+
+.error_404{
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+}

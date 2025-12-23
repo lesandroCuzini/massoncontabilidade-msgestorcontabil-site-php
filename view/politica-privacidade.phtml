@@ -1,0 +1,44 @@
+<?php
+$page = "politica-privacidade";
+
+// ID 1 = Política de Privacidade
+$id_institucional = 1;
+
+$objInstitucional = new Institucional();
+$objInstitucional->setIdTable($id_institucional);
+$objInstitucional->getByCod();
+
+$str_add_css = array("institucional");
+
+include_once("header.phtml");
+?>
+<main class="page-institutional">
+    <?php if ($objInstitucional->url_banner_topo != "") { ?>
+    <section class="banner">
+        <picture>
+            <img src="<?php echo UPLOADS_URL . '/institucionais/banners/' . $objInstitucional->url_banner_topo ?>" class="img-fluid" alt="<?php echo $objInstitucional->titulo ?>">
+        </picture>
+    </section>
+    <?php } ?>
+    <nav aria-label="breadcrumb">
+        <div class="container container-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?php echo $objInstitucional->titulo ?></li>
+            </ol>
+        </div>
+    </nav>
+    <section class="institutional overflow-hidden">
+        <div class="container">
+            <h3 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700"><?php echo $objInstitucional->titulo ?></h3>
+            <div class="content" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                <?php echo $objInstitucional->conteudo ?>
+            </div>
+        </div>
+    </section>
+</main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

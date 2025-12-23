@@ -1,0 +1,80 @@
+/* Home */
+div.logotipo {
+	box-sizing:border-box;
+	padding:15px 0;
+	text-align:center;
+	border-bottom:solid 1px #EFEFEF;
+	margin-bottom:10px;
+}
+div.logotipo img { max-width:80%; }
+/* End - Home */
+
+/* Menu */
+ul.nav.menu li.parent > a { position:relative; }
+ul.nav.menu li.parent > a > span { 
+	position: absolute;
+    top: 3px;
+    right: 3px;
+    cursor:pointer;
+    width: 25px;
+    height: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 5px;
+}
+/* End - Menu */
+
+/* Botoes */
+.btn_admin {
+	margin-top: 40px;
+}
+.erro-form{color: red;}
+/* End - Botoes */
+
+/* Form */
+.input-group-addon { color:#999 !important; }
+label { margin:15px 0 0 0 !important; }
+.mce-reset label { margin:inherit !important; }
+input:focus:read-only, select:focus {
+	box-shadow:none !important;
+	border-color:#CCC !important;
+}
+.input_form select { width:100% }
+.input_form legend { font-size:16px; color:#333; margin-bottom: 0px; }
+.table_check { width: 100%; }
+.table_check tr th { border-bottom:solid 1px #CCC; border-left:solid 1px #FFF; }
+.table_check tr td {
+	line-height:30px;
+	padding:0 5px;
+	border-left:solid 1px #FFF;
+}
+.table_check tr td label {
+	display:block;
+	padding:0 !important;
+	margin:0 !important;
+}
+.line-buttons {
+	padding-top:20px;
+	margin:20px 0 50px 0;
+	border-top:solid 1px #CCC;
+}
+span.data_error {
+	color:#F00;
+	font-weight:bold;
+}
+ul.dias_semana { margin:0 0 20px 0; padding:0; }
+ul.dias_semana li { margin:0; padding:0; list-style:none; }
+/* End - Form */
+body .mce-abs-layout-item, .mce-abs-end{
+
+}
+ul#caracteristicas-selecionaidas li{list-style: none}
+.apagar-caracteristica{
+	cursor: pointer;
+}
+
+
+
+
+
+

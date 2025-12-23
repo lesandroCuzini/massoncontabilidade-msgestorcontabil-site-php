@@ -1,0 +1,29 @@
+<?php
+    $page = "404";
+
+    $str_add_css = array("404");
+
+    include_once("view/header.phtml");
+?>
+<main class="page-not-found">
+    <nav aria-label="breadcrumb">
+        <div class="container container-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Página não encontrada</li>
+            </ol>
+        </div>
+    </nav>
+    <section class="not-found">
+        <img src="<?php echo BASE_IMAGES_URL . '/error.png' ?>" class="img-fluid">
+        <h3>Ops, não encontramos a página!</h3>
+        <p>A página que você procura não foi encontrada.</p>
+        <p>Tente novamente.</p>
+        <a href="<?php echo BASE_SITE_URL ?>" class="btn btn-green">Ir para página inicial</a>
+    </section>
+</main>
+<?php
+    $str_add_js = array();
+
+    include_once("view/footer.phtml");
+?>

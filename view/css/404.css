@@ -1,0 +1,32 @@
+/* Não Encontrado */
+.page-not-found .not-found {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 5rem 1rem 10rem;
+}
+.page-not-found .not-found img {
+    margin-bottom: 2rem;
+}
+.page-not-found .not-found h3 {
+    font-family: "Poppins SemiBold";
+    font-size: 1.625rem;
+    text-align: center;
+    margin-bottom: 0;
+    color: #272727;
+}
+.page-not-found .not-found p {
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.25;
+    color: #5d5d5d;
+}
+.page-not-found .not-found p:first-of-type {
+    margin-bottom: 0;
+}
+.page-not-found .not-found p:last-of-type {
+    margin-bottom: 1.75rem;
+}
+.page-not-found .not-found .btn-green {
+    max-width: 375px;
+}

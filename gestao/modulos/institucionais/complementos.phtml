@@ -1,0 +1,67 @@
+<?php
+global $url_formulario, $id_registro, $objeto;
+?>
+<form method="post" action="<?php echo $url_formulario ?>" enctype="multipart/form-data" data-form="form-imagem">
+    <input type="hidden" name="acao" id="acao" value="addComplemento" />
+    <input type="hidden" name="id_institucional" id="id_institucional" value="<?php echo $id_registro ?>" />
+    <h2 class="subtitulo" style="margin-top: 15px; margin-bottom: 0;">Perguntas Frequentes da Página Inicial</h2>
+    <div class="row">
+        <div class="col-lg-8 input_form">
+            <label for="titulo">Título</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                <input type="text" class="form-control" name="titulo" id="titulo" required="required" value="" />
+            </div>
+        </div>
+        <div class="col-lg-8 input_form">
+            <label for="conteudo">Conteúdo</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                <textarea id="conteudo" name="conteudo" class="form-control tinymce" required="required"></textarea>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-8 text-right">
+            <button type="submit" name="btnEnviarComplemento" id="btnEnviarComplemento" class="btn btn-primary" style="margin-top: 16px;">
+                <i class="fa fa-floppy-o"></i>
+                Salvar
+            </button>
+        </div>
+    </div>
+</form>
+
+<br />
+
+<div id="complementos">
+    <?php
+        $complementos = $objeto->getComplementosByIdInstitucional($id_registro);
+        if (count($complementos) && is_array($complementos)) {
+            ?>
+            <div class="row hidden-md linhaTitulo">
+                <div class="col-lg-10 text-uppercase"><b>Informações</b></div>
+                <div class="col-lg-2 text-uppercase"><b>Ação</b></div>
+            </div>
+            <?php
+            foreach ($complementos as $infoComplemento) {
+                ?>
+                <div class="row linhaComplemento <?php echo $infoComplemento->i % 2 == 0 ? 'even' : 'odd' ?>">
+                    <div class="col-lg-10">
+                        <b><?php echo $infoComplemento->titulo ?></b>
+                        <br />
+                        <?php echo $infoComplemento->conteudo ?>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="apagarComplemento" data-id-complemento="<?php echo $infoComplemento->id_institucional_complemento; ?>"><i class="fa fa-trash"></i> Apagar</span>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            ?>
+            <div class="row">
+                <div class="col-xs-12 container-img"><b>Nenhum complemento foi cadastrado até momento!</b></div>
+            </div>
+            <?php
+        }
+    ?>
+</div>

@@ -1,0 +1,36 @@
+<?php
+$page_back = "";
+$page_id = "politica-privacidade";
+
+$str_add_css = array();
+$str_add_js = array('jquery.mask.min');
+
+$texto = new Texto();
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_POLITICA);
+$textos->getByCod();
+
+include_once("header.phtml");
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $texto->url_imagem; ?>" alt="<?php echo SITE_TITLE ?>">
+    </div>
+    <?php
+}
+?>
+<div class="row fullContainer" id="breadcrumb">
+    <div class="columns">
+        <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Política de Privacidade</span>
+        <h1 class="titulo"><?php echo $textos->titulo; ?></h1>
+    </div>
+</div>
+<div class="row fullContainer" style="margin-bottom: 50px">
+    <div class="columns text-center">
+        <div class="texto" style="color: #000;font-size: 14px"><?php echo $textos->descricao; ?></div>
+    </div>
+</div>
+
+<?php
+include_once("footer.phtml");
+?>

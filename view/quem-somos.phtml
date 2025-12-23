@@ -1,0 +1,33 @@
+<?php
+$page_id = "quem-somos";
+
+$quemSomos = new QuemSomos();
+$quemSomos->setIdTable(1);
+$quemSomos->getByCod();
+
+$str_add_css = array('jquery.fancybox.min');
+$str_add_js = array('jquery.fancybox.min', 'scroll');
+
+include_once("header.phtml");
+?>
+    <div class="container" id="breadcrumb">
+        <div class="row">
+            <div class="col-lg-12">
+                <a href="<?php echo BASE_SITE_URL ?>">Home</a> | Sobre Nós
+                <h1 class="text-center">
+                    Nossa História
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="info">
+        <div class="row  justify-content-md-center justify-content-lg-center">
+            <div class="col-md-10">
+                <div class="texto top-scroll">
+                    <?php echo $quemSomos->getDescricao() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php
+include_once("footer.phtml");

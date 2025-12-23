@@ -1,0 +1,380 @@
+<?php
+$page_name = "banners";
+$page_title = "Banners";
+$page_id = 7; // salvar na tabela página para gerar o ID
+
+//URls
+$url_listagem = BASE_ADMIN_URL . '/' . $page_name . '-lista.html';
+$url_formulario = BASE_ADMIN_URL . '/' . $page_name . '-form.html';
+
+$objeto = new Banner(true);
+$bannerTipos = new Bannertipo();
+$bannerTipo = $bannerTipos->listAll('A');
+
+//Informações da Página para BreadCrumb
+$pagina = new Pagina();
+$pagina->setIdTable($page_id);
+$pagina->getByCod();
+
+$grupo = new Pagina();
+$grupo->setIdTable($pagina->getIdParent());
+$grupo->getByCod();
+//End - Informações da Página para BreadCrumb
+
+//Verifica se é alteração ou inclusão para carregar os dados
+$id_registro = getRequest("id") ? getRequest("id") : 0;
+if ($id_registro > 0) {
+    $objeto->setIdTable($id_registro);
+    $objeto->getByCod();
+    $title = $pagina->getTitulo() . ": " . $id_registro . " | Painel Administrativo";
+} else {
+    $title = "Novo Registro | Painel Administrativo";
+}
+
+//Add JS e CSS
+$str_add_css = array(
+    'bootstrap-table',
+    'switchery',
+    'bootstrap-colorpicker.min',
+);
+$str_add_js = array(
+    'bootstrap-table',
+    'switchery',
+    'jquery.inputmask.bundle',
+    'bootstrap-confirmation.min',
+    'bootstrap-colorpicker.min'
+);
+
+//BreadCrumb
+$breadcrumb = array(
+    array(
+        "url" => BASE_ADMIN_URL,
+        "nome" => ' Home',
+        "icon" => '<i class="fas fa-home fontawesome"></i>'
+    ),
+    array(
+        "url" => "#",
+        "nome" => ' ' . $grupo->getTitulo(),
+        "icon" => '<i class="fa ' . $grupo->getIcone() . '" aria-hidden="true"></i>'
+    ),
+    array(
+        "url" => $url_listagem,
+        "nome" => ' Todos ' . $pagina->getTitulo(),
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'
+    ),
+    array(
+        "url" => $url_formulario,
+        "nome" => ' ' . $page_title,
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'
+    )
+);
+
+//Add Header
+include_once('gestao/header.phtml');
+?>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <?php
+                //Add BreadCrumb
+                include_once('gestao/breadcrumb.phtml');
+            ?>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <h1 class="page-header"><?php echo $page_title ?></h1>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-right">
+                <a href="<?php echo $url_listagem ?>" class="btn_admin btn btn-default">
+                    <i class="fa fa-undo" aria-hidden="true"></i>
+                    Voltar</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <?php
+                    $retorno = getRequest('msg');
+                    if ($retorno != "" && $retorno == "ok") {
+                        ?>
+                        <div class="alert alert-success">
+                            <strong><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Ok...</strong> Os dados foram
+                            salvos com sucesso!
+                        </div>
+                        <?php
+                    } elseif ($retorno != "" && $retorno == "erro") {
+                        ?>
+                        <div class="alert alert-danger">
+                            <strong><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> Falha...</strong> Houve algum
+                            problema ao salvar os dados, por favor tente novamente!
+                        </div>
+                        <?php
+                    }
+                ?>
+                <div class="clearfix"></div>
+                <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="acao" value="<?php echo $id_registro > 0 ? 'alterar' : 'incluir' ?>"/>
+                    <input type="hidden" name="acao_posterior" id="acao_posterior" value=""/>
+                    <div class="row">
+                        <div class="col-md-3 col-lg-2 input_form">
+                            <label for="id_registro">Código</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-hashtag" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder=""
+                                       aria-describedby="id_registro" name="id_registro" id="id_registro"
+                                       value="<?php echo $objeto->getIdTable() ?>" readonly="readonly"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 input_form">
+                            <label for="id_banner_tipo">Tipo do Banner</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i style="font-family: FontAwesome;" class="fa fa-align-left" aria-hidden="true"></i>
+                                </span>
+                                <select class="form-control" id="id_banner_tipo" name="id_banner_tipo" required="required">
+                                    <option value="">Selecione</option>
+                                    <?php foreach ($bannerTipo as $bt) { ?>
+                                        <option <?php if ($objeto->getIdBannerTipo() == $bt->id_banner_tipo) { ?>selected="selected"<?php } ?>
+                                                largura="<?php echo $bt->largura ?>" altura="<?php echo $bt->altura ?>"
+                                                value="<?php echo $bt->id_banner_tipo ?>"><?php echo $bt->descricao ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-2 input_form">
+                            <label for="status">Status</label>
+                            <div style="position:relative">
+                                <div class="form-group">
+                                    <input type="checkbox" id="status" name="status"
+                                           <?php if ($objeto->getStatus() == "A" || $id_registro == '') { ?>checked="checked"<?php } ?>
+                                           class="js-switch flag_form" value="A" data-active="Ativo"
+                                           data-inactive="Inativo"/>
+                                    <span class="label_flag"><?php echo $objeto->getStatus() == "A" || $id_registro == '' ? "Ativo" : "Inativo" ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-9 col-lg-6 input_form">
+                            <label for="nome_banner">Nome do Banner</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-align-left" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Nome do Banner"
+                                       aria-describedby="nome_banner" name="nome_banner" id="nome_banner"
+                                       value="<?php echo $objeto->getNomeBanner() ?>"/>
+                            </div>
+                            <small>Esta informação é apenas interna, ou seja, não aparece em lugar algum do site para os visitantes.</small>
+                        </div>
+                        <div class="col-md-3 col-lg-2 input_form">
+                            <label for="posicao">Posição do Banner</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i style="font-family: FontAwesome;" class="far fa-list-ol" aria-hidden="true"></i>
+                                </span>
+                                <input type="number" class="form-control"
+                                       aria-describedby="posicao"
+                                       name="posicao" id="posicao"
+                                       value="<?php echo $objeto->getPosicao() ?>" min="0"/>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-8 col-lg-6 input_form">
+                            <label for="link_banner">Link do banner</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-link" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control"
+                                       aria-describedby="link_banner"
+                                       name="link_banner" id="link_banner"
+                                       value="<?php echo $objeto->getLinkBanner() ?>"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-3 input_form">
+                            <label for="target">Abrir link em uma nova guia?</label>
+                            <div style="position:relative">
+                                <div class="form-group">
+                                    <input type="checkbox" id="target" name="target"
+                                           <?php if ($objeto->getTarget() == "_blank") { ?>checked="checked"<?php } ?>
+                                           class="js-switch flag_form" value="_blank" data-active="Sim"
+                                           data-inactive="Não"/>
+                                    <span class="label_flag"><?php echo $objeto->getTarget() == "_blank" ? "Sim" : "Não" ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-8 col-lg-6 input_form">
+                            <label for="alt_imagem">Texto alternativo para o banner</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-align-left" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Alt Banner"
+                                       aria-describedby="alt_imagem" name="alt_imagem" id="alt_imagem"
+                                       value="<?php echo $objeto->getAltImagem() ?>"/>
+                            </div>
+                            <small>Esta informação é útil apenas para buscadores, como por exemplo: Google, Bing, Yahoo Search, etc.
+                            </small>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-8 col-lg-6 input_form">
+                            <br/>
+                            <strong>BANNER</strong>
+                            <br/>
+                            <label id="info" for="url_imagem">Imagem [jpg]: px x px em 72 dpi</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                </span>
+                                <input type="file" class="form-control"
+                                       aria-describedby="url_imagem"
+                                       name="url_imagem" id="url_imagem"
+                                       <?php if (!$objeto->getUrlImagem()){?>required="required"<?php }?>/>
+                            </div>
+                            <?php
+                                if ($objeto->getUrlImagem()) {
+                                    ?>
+                                    <small>A imagem atual será excluida após substituí-la por outra.</small>
+                                    <div class="box_url_imagem">
+                                        <?php if ($objeto->getUrlImagem()) { ?>
+                                            <img style="max-width: 100%;" src="<?php echo UPLOADS_URL . '/banners/' . $objeto->getUrlImagem() ?>"
+                                                 alt="" class="imagem_bg"/>
+                                        <?php } ?>
+                                    </div>
+                                    <?php
+                                }
+                            ?>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="line-buttons">
+                                <?php
+                                    if ($id_registro) {
+                                        ?>
+                                        <a href="#" class="btn btn-danger" data-toggle="confirmation_delete"
+                                           data-title="Excluir Permanetemente?"
+                                           data-content="Após confirmada está ação não pode ser desfeita!"><i
+                                                class="fa fa-trash"></i> Excluir</a>
+                                        <a href="#" class="btn btn-warning" data-toggle="confirmation_cancel"
+                                           data-title="Deseja Realmente Cancelar?"
+                                           data-content="Todas alterações não salvas serão perdidas."><i
+                                                class="fa fa-ban"></i> Cancelar</a>
+                                        <?php
+                                    }
+                                ?>
+                                <a href="#" class="btn btn-primary btn_submit_form_new"><i class="fa fa-floppy-o"></i>
+                                    Salvar e Adicionar Outro</a>
+                                <a href="#" class="btn btn-success btn_submit_form"><i class="fa fa-floppy-o"></i>
+                                    Salvar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            //Carregam as informações pré-definidas
+            var val = $('select[name="id_banner_tipo"]').val();
+            var optSelected = $('select#id_banner_tipo option:selected');
+            getProporcoesBanner(val, optSelected);
+
+            //Alteração do tipo
+            $('select[name="id_banner_tipo"]').change(function () {
+                var val = $(this).val();
+                var optSelected = $('select#id_banner_tipo option:selected');
+
+                getProporcoesBanner(val, optSelected);
+            });
+
+            //Confirma a exclusão
+            $('[data-toggle=confirmation_delete]').confirmation({
+                rootSelector: '[data-toggle=confirmation_delete]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim, Excluir!',
+                        onClick: function () {
+                            var codigo = $('#id_registro').val();
+                            $.ajax({
+                                method: "POST",
+                                url: "<?php echo $url_formulario ?>",
+                                data: {
+                                    'acao': 'excluir',
+                                    'id': codigo
+                                },
+                                success: function (retorno) {
+                                    if (retorno == 'ok') {
+                                        window.location = '<?php echo $url_listagem ?>?del=ok';
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                    }
+                ]
+            });
+
+            //Confirma o cancelamento
+            $('[data-toggle=confirmation_cancel]').confirmation({
+                rootSelector: '[data-toggle=confirmation_cancel]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim',
+                        onClick: function () {
+                            location.reload();
+                        }
+                    }
+                ]
+            });
+
+            if ($(".alert-texto").length) {
+                $('html, body').animate({
+                    scrollTop: $(".alert-texto").offset().top - 60
+                }, 2000);
+            }
+            setTimeout(function () {
+                $(".alert-texto").slideUp();
+            }, 3000);
+        });
+
+        function getProporcoesBanner(valor, optSelected) {
+            var width = optSelected.attr('largura') !== undefined ? optSelected.attr('largura') : '???';
+            var height = optSelected.attr('altura') !== undefined ? optSelected.attr('altura') : '???';
+
+            if (valor != '') {
+                $('label#info').html('Imagem [jpg]: ' + width + 'px largura x ' + height + 'px altura 72 dpi');
+            } else {
+                $('label#info').html('Imagem [jpg]: Nenhum tipo de banner informado...(seleciona um tipo de banner)');
+            }
+        }
+    </script>
+<?php
+//Add Footer
+include_once('gestao/footer.phtml');

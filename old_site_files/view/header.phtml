@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <meta name="theme-color" content="#dbdbdb"/>
+    <meta name="author" content="3dots"/>
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE"/>
+    <title><?php echo(isset($title) ? $title . ' - ' . SITE_TITLE : SITE_TITLE) ?></title>
+    <meta name="description" content="<?php echo(isset($description) ? $description : SITE_DESCRIPTION) ?>"/>
+    <meta name="keywords" content="<?php echo(isset($keywords) ? $keywords : SITE_KEYWORDS) ?>"/>
+    <?php
+    $meta_url = BASE_SITE_URL;
+    $meta_title = SITE_TITLE;
+    $meta_type = "website";
+    $meta_description = SITE_DESCRIPTION;
+    $meta_image = UPLOADS_URL . "/tema/" . SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK;
+    if (isset($open_graph)) {
+        $meta_url = $open_graph["url"];
+        $meta_title = $open_graph["title"];
+        $meta_description = $open_graph["description"];
+        $meta_image = $open_graph["image"];
+    }
+    ?>
+    <meta property="og:url" content="<?php echo $meta_url; ?>"/>
+    <meta property="og:type" content="<?php echo $meta_type ?>"/>
+    <meta property="og:title" content="<?php echo $meta_title; ?>"/>
+    <meta property="og:description" content="<?php echo $meta_description ?>"/>
+    <meta property="og:image" content="<?php echo $meta_image ?>"/>
+    <link href='<?php echo BASE_IMAGES_URL ?>/favicon.ico' rel='shortcut' type='image/x-icon'/>
+    <link href='<?php echo BASE_IMAGES_URL ?>/favicon.png' rel='icon' type='image/png'/>
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_CSS_URL ?>/innovare.min.css"/>
+
+    <!-- Global site tag (gtag.js) - Google Ads: 814193638 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW814193638"></script>
+    <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-814193638'); </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MQH4KWK');</script>
+    <!-- End Google Tag Manager -->
+</head>
+<body <?php echo isset($page_id) && $page_id ? 'id="' . $page_id . '"' : '' ?>>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQH4KWK"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header>
+    <?php
+    if ($page_id == 'home'){
+    ?>
+    <div style="transition: all 0.6s linear;">
+        <?php
+        } else{
+        ?>
+        <div class="header" style="transition: all 0.6s linear;">
+            <?php
+            }
+            ?>
+            <div class="fullWidth" id="logotipo">
+                <?php
+                if (SITE_IMAGEM_HEADER_HOME != "") {
+                    ?>
+                    <div class="banner-topo">
+                        <img src="<?php echo UPLOADS_URL . "/tema/" . SITE_IMAGEM_HEADER_HOME; ?>">
+                    </div>
+                    <?php
+                }
+                ?>
+                <div id="logo">
+                    <div class="row fullContainer">
+                        <div class="columns text-center">
+                            <div class="logo">
+                                <?php
+                                if ($page_id == 'home') {
+                                    ?>
+                                    <h1>
+                                        <img src="<?php echo UPLOADS_URL . "/tema/" . SITE_LOGOTIPO; ?>"
+                                             alt="<?php echo SITE_TITLE ?>">
+                                        <a style="    display: block;font-size: 12px;color: #777777;"
+                                           target="_blank" href="<?php echo SITE_LINK_CERTIDAO?>"><span class="veja-certidao">Veja a Certidão de Regularidade</span></a>
+                                    </h1>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <a href="<?php echo BASE_SITE_URL; ?>">
+                                        <img src="<?php echo UPLOADS_URL . "/tema/" . SITE_LOGOTIPO ?>"
+                                             alt="<?php echo SITE_TITLE ?>">
+                                    </a>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row fullContainer" id="menu">
+                <div class="logo-scroll columns">
+                    <?php
+                    if ($page_id == 'home') {
+                        ?>
+                        <img src="<?php echo BASE_IMAGES_URL ?>/logotipo.png" alt="<?php echo SITE_TITLE ?>">
+                        <?php
+                    } else {
+                        ?>
+                        <a href="<?php echo BASE_SITE_URL; ?>">
+                            <img src="<?php echo BASE_IMAGES_URL ?>/logotipo.png" alt="<?php echo SITE_TITLE ?>">
+                        </a>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <div class="columns text-center tamanho">
+                    <nav>
+                        <ul class="box_menu_small">
+                            <li class="icon menu_small"></li>
+                        </ul>
+                        <ul class="st-menu">
+                            <li class="<?php if (isset($page_id) && $page_id == "nossa-empresa") {
+                                echo "ativo";
+                            } ?>">
+                                <a href="<?php echo BASE_SITE_URL; ?>/nossa-empresa">NOSSA EMPRESA</a>
+                            </li>
+                            <li class="<?php if (isset($page_id) && $page_id == "nossos-servicos") {
+                                echo "ativo";
+                            } ?>">
+                                <a href="<?php echo BASE_SITE_URL ?>/nossos-servicos">NOSSOS SERVIÇOS</a>
+                            </li>
+                            <li class="<?php if (isset($page_id) && $page_id == "abrir-empresa") {
+                                echo "ativo";
+                            } ?>">
+                                <a href="<?php echo BASE_SITE_URL ?>/abrir-empresa">ABRIR UMA EMPRESA</a>
+                            </li>
+                            <li class="<?php if (isset($page_id) && $page_id == "migrar-minha-empresa") {
+                                echo "ativo";
+                            } ?>">
+                                <a href="<?php echo BASE_SITE_URL; ?>/migrar-minha-empresa">MIGRAR MINHA EMPRESA</a>
+                            </li>
+                            <li class="<?php if (isset($page_id) && $page_id == "nossa-empresa") {
+                                echo "ativo";
+                            } ?>">
+                                <span class="icon menu-mobile-grover"></span>
+                                <a>ver mais</a>
+                                <ul>
+                                    <?php
+                                    if (MOSTRAR_CALCULADORA_SIMULACAO_MENSALIDADE == "S") { ?>
+                                        <li class="simule"><a>Simule sua mensalidade</a></li>
+                                        <?php
+                                    }
+                                    ?>
+                                    <li><a href="<?php echo BASE_SITE_URL ?>/links-uteis">Links Úteis</a></li>
+                                    <li><a href="<?php echo BASE_SITE_URL; ?>/parceiros">Parceiros</a></li>
+                                    <li><a href="<?php echo BASE_SITE_URL; ?>/artigos">Artigos</a></li>
+                                    <li><a href="<?php echo BASE_SITE_URL ?>/nossa-equipe">Nossa Equipe</a></li>
+                                    <li><a href="<?php echo BASE_SITE_URL; ?>/perguntas-frequentes">Perguntas
+                                            Frequentes</a></li>
+                                    <li><a href="<?php echo BASE_SITE_URL ?>/politica-privacidade">Política de Privacidade</a></li>
+                                    <li><a href="<?php echo BASE_SITE_URL ?>/contato">Contato</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <a href="<?php echo SITE_LINK_AREA_CLIENTE; ?>" target="_blank">
+                        <div class="area-restrita">ÁREA DO CLIENTE</div>
+                    </a>
+                </div>
+                <div class="columns text-center" id="contatos">
+                    <span class="telefone">Fone: <?php echo SITE_TELEFONE ?></span>
+                    <span class="Whatsapp">Whatsapp: <?php echo SITE_WHATSAPP ?></span>
+                    <span class="email">Email: <?php echo SITE_EMAIL ?></span>
+                </div>
+            </div>
+        </div>
+</header>
+<script type="text/javascript">
+    var site_url = "<?php echo BASE_SITE_URL?>";
+</script>

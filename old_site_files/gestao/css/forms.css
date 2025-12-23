@@ -1,0 +1,83 @@
+#title_lista {
+  border-width:0 0 4px 4px;
+  border-style:solid;
+  border-color:#C1C1C1;
+  padding:5px 0 5px 45px;
+  background:url("../images/icn_listas.gif") no-repeat 4px 0;
+}
+#title_lista h1 {
+  font-family:Arial;
+  font-size:30px;
+  line-height:30px;
+  font-weight:bold;
+  color:#ACACAC;
+}
+#formulario {
+  padding:20px 0;
+}
+#formulario .input_form {
+  min-height:32px;
+  float:left;
+  margin:0 10px 10px 0;
+  padding-right:10px;
+}
+#formulario .input_form label {
+  text-transform:uppercase; 
+  font-family:Arial;
+  font-size:10px;
+  color:#3F3E3E;
+  display:block;
+}
+#formulario .input_form input.edit_form {
+  border: none;
+  height:32px;
+  background-color:#E4E4E4;  
+  font-family:Arial;
+  font-size:16px;
+  color:#415EAF;
+  padding:0 3px;
+  width:100%;
+  border-left:solid 3px #4665B7;
+}
+#formulario .input_form select.edit_form {
+  height:32px;
+  background-color:#E4E4E4;  
+  font-family:Arial;
+  font-size:16px;
+  color:#415EAF;
+  padding:0 0 0 3px;
+  width:100%;
+  border-top:solid 1px #E4E4E4;
+  border-bottom:solid 1px #E4E4E4;
+  border-right:solid 1px #E4E4E4;
+  border-left:solid 3px #4665B7;
+}
+#formulario .input_form input.edit_form[readonly="readonly"] {
+  color:#ACACAC;
+  border-left:solid 3px #CCCCCC;
+}
+#formulario .input_form textarea.edit_form {
+  background-color:#E4E4E4; 
+  font-family:Arial;
+  font-size:16px;
+  color:#415EAF;
+  width:100%;
+  height:80px;
+  border:none;
+  border-left:solid 3px #4665B7;
+}
+#formulario .input_form input.requerido, #formulario .input_form select.requerido, #formulario .input_form textarea.requerido {
+  border-left:solid 3px #941010;
+}
+.desc h2{
+  font-size: 16px;
+  text-transform: uppercase;
+}
+li.ui-menu-item a {
+  display:block;
+  font-size:16px;
+  
+}
+.select_custom {
+  height:34px !important;
+}

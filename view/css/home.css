@@ -1,0 +1,712 @@
+/* Banner */
+.banner .swiper-slide {
+    padding: 5rem 0;
+}
+.banner .swiper-slide .wrap {
+    max-width: 570px;
+}
+.banner .swiper-slide .wrap .title {
+    font-family: "Poppins Bold";
+    font-size: 1.375rem;
+    color: #00a859;
+    margin-bottom: 2rem;
+}
+.banner .swiper-slide .wrap .nav {
+    position: relative;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+}
+.banner .swiper-slide .wrap .nav .nav-item {
+    font-family: "Poppins Medium";
+    font-size: 1rem;
+    color: #707070;
+    display: flex;
+    align-items: center;
+    padding-left: 3.5rem;
+    line-height: 1.25;
+}
+.banner .swiper-slide .wrap .nav .nav-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+.banner .swiper-slide .wrap .nav .nav-item:nth-child(1)::before {
+    background-image: url("../images/icones/icone-contabilidade.png");
+    width: 37px;
+    height: 37px;
+}
+.banner .swiper-slide .wrap .nav .nav-item:nth-child(2)::before {
+    background-image: url("../images/icones/icone-plataforma-digital.png");
+    width: 39px;
+    height: 39px;
+}
+.banner .swiper-slide .wrap .nav .nav-item:nth-child(3)::before {
+    background-image: url("../images/icones/icone-sac.png");
+    width: 39px;
+    height: 45px;
+}
+@media(min-width: 576px) {
+    .banner .swiper-slide .wrap .title {
+        font-size: 1.75rem;
+    }
+}
+@media(min-width: 768px) {
+    .banner .swiper-slide .wrap .title {
+        font-size: 2.125rem;
+        margin-bottom: 2.5rem;
+    }
+    .banner .swiper-slide .wrap .nav {
+        margin-left: 3.5rem;
+        margin-bottom: 2.5rem;
+    }
+    .banner .swiper-slide .wrap .nav .nav-item {
+        font-size: 1.125rem;
+    }
+}
+
+/* Nossos Serviços */
+.our-services {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+.our-services .btn-green {
+    max-width: 270px;
+    margin: 3rem auto 0;
+}
+.our-services .content {
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+.our-services .card-group {
+    position: relative;
+    display: grid;
+    grid-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 270px));
+    grid-auto-columns: minmax(270px, 270px);
+    grid-auto-flow: column;
+    overflow-x: auto;
+    padding: 2rem 1rem;
+    scrollbar-color: #bababa #e3e3e3;
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+}
+.our-services .card-group::-webkit-scrollbar {
+    height: 11px;
+}
+.our-services .card-group::-webkit-scrollbar-thumb {
+    height: 11px;
+    background-color: #bababa;
+    border-radius: 5px;
+}
+.our-services .card-group .card {
+    border: 0;
+    border-radius: 1.25rem;
+    background-color: #FFFFFF;
+    padding: 7.75rem 1rem 1.5rem;
+    box-shadow: 0px 0px 9px 0.5px rgba(122, 122, 122, 0.3);
+}
+.our-services .card-group .card:hover {
+    background-color: #f2f2f2;
+}
+.our-services .card-group .card img {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.our-services .card-group .card .card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+}
+.our-services .card-group .card .card-title h4 {
+    font-family: "Poppins SemiBold";
+    font-size: 1rem;
+    color: #100f0f;
+    margin-bottom: 0;
+    text-align: center;
+}
+.our-services .card-group .card .card-description span {
+    display: block;
+    color: #5d5d5d;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    text-align: center;
+}
+@media(min-width: 768px) {
+    .our-services .section-title {
+        max-width: 760px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .our-services .section-subtitle {
+        max-width: 620px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .our-services .card-group .card .card-title {
+        height: 48px;
+    }
+    .our-services .card-group .card .card-title h4 {
+        font-size: 1.25rem;
+    }
+    .our-services .card-group .card .card-description span {
+        font-size: 1rem;
+    }
+    .our-services .btn-green {
+        max-width: 315px;
+        margin: 3.5rem auto 0;
+    }
+}
+@media(min-width: 992px) {
+    .our-services .card-group {
+        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 3 - 1rem), 1fr));
+        grid-auto-columns: minmax(calc(100% / 3 - 1rem), 1fr);
+    }
+}
+@media(min-width: 1200px) {
+    .our-services {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+    .our-services .card-group {
+        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 4 - 1.125rem), 1fr));
+        grid-auto-columns: minmax(calc(100% / 4 - 1.125rem), 1fr);
+    }
+}
+@media(min-width: 1400px) {
+    .our-services .card-group .card .card-description span {
+        max-width: 240px;
+        margin: 0 auto;
+    }
+}
+
+/* Simule sua mensalidade */
+.simulator {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    background-color: #f2f2f2;
+}
+.simulator .section-underline {
+    margin-bottom: 2.5rem;
+}
+.simulator .btn-green {
+    max-width: 375px;
+    margin: 2.75rem auto 0;
+}
+.simulator .wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+.simulator .wrap .card {
+    border-radius: 1.25rem;
+    max-width: 540px;
+    width: 100%;
+    padding: 2.5rem 1.5rem 1.5rem;
+    box-shadow: 0px 0px 9px 0.5px rgba(122, 122, 122, 0.3);
+}
+.simulator .wrap .card:nth-child(2) {
+    padding-top: 4.5rem;
+}
+.simulator .wrap .card .card-title {
+    font-family: "Poppins SemiBold";
+    font-size: 1rem;
+    text-align: center;
+    color: #272727;
+}
+.simulator .wrap .card .card-price {
+    font-family: "Poppins Bold";
+    font-size: 3.5rem;
+    line-height: 1.25;
+    position: relative;
+    display: inline-flex;
+    text-align: center;
+    margin: 0 auto;
+}
+.simulator .wrap .card .card-price::before {
+    content: "R$";
+    font-family: "Poppins SemiBold";
+    font-size: 1.25rem;
+    position: absolute;
+    top: 0.625rem;
+    left: -1.875rem;
+}
+.simulator .wrap .card .card-price::after {
+    font-family: "Poppins SemiBold";
+    font-size: 0.875rem;
+    position: absolute;
+    bottom: 0.875rem;
+    right: -2.25rem;
+}
+.simulator .wrap .card .card-price:first-of-type {
+    color: #00a859;
+}
+.simulator .wrap .card .card-price:first-of-type::after {
+    content: "/mês";
+}
+.simulator .wrap .card .card-price:last-of-type {
+    color: #a3e5c6;
+}
+.simulator .wrap .card .card-price:last-of-type::after {
+    content: "/ano";
+}
+.simulator .wrap .card .card-text span {
+    font-family: "Poppins Regular Italic";
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    color: #747474;
+    text-align: center;
+}
+.simulator .wrap .card hr {
+    width: 188px;
+    height: 3px;
+    margin: 1rem auto 1.5rem;
+    background-color: rgb(202, 202, 202);
+    opacity: 1;
+}
+.simulator .wrap .card .form-label {
+    font-size: 0.875rem;
+    color: #5d5d5d;
+    line-height: 1.25;
+    margin-bottom: 0;
+}
+.simulator .wrap .card .form-select,
+.simulator .wrap .card .form-control {
+    font-family: "Poppins Medium";
+    font-size: 1rem;
+    color: #272727;
+    height: 50px;
+    border-color: #B5B5B5;
+}
+.simulator .wrap .card .form-select:focus,
+.simulator .wrap .card .form-control:focus {
+    box-shadow: 0 0 0 0.20rem rgba(122 122 122 / 25%);
+}
+@media(min-width: 576px) {
+    .simulator .wrap .card .card-title {
+        font-size: 1.25rem;
+    }
+    .simulator .wrap .card .card-price {
+        font-size: 5.5rem;
+    }
+    .simulator .wrap .card .card-price::before {
+        font-size: 1.625rem;
+        top: 1rem;
+        left: -2.5rem;
+    }
+    .simulator .wrap .card .card-price::after {
+        font-size: 1.125rem;
+        bottom: 1.5rem;
+        right: -2.875rem;
+    }
+}
+@media(min-width: 1200px) {
+    .simulator .wrap {
+        flex-direction: row;
+        justify-content: center;
+        gap: 6rem;
+    }
+    .simulator .wrap::before {
+        content: "\f061";
+        font: var(--fa-font-solid);
+        font-size: 2.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 68px;
+        height: 68px;
+        margin: auto;
+        background-color: #6dcb9d;
+        color: #FFFFFF;
+        border-radius: 50%;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+/* Atendimento Personalizado */
+.customer-service {
+    padding-top: 5rem;
+    padding-bottom: 6rem;
+}
+.customer-service .image {
+    position: relative;
+    padding: 3rem 1rem;
+}
+.customer-service .image::before {
+    content: "";
+    background-image: url("../images/fundo-atendimento-ao-cliente.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+.customer-service .image img {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.25rem;
+}
+.customer-service .title {
+    font-family: "Poppins SemiBold";
+    font-size: 1.25rem;
+    color: #272727;
+    margin-bottom: 1rem;
+}
+.customer-service .subtitle {
+    font-family: "Poppins Medium";
+    font-size: 0.938rem;
+    color: #5d5d5d;
+    margin-bottom: 1.5rem;
+}
+.customer-service .channels {
+    display: flex;
+    gap: 1.75rem;
+}
+.customer-service .channels .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 9px 0.5px rgba(122, 122, 122, 0.3);
+}
+.customer-service .channels .icon::before {
+    content: "";
+    transition: all 0.3s;
+}
+.customer-service .channels .icon:hover::before {
+    margin-bottom: 1rem;
+}
+.customer-service .channels .icon.icon-whatsapp::before {
+    background: url("../images/icones/icone-whatsapp.png") no-repeat;
+    width: 42px;
+    height: 42px;
+}
+.customer-service .channels .icon.icon-phone::before {
+    background: url("../images/icones/icone-telefone.png") no-repeat;
+    width: 42px;
+    height: 42px;
+}
+.customer-service .channels .icon.icon-email::before {
+    background: url("../images/icones/icone-email.png") no-repeat;
+    width: 42px;
+    height: 28px;
+}
+@media(min-width: 576px) {
+    .customer-service .title {
+        font-size: 1.875rem;
+    }
+    .customer-service .channels {
+        gap: 2.5rem;
+    }
+}
+@media(min-width: 768px) {
+    .customer-service .image {
+        padding: 5rem 3rem;
+    }
+}
+@media(min-width: 992px) {
+    .customer-service .image {
+        padding: 4rem 2rem;
+    }
+}
+@media(min-width: 1200px) {
+    .customer-service .image {
+        padding: 5rem 2.5rem;
+    }
+    .customer-service .image::before {
+        background-position: right;
+    }
+    .customer-service .title {
+        font-size: 2.25rem;
+    }
+    .customer-service .subtitle {
+        font-size: 1.125rem;
+    }
+}
+
+/* Sobre a MS Contabilidade */
+.about {
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+    background-color: #f2f2f2;
+}
+.about .image {
+    position: relative;
+    padding: 3rem 1rem;
+}
+.about .image::before {
+    content: "";
+    background-image: url("../images/fundo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+.about .image img {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.25rem;
+}
+.about .title {
+    font-family: "Poppins SemiBold";
+    font-size: 1.25rem;
+    color: #272727;
+}
+.about .section-underline {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+.about .section-underline::before {
+    margin-left: 0;
+}
+.about .description {
+    color: #5d5d5d;
+    margin-bottom: 1.5rem;
+}
+.about .btn-outline-green {
+    max-width: 235px;
+    margin-bottom: 2rem;
+}
+@media(min-width: 576px) {
+    .about .title {
+        font-size: 1.875rem;
+    }
+}
+@media(min-width: 768px) {
+    .about .image {
+        padding: 5rem 3rem;
+    }
+}
+@media(min-width: 992px) {
+    .about .image {
+        padding: 4rem 2rem;
+    }
+    .about .btn-outline-green {
+        margin-bottom: 0;
+    }
+}
+@media(min-width: 1200px) {
+    .about {
+        padding-top: 6rem;
+        padding-bottom: 7rem;
+    }
+    .about .image {
+        padding: 5rem 2.5rem;
+    }
+    .about .image::before {
+        background-position: right;
+    }
+    .about .title {
+        font-size: 2.25rem;
+    }
+}
+
+/* Planos */
+.plans {
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+    background-color: #00a859;
+}
+.plans .title {
+    color: #FFFFFF;
+    font-size: 1.25rem;
+}
+.plans .title.ff-semibold {
+    font-family: "Poppins SemiBold";
+}
+.plans .title.ff-bold {
+    font-family: "Poppins Bold";
+    margin-bottom: 1.25rem;
+}
+.plans .subtitle {
+    font-family: "Poppins Medium";
+    font-size: 0.938rem;
+    line-height: 1.5;
+    color: #FFFFFF;
+    max-width: 320px;
+    margin-bottom: 2.25rem;
+}
+.plans .price {
+    display: inline-flex;
+    position: relative;
+    padding-left: 2.25rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    width: fit-content;
+    color: #FFFFFF;
+}
+.plans .price::before {
+    content: "R$";
+    font-family: "Poppins Medium";
+    font-size: 2rem;
+    position: absolute;
+    top: 0.625rem;
+    left: 0;
+}
+.plans .price::after {
+    content: "/mês";
+    font-family: "Poppins Medium";
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.plans .price span:nth-child(1) {
+    font-family: "Poppins Bold";
+    font-size: 10.5rem;
+    line-height: 1;
+}
+.plans .price span:nth-child(2) {
+    font-family: "Poppins Medium";
+    font-size: 2.75rem;
+    margin-top: 0.25rem;
+}
+.plans .price span:nth-child(2)::before {
+    content: ",";
+}
+.plans .btn-white {
+    max-width: 315px;
+    margin: 0 auto;
+}
+@media(min-width: 576px) {
+    .plans .btn-white {
+        margin-left: 0;
+    }
+}
+@media(min-width: 768px) {
+    .plans .title {
+        font-size: 1.5rem;
+    }
+    .plans .subtitle {
+        margin-bottom: 2rem;
+    }
+    .plans .price {
+        margin-bottom: 0;
+    }
+}
+@media(min-width: 992px) {
+    .plans .title {
+        font-size: 1.875rem;
+    }
+    .plans .price {
+        padding-left: 2.75rem;
+    }
+    .plans .price::before {
+        top: 1rem;
+        font-size: 2.5rem;
+    }
+    .plans .price::after {
+        font-size: 1.875rem;
+    }
+    .plans .price span:nth-child(1) {
+        font-size: 15rem;
+    }
+    .plans .price span:nth-child(2) {
+        font-size: 3.5rem;
+        margin-top: 0.375rem;
+    }
+}
+@media(min-width: 1200px) {
+    .plans {
+        padding-top: 7rem;
+    }
+    .plans .title {
+        font-size: 2.25rem;
+    }
+    .plans .subtitle {
+        font-size: 1.25rem;
+        max-width: 400px;
+    }
+    .plans .price span:nth-child(1) {
+        font-size: 17rem;
+    }
+}
+
+/* Perguntas Frequentes */
+.faq {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+.faq .accordion {
+    display: flex;
+    flex-direction: column;
+    max-width: 1004px;
+    margin: 0 auto;
+    gap: 1.25rem;
+}
+.faq .accordion .accordion-item {
+    overflow: hidden;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 9px 0.5px rgba(122, 122, 122, 0.3);
+}
+.faq .accordion .accordion-item .accordion-button {
+    font-family: "Poppins SemiBold";
+    font-size: 0.938rem;
+    padding: 1.25rem 1.5rem;
+    color: #404141;
+}
+.faq .accordion .accordion-item .accordion-button:focus {
+    box-shadow: none;
+}
+.faq .accordion .accordion-item .accordion-button::after {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: 1.5rem;
+}
+.faq .accordion .accordion-item .accordion-button:not(.collapsed) {
+    background-color: #f2f2f2;
+}
+.faq .accordion .accordion-item .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+.faq .accordion .accordion-item .accordion-body {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    text-align: justify;
+    color: #5d5d5d;
+}
+.faq .btn-outline-green {
+    margin: 0 auto;
+    max-width: 235px;
+}
+@media(min-width: 768px) {
+    .faq .accordion .accordion-item .accordion-button {
+        font-size: 1.125rem;
+    }
+    .faq .accordion .accordion-item .accordion-body {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,174 @@
+<?php
+// atualizando o perfil da sessao (em caso de mudança)
+if (getSession("id", "info_user") != "") {
+    $obj_usuario = new UsuarioAdmin();
+    $obj_usuario->setIdTable(getSession("id", "info_user"));
+    $obj_usuario->getByCod();
+    setSession($obj_usuario->getIdPerfil(), "id_perfil", "info_user");
+}
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="robots" content="noindex, nofollow"/>
+    <?php if (isset($title) && $title != "") { ?>
+        <title><?php echo $title ?></title>
+    <?php } else { ?>
+        <title>Painel Administrativo</title>
+    <?php } ?>
+    <link href='<?php echo BASE_IMAGES_URL ?>/favicon.ico' rel='shortcut' type='image/x-icon'/>
+    <link href='<?php echo BASE_IMAGES_URL ?>/favicon.png' rel='icon' type='image/png'/>
+    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/fontawesome.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/3dots.css"/>
+    <?php
+    #adiciona caso exista arquivos css especificos
+    if (isset($str_add_css) && count($str_add_css) > 0) {
+        foreach ($str_add_css as $new_file_css)
+            print('<link rel="stylesheet" type="text/css" href="' . ADMIN_CSS_URL . '/' . $new_file_css . '.css" />' . chr(13));
+    }
+    ?>
+    <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/jquery-3.1.min.js"></script>
+    <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/respond.min.js"></script>
+</head>
+<body id="<?php echo $page_name ?>">
+<?php if(!$liberado_incluir){ ?>
+    <style type="text/css">
+        .main .btn_admin.btn.btn-primary, .main .btn.btn-primary.btn_submit_form_new{
+            display: none;
+        }
+    </style>
+<?php } ?>
+<?php if(!$liberado_alterar){ ?>
+    <style type="text/css">
+        .main .btn.btn-success.btn_submit_form, .main .btn.btn-primary.btn_submit_form_new{
+            display: none;
+        }
+    </style>
+<?php } ?>
+<?php if(!$liberado_excluir){ ?>
+    <style type="text/css">
+        .main .btn.btn-danger{
+            display: none;
+        }
+    </style>
+<?php } ?>
+<nav class="navbar navbar-inverse " role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button id="menu-mobile" type="button" class="navbar-toggle collapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="<?php echo BASE_ADMIN_URL ?>/home.html">PAINEL ADMINISTRATIVO</a>
+            <ul class="user-menu">
+                <li class="dropdown pull-right">
+                    <?php
+                    $hora = date('H');
+                    $saudacao = ($hora >= 0 && $hora < 12 ? 'bom dia' : ($hora >= 12 && $hora < 18 ? 'boa tarde' : 'boa noite'));
+                    ?>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <svg class="glyph stroked male-user">
+                            <use xlink:href="#stroked-male-user"></use>
+                        </svg>
+                        Olá <?php echo getSession('nome', 'info_user') ?>, <?php echo $saudacao ?>!
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="<?php echo BASE_SITE_URL ?>" target="_blank">
+                                <i class="fas fa-home fontawesome"></i>
+                                Ver meu site</a></li>
+                        <li>
+                            <a href="<?php echo BASE_ADMIN_URL ?>/usuarios-form.html?id=<?php echo getSession("id_usuario", "info_user") ?>">
+                                <i class="far fa-user fontawesome"></i>
+                                Meus Dados</a></li>
+                        <li>
+                            <a href="<?php echo BASE_ADMIN_URL ?>/senha-form.html?id=<?php echo getSession("id_usuario", "info_user") ?>">
+                                <i class="far fa-cog fontawesome"></i>
+                                Alterar Senha</a></li>
+                        <li><a href="<?php echo BASE_ADMIN_URL ?>/login.html?acao=logout">
+                                <i class="fas fa-minus-circle fontawesome"></i>
+                                Sair</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="menu" class="col-sm-3 col-lg-2 sidebar">
+    <div class="logotipo">
+        <a href="<?php echo BASE_ADMIN_URL ?>/home.html">
+            <img src="<?php echo UPLOADS_URL ."/tema/logotipo/". SITE_LOGOTIPO;?>" alt="<?php echo SITE_TITLE ?>"/>
+        </a>
+    </div>
+    <?php
+    //Menu Principal
+    $pag_obj = new Pagina();
+    $grupos = $pag_obj->getGrupos();
+    ?>
+    <nav>
+        <ul class="nav menu">
+            <li <?php if ($page_name == "home") { ?>class="active"<?php } ?>>
+                <a href="<?php echo BASE_ADMIN_URL ?>/home.html">
+                    <i class="fas fa-home fontawesome"></i>
+                    Início</a></li>
+            <?php
+            if ($grupos !== false) {
+                $i = 0;
+                foreach ($grupos as $grupo) {
+                    $i++;
+                    $paginas = $pag_obj->getPaginas($grupo->id_pagina);
+                    $liberado = false;
+                    foreach($paginas as $p){
+                        if(Perfil::verificaPermissao(getSession("id_perfil", "info_user"),$p->id_pagina,'visualizar')) {
+                            $liberado = true;
+                            break;
+                        }
+                    }
+                    if($liberado) {
+                        ?>
+                        <li class="<?php if ($paginas !== false) { ?>parent<?php } ?>">
+                            <a href="#" onclick="return false;">
+                                <i class="fa <?php echo $grupo->icone ?>" aria-hidden="true"></i> <?php echo $grupo->titulo ?>
+                                <?php if ($paginas !== false) { ?>
+                                    <span data-toggle="collapse" href="#sub-item-<?php echo $i ?>"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                                <?php } ?>
+                            </a>
+                            <?php if ($paginas !== false) { ?>
+                                <ul class="children" id="sub-item-<?php echo $i ?>">
+                                    <?php $page_select = false;
+                                    foreach ($paginas as $pagina) {
+                                        $url_menu = BASE_ADMIN_URL . "/" . $pagina->nome . "-lista.html";
+                                        if ($page_name == $pagina->nome) $page_select = true;
+                                        if (Perfil::verificaPermissao(getSession("id_perfil", "info_user"), $pagina->id_pagina, 'visualizar')) {
+                                            ?>
+                                            <li>
+                                                <a class="<?php echo $pagina->nome ?> <?php if ($page_name == $pagina->nome) { ?>active<?php } ?>" href="<?php echo $url_menu ?>">
+                                                    <i class="fa <?php echo $pagina->icone ?>" aria-hidden="true"></i> <?php echo $pagina->titulo ?>
+                                                </a>
+                                            </li>
+                                        <?php }
+                                    }
+                                    if (!$page_select)
+                                        echo '<script>$("a.' . $pagina->nome . '").closest("ul").addClass("collapse");</script>';
+                                    ?>
+                                </ul>
+                            <?php } ?>
+                        </li>
+                    <?php
+                    }
+                }
+            }
+            ?>
+        </ul>
+    </nav>
+</div>
+<div class="clearfix"></div>

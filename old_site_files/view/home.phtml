@@ -1,0 +1,445 @@
+<?php
+$page_back = "";
+$page_id = "home";
+
+$str_add_css = array();
+$str_add_js = array('owl.carousel.min', 'scrollreveal.min', 'jquery.maskMoney.min');
+
+$banner = new Banner();
+$banners = $banner->listAll("A", "posicao ASC");
+
+$servico = new Servico();
+$servicos = $servico->getServicosHome();
+
+$parceiro = new Parceiro();
+$parceiros = $parceiro->listAll("A", "posicao");
+
+$pergunta_frequente = new PerguntaFrequente();
+$perguntas_frequentes = $pergunta_frequente->listAll("A", "posicao LIMIT 3");
+
+$obj_artigo = new Artigo();
+$artigos = $obj_artigo->listAll("A", "data_artigo DESC LIMIT 4");
+
+$obj_calculadora_faturamento = new CalculadoraFaturamento();
+
+$obj_nossa_equipe = new NossaEquipe();
+$nossa_equipe = $obj_nossa_equipe->getNossaEquipeHome();
+
+$obj_tipo_servico_calculadora = new TipoServicoCalculadora();
+
+$tipos_servicos_calculadoras = $obj_tipo_servico_calculadora->listAll('A');
+$calculadora_faturamento = $obj_tipo_servico_calculadora->getValoresFaturamenteByTipoServico($tipos_servicos_calculadoras[0]->id_tipo_servico_calculadora);
+
+$texto = new Texto();
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_PERGUNTAS_FREQUENTES);
+$textos->getByCod();
+
+
+include_once("header.phtml");
+?>
+<div class="row fullWidth">
+    <div class="owl-carousel" id="banners-detalhe">
+        <?php
+        foreach ($banners as $banner) {
+            ?>
+            <div class="item">
+                <?php
+                if ($banner->link_banner != "#") {
+                    ?>
+                    <a href="<?php echo $banner->link_banner; ?>" target="<?php echo $banner->target; ?>">
+                        <img src="<?php echo UPLOADS_URL . "/banners/" . $banner->url_imagem; ?>"
+                             alt="<?php echo SITE_TITLE ?>"></a>
+                    <?php
+                } else {
+                    ?>
+                    <img src="<?php echo UPLOADS_URL . "/banners/" . $banner->url_imagem; ?>"
+                         alt="<?php echo SITE_TITLE ?>"></a>
+                    <?php
+                }
+                ?>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+</div>
+<div class="fullWidth" id="container">
+    <div class="row fullContainer">
+        <div class="columns text-center">
+            <h2>Conheça Nossos serviços e contrate</h2>
+        </div>
+        <?php
+        $contador = 0;
+        foreach ($servicos as $servico) {
+            $pull_or_push_nome = "";
+            $pull_or_push_icon = "";
+            $pull_or_push_descricao = "";
+            ?>
+            <div class="columns">
+                <?php
+                if ($contador == 0) {
+                    ?>
+                    <hr class="desing-br">
+                    <?php
+                }
+                if ($contador == 1 || $contador == 2) {
+                    ?>
+                    <hr>
+                    <?php
+                }
+                switch ($contador) {
+                    case 0:
+                        $pull_or_push_nome = "medium-5 large-5 columns text-right";
+                        $pull_or_push_icon = "medium-2 large-2 columns text-center";
+                        $pull_or_push_descricao = "medium-5 large-5 columns";
+                        break;
+                    case 1:
+                        $pull_or_push_nome = "medium-5 large-5 medium-push-7 large-push-7 columns";
+                        $pull_or_push_icon = "medium-2 large-2 columns text-center";
+                        $pull_or_push_descricao = "medium-5 large-5 medium-pull-7 large-pull-7 columns text-right";
+                        break;
+                    case 2:
+                        $pull_or_push_nome = "medium-5 large-5 columns text-right";
+                        $pull_or_push_icon = "medium-2 large-2 columns text-center";
+                        $pull_or_push_descricao = "medium-5 large-5 columns";
+                        break;
+                    case 3:
+                        $pull_or_push_nome = "medium-5 large-5 medium-push-7 large-push-7 columns";
+                        $pull_or_push_icon = "medium-2 large-2 columns text-center";
+                        $pull_or_push_descricao = "medium-5 large-5 medium-pull-7 large-pull-7 columns text-right";
+                        break;
+                    default:
+                        $pull_or_push_nome = "medium-5 large-5 columns text-right";
+                        $pull_or_push_icon = "medium-2 large-2 columns text-center";
+                        $pull_or_push_descricao = "medium-5 large-5 columns";
+                        break;
+                };
+                ?>
+                <div class="row container-servicos">
+                    <div class="<?php echo $pull_or_push_nome; ?>">
+                        <a href="<?php echo BASE_SITE_URL . "/nosso-servico-detalhes/" . url_amigavel($servico->nome_servico) . '-' . $servico->id_servico; ?>">
+                            <div class="titulo"><?php echo $servico->nome_servico; ?></div>
+                        </a>
+                    </div>
+                    <div class="<?php echo $pull_or_push_icon; ?>">
+                        <a href="<?php echo BASE_SITE_URL . "/nosso-servico-detalhes/" . url_amigavel($servico->nome_servico) . '-' . $servico->id_servico; ?>">
+                            <img src="<?php echo UPLOADS_URL . "/servicos/" . $servico->icon_servico; ?>"
+                                 alt="<?php echo SITE_TITLE ?>">
+                        </a>
+                    </div>
+                    <div class="<?php echo $pull_or_push_descricao; ?>">
+                        <a href="<?php echo BASE_SITE_URL . "/nosso-servico-detalhes/" . url_amigavel($servico->nome_servico) . '-' . $servico->id_servico; ?>">
+                            <div class="texto"><?php echo $servico->breve_descricao_servico; ?></div>
+                        </a>
+                    </div>
+                </div>
+                <?php
+                if ($contador == 2) {
+                    ?>
+                    <hr>
+                    <?php
+                }
+                if ($contador == 3) {
+                    $contador = 0;
+                    ?>
+                    <hr class="desing-br">
+                    <?php
+                }
+                ?>
+            </div>
+            <?php
+            $contador++;
+        }
+        ?>
+        <div class="columns" id="buttom">
+            <a href="<?php echo BASE_SITE_URL ?>/nossos-servicos">
+                <div>VER TODOS SERVIÇOS</div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row fullContainer" id="parceiros">
+    <div class="columns text-center">
+        <h2>nossos parceiros</h2>
+    </div>
+    <div class="owl-carousel columns" id="banners-parceiros">
+        <?php
+        foreach ($parceiros as $parceiro) {
+            ?>
+            <div class="item imagem">
+                <a <?php echo ($parceiro->link_parceiro != "#") ? 'href="' . $parceiro->link_parceiro . '"' : '' ?>
+                        target="_blank">
+                    <img src="<?php echo UPLOADS_URL . "/parceiros/" . $parceiro->imagem_parceiro; ?>"
+                         alt="<?php echo $parceiro->nome_parceiro; ?>">
+                </a>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+</div>
+<div class=" fullWidth" id="perguntas">
+    <?php
+    if ($textos->url_imagem_home != "") {
+        ?>
+        <div class="large-6 columns padding">
+            <img src="<?php echo UPLOADS_URL . "/textos/" . $textos->url_imagem_home ?>"
+                 alt="<?php echo SITE_TITLE ?>">
+        </div>
+        <?php
+    }
+    ?>
+    <div class="row fullContainer">
+        <div class="large-6 columns textos">
+            <h2>perguntas frequentes</h2>
+            <?php
+            $contador = 1;
+            foreach ($perguntas_frequentes as $pergunta_frequente) {
+                ?>
+                <div class="pergunta"><?php echo $contador . ". " . $pergunta_frequente->pergunta_frequente ?></div>
+                <div class="resposta"><?php echo $pergunta_frequente->resposta_pergunta_frequente ?></div>
+                <br/>
+                <br/>
+                <?php
+                $contador++;
+            }
+            ?>
+            <div id="buttom">
+                <a href="<?php echo BASE_SITE_URL ?>/perguntas-frequentes">
+                    <div>VER MAIS</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row fullContainer" id="publicacoes">
+    <div class="columns text-center">
+        <h2>últimas publicações</h2>
+    </div>
+    <?php
+    foreach ($artigos as $artigo) {
+        ?>
+        <div class="medium-6 large-3 columns">
+            <a href="<?php echo BASE_SITE_URL . "/artigos-detalhes/" . url_amigavel($artigo->titulo_artigo) . '-' . $artigo->id_artigo; ?>">
+                <div class="imagem">
+                    <img src="<?php echo UPLOADS_URL . "/artigos/" . $artigo->imagem_capa_artigo; ?>"
+                         alt="<?php echo SITE_TITLE ?>">
+                </div>
+                <div class="data"><?php echo htmlspecialchars($obj_artigo->getDataArtigoByData($artigo->data_artigo)) ?></div>
+                <div class="titulo"><?php echo htmlspecialchars($artigo->titulo_artigo); ?></div>
+                <div class="texto"><?php echo (strlen(strip_tags($artigo->descricao_artigo)) > 180) ? substr(strip_tags($artigo->descricao_artigo), 0, 180) . '...' : strip_tags($artigo->descricao_artigo); ?></div>
+                <span>+ Ver mais</span>
+            </a>
+        </div>
+        <?php
+    }
+    ?>
+    <div class="columns" id="buttom">
+        <a href="<?php echo BASE_SITE_URL ?>/artigos">
+            <div>ver todas publicações</div>
+        </a>
+    </div>
+</div>
+<?php
+if (MOSTRAR_CALCULADORA_SIMULACAO_MENSALIDADE == "S") {
+    ?>
+    <div class="fullWidth" id="info-mensalidades">
+        <div class="banner">
+            <div class="row fullContainer">
+                <div class="columns text-center">
+                    <h3>simule sua mensalidade</h3>
+                    <div class="sub-titulo">Nossos clientes economizam em média 90% em contabilidade.</div>
+                </div>
+                <div class="large-6 columns">
+                    <div class="container">
+                        <form id="formulario-simular-mensalidade">
+                            <select id="tipo-simulacao">
+                                <?php
+                                foreach ($tipos_servicos_calculadoras as $tsc) {
+                                    ?>
+                                    <option value="<?php echo $tsc->id_tipo_servico_calculadora ?>"><?php echo $tsc->nome_tipo_servico_calculadora ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                            <br/>
+                            <br/>
+                            <label>Quanto você paga de contabilidade por mês?</label>
+                            <input type="text" id="preco" value="0,00"/>
+                            <br/>
+                            <label>Quantos sócios têm sua empresa?</label>
+                            <input type="text" id="socios" value="1"/>
+                            <br/>
+                            <label>Quantos funcionários?</label>
+                            <input type="text" id="funcionarios" value="0"/>
+                            <br/>
+                            <label>Qual o faturamento mensal?</label>
+                            <select id="faturamento">
+                                <?php
+                                foreach ($calculadora_faturamento as $cf) {
+                                    ?>
+                                    <option value="<?php echo $cf->valor ?>"><?php echo $cf->descricao_faturamento; ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="large-6 columns text-center">
+                    <div id="container-valores-simulacao" class="container">
+                        <span class="titulo">O valor de sua mensalidade será:</span>
+                        <span id="valor_mensalidade" class="preco">0,00</span>
+                        <div class="texto" style="font-family: 'Lato-Regular';font-weight: bold;font-size: 14px;margin-top: 10px">*Para empresas sujeitas ao fator R e enquadradas no anexo IV,<br />
+                            os valores simulados estarão sujeitos a alterações.</div>
+                        <hr style="margin: 30px auto 0px;">
+                        <span class="titulo" style="margin-top: 28px">Voce irá economizar:</span>
+                        <span id="valor_economia" class="preco" style="color: #1b56a6;">0,00</span>
+                    </div>
+                </div>
+                <div class="columns" id="buttom">
+                    <a href="<?php echo BASE_SITE_URL ?>/migrar-minha-empresa">
+                        <div>como faço para migrar?</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+?>
+<?php
+if ($nossa_equipe) {
+    ?>
+    <div class="row fullContainer" id="pessoas">
+        <div class="columns text-center">
+            <h2>conheça nossa equipe</h2>
+        </div>
+        <?php
+        foreach ($nossa_equipe as $equipe) {
+            ?>
+            <div id="div-integrante-equipe" class="medium-6 large-3 columns text-center">
+                <img src="<?php echo UPLOADS_URL . "/nossa-equipe/" . $equipe->foto; ?>"
+                     alt="<?php echo $equipe->nome ?>">
+                <div class="nome"><?php echo $equipe->nome; ?></div>
+                <div class="cargo"><?php echo $equipe->funcao; ?></div>
+                <div class="redes-sociais">
+                    <?php
+                    if ($equipe->link_facebook != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_facebook; ?>"><span
+                                    class="icon facebook"></span></a>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ($equipe->link_twitter != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_twitter; ?>"><span
+                                    class="icon twitter"></span></a>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ($equipe->link_linkedin != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_linkedin; ?>"><span
+                                    class="icon in"></span></a>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ($equipe->link_google_plus != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_google_plus; ?>"><span
+                                    class="icon google-mais"></span></a>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+    <?php
+}
+include_once("footer.phtml");
+?>
+<script type="text/javascript">$("input#preco").maskMoney({
+        prefix: 'R$ ',
+        allowNegative: true,
+        thousands: '.',
+        decimal: ',',
+        affixesStay: false
+    });</script>
+<script type="text/javascript">
+
+    // Lazy Load Brendol Lourençon
+    window.sr = ScrollReveal({reset: false});
+
+    sr.reveal('#home #container div.titulo', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 300,
+        scale: 0
+    });
+    sr.reveal('#home #container img', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 100,
+        scale: 0
+    });
+    sr.reveal('#home #container div.texto', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 400,
+        scale: 0
+    });
+    sr.reveal('#home #publicacoes div', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 200,
+        scale: 0
+    });
+    sr.reveal('#home #parceiros', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 200,
+        scale: 0
+    });
+    sr.reveal('#home #perguntas img', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 300,
+        scale: 0
+    });
+    sr.reveal('#home #perguntas div.textos', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 400,
+        scale: 0
+    });
+    sr.reveal('#home #info-mensalidades div', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 300,
+        scale: 0
+    });
+    sr.reveal('#home #pessoas div', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 300,
+        scale: 0
+    });
+</script>

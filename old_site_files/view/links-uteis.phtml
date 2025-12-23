@@ -1,0 +1,75 @@
+<?php
+$page_back = "";
+$page_id = "links-uteis";
+
+$str_add_css = array();
+$str_add_js = array();
+
+$texto = new Texto();
+$obj_tipos_links_uteis = new TipoLinkUtel();
+$obj_links_uteis = new LinkUtel();
+$tipos_links_uteis = $obj_tipos_links_uteis->listAll("A", "posicao");
+
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_LINKS_UTEIS);
+$textos->getByCod();
+
+
+include_once("header.phtml");
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $texto->url_imagem; ?>" alt="<?php echo SITE_TITLE ?>">
+    </div>
+    <?php
+}
+?>
+    <div class="row fullContainer" id="breadcrumb">
+        <div class="columns">
+            <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Links Úteis</span>
+            <h1 class="titulo"><?php echo $textos->titulo;?></h1>
+        </div>
+    </div>
+    <div class="row fullContainer" id="conteudo">
+        <div class="columns">
+            <?php
+            $contador=0;
+            $css = "";
+            foreach ($tipos_links_uteis as $tipo_link) {
+                $css .= "#links-uteis-".$contador.":before
+                {content:'';
+                background-image:url(".UPLOADS_URL."/tipos-links-uteis/".$tipo_link->icon_tipo_link_utel.");
+                position: absolute;
+                left:2%;
+                width: 27px;
+                height: 27px;
+                top: 0;
+                bottom: 0;
+                margin: auto 0;
+                background-repeat:no-repeat;
+                }";
+                $links_uteis = $obj_links_uteis->getLinksUteisByTipoLinkUtel($tipo_link->id_tipo_link_utel);
+                ?>
+                <ul>
+                    <li style="background-color: <?php echo "#".$tipo_link->cor_tipo_link_utel;?>"><?php echo $tipo_link->nome_tipo_link_utel; ?></li>
+                    <?php
+                    foreach ($links_uteis as $link) {
+                        ?>
+                        <li id="<?php echo "links-uteis-".$contador;?>" class="item-link">
+                            <a target="_blank" href="<?php echo $link->link_utel;?>" class="url-link-uteis"></a>
+                            <a target="_blank" href="<?php echo $link->link_utel;?>"><?php echo $link->nome_link_utel?></a>
+                        </li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+                <?php
+                $contador++;
+            }
+            ?>
+            <style><?php echo $css;?></style>
+        </div>
+    </div>
+<?php
+include_once("footer.phtml");
+?>

@@ -1,0 +1,43 @@
+<?php
+    if (isset($breadcrumb) && count($breadcrumb) > 0) {
+        $str_ol  = "\n".'<div id="breadcrumb">';
+        $str_ol .= "\n\t".'<ol class="breadcrumb">';
+        $str_json  = "\n".'<script type="application/ld+json">';
+        $str_json .= "\n\t".'{';
+        $str_json .= "\n\t\t".'"@context": "http://schema.org",';
+        $str_json .= "\n\t\t".'"@type": "BreadcrumbList",';
+        $str_json .= "\n\t\t".'"itemListElement": [';
+        
+        for($i=0; $i<count($breadcrumb); $i++) {
+            if ($i > 0) $str_json .= ',';
+            
+            $str_json .= '{';
+            $str_json .= "\n\t\t\t".'"@type": "ListItem",';
+            $str_json .= "\n\t\t\t".'"position": '.($i+1).',';
+            $str_json .= "\n\t\t\t".'"item": {';
+            $str_json .= "\n\t\t\t\t".'"@id": "'.$breadcrumb[$i]['url'].'",';
+            $str_json .= "\n\t\t\t\t".'"name": "'.$breadcrumb[$i]['nome'].'"';
+            if (isset($breadcrumb[$i]['imagem']) && $breadcrumb[$i]['imagem'] != "")
+                $str_json .= "\n\t\t\t\t".'"image": "'.$breadcrumb[$i]['imagem'].'"';
+            $str_json .= "\n\t\t\t".'}';
+            $str_json .= "\n\t\t".'}';
+            
+            $str_ol .= "\n\t\t".'<li>';
+            $str_ol .= "\n\t\t\t".'<a href="'.$breadcrumb[$i]['url'].'">';
+            if (isset($breadcrumb[$i]['icon']) && $breadcrumb[$i]['icon'] != "")
+                $str_ol .= $breadcrumb[$i]['icon'];
+            $str_ol .= $breadcrumb[$i]['nome'].'</a>';
+            if (($i+1) < count($breadcrumb))
+                $str_ol .= '  ';
+            $str_ol .= "\n\t\t".'</li>';
+            
+        }
+        $str_json .= ']';
+        $str_json .= "\n\t".'}';
+        $str_json .= "\n".'</script>';
+        $str_ol .= "\n\t".'</ol>';
+        $str_ol .= "\n".'</div>'."\n";
+    }
+    
+    echo $str_json;
+    echo $str_ol;

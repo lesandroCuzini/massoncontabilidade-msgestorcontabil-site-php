@@ -1,0 +1,73 @@
+<?php
+$page = "artigos";
+
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+
+$id_artigo = getRequest('id_artigo');
+if (!$id_artigo) {
+    header('Location: ' . BASE_SITE_URL);
+    die;
+}
+
+// Artigo
+$objArtigo = new Artigo();
+$objArtigo->setIdTable($id_artigo);
+$objArtigo->getByCod();
+
+$str_add_css = array('artigos');
+
+include_once("header.phtml");
+?>
+    <main class="page-articles">
+        <nav aria-label="breadcrumb">
+            <div class="container container-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL . '/artigos' ?>">Artigos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo $objArtigo->titulo ?></li>
+                </ol>
+            </div>
+        </nav>
+        <section class="internal-article overflow-hidden">
+            <div class="container">
+                <h3 class="section-title" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700"><?php echo $objArtigo->titulo ?></h3>
+                <h5 class="section-subtitle section-underline" data-aos="fade-up" data-aos-delay="400" data-aos-duration="700"><?php echo $objArtigo->descricao ?></h5>
+                <h6 class="section-date" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700"><?php echo strftime('%d de %B de %Y', strtotime(formatarData('bd', $objArtigo->data_artigo))); ?></h6>
+                <?php if ($objArtigo->url_imagem != "") { ?>
+                <img src="<?php echo UPLOADS_URL . '/artigos/' . $objArtigo->url_imagem ?>" class="img-fluid d-block mx-auto" alt="<?php echo $objArtigo->titulo ?>" data-aos="fade-up" data-aos-delay="600" data-aos-duration="700">
+                <?php } ?>
+                <div class="content" data-aos="fade-up" data-aos-delay="700" data-aos-duration="700">
+                    <?php echo $objArtigo->conteudo ?>
+                </div>
+                <div class="share-news" data-aos="fade-up" data-aos-delay="700" data-aos-duration="700">
+                    <span>Compartilhar</span>
+                    <div class="share">
+                        <a href="#" class="btn btn-share whatsapp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="#" class="btn btn-share facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="btn btn-share twitter">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                        <a href="#" class="btn btn-share messenger">
+                            <i class="fa-brands fa-facebook-messenger"></i>
+                        </a>
+                        <a href="#" class="btn btn-share telegram">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a>
+                        <a href="#" class="btn btn-share envelope">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

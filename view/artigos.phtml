@@ -1,0 +1,60 @@
+<?php
+$page = "artigos";
+
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+
+// Data Atual
+$data_atual = date('Y-m-d');
+
+$artigo = new Artigo();
+$artigos = $artigo->getArtigosByDataArtigo($data_atual, 'A');
+
+$str_add_css = array('artigos');
+
+include_once("header.phtml");
+?>
+    <main class="page-articles">
+        <nav aria-label="breadcrumb">
+            <div class="container container-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Artigos</li>
+                </ol>
+            </div>
+        </nav>
+        <?php if ($artigos) { ?>
+        <section class="articles overflow-hidden">
+            <div class="container">
+                <h3 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Artigos</h3>
+                <div class="cards">
+                    <?php foreach ($artigos as $infoArtigo) { ?>
+                        <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                            <img src="<?php echo UPLOADS_URL . '/artigos/small/' . $infoArtigo->url_imagem_capa ?>" class="card-img-top">
+                            <div class="card-body">
+                                <span class="card-date"><?php echo strftime('%d de %B de %Y', strtotime(formatarData('bd', $infoArtigo->data_artigo))); ?></span>
+                                <h5 class="card-title"><?php echo $infoArtigo->titulo ?></h5>
+                                <span class="card-description"><?php echo $infoArtigo->descricao ?></span>
+                                <a href="<?php echo BASE_SITE_URL . '/artigo/' . $infoArtigo->url_rewrite ?>" class="card-link stretched-link">Ver mais +</a>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+                <nav data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#"><span>Anterior</span></a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><span>Próxima</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+        <?php } ?>
+    </main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

@@ -1,0 +1,304 @@
+/* Página Serviços */
+.page-services .services {
+    padding-bottom: 5rem;
+}
+.page-services .services .card-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+.page-services .services .card-group .card {
+    width: 100%;
+    max-width: 270px;
+    margin-bottom: 0;
+    border: 0;
+    border-radius: 1.25rem;
+    background-color: #FFFFFF;
+    padding: 7.75rem 1rem 1.5rem;
+    box-shadow: 0px 0px 9px 0.5px rgba(122, 122, 122, 0.3);
+}
+.page-services .services .card-group .card:hover {
+    background-color: #f2f2f2;
+}
+.page-services .services .card-group .card img {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.page-services .services .card-group .card .card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+}
+.page-services .services .card-group .card .card-title h4 {
+    font-family: "Poppins SemiBold";
+    font-size: 1rem;
+    color: #100f0f;
+    margin-bottom: 0;
+    text-align: center;
+}
+.page-services .services .card-group .card .card-description span {
+    display: block;
+    color: #5d5d5d;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    text-align: center;
+}
+@media(min-width: 576px) {
+    .page-services .services .card-group {
+        flex-direction: inherit;
+        align-items: inherit;
+        flex-wrap: wrap;
+    }
+    .page-services .services .card-group .card {
+        flex: inherit;
+        flex-basis: calc(100% / 2 - 0.75rem);
+        max-width: inherit;
+    }
+}
+@media(min-width: 768px) {
+    .page-services .services .card-group .card .card-title {
+        height: 48px;
+    }
+    .page-services .services .card-group .card .card-title h4 {
+        font-size: 1.25rem;
+    }
+    .page-services .services .card-group .card .card-description span {
+        font-size: 1rem;
+    }
+}
+@media(min-width: 992px) {
+    .page-services .services .card-group .card {
+        flex-basis: calc(100% / 3 - 1rem);
+    }
+}
+@media(min-width: 1200px) {
+    .page-services .services {
+        padding-bottom: 8rem;
+    }
+    .page-services .services .card-group .card {
+        flex-basis: calc(100% / 4 - 1.125rem);
+    }
+}
+
+/* Página Interna do Serviço */
+.page-service .service {
+    padding-bottom: 2rem;
+}
+.page-service .service .image {
+    position: relative;
+    padding: 3rem 1rem;
+}
+.page-service .service .image::before {
+    content: "";
+    background-image: url("../images/fundo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+.page-service .service .image img {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.25rem;
+}
+.page-service .service .content > * {
+    color: #5d5d5d;
+    margin-bottom: 0;
+}
+.page-service .service .content.content-justify > *:not(h1,h2,h3,h4,h5,h6) {
+    text-align: justify;
+}
+.page-service .service .content ul {
+    list-style-type: "⯈";
+    text-align: left;
+    line-height: 1.25;
+    padding-left: 0.75rem;
+}
+.page-service .service .content ul li {
+    padding-left: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+.page-service .service .content h1,
+.page-service .service .content h2 {
+    position: relative;
+    font-family: "Poppins SemiBold";
+    font-size: 1.5rem;
+    color: #272727;
+    margin-bottom: 2rem;
+    padding-bottom: 0.875rem;
+}
+.page-service .service .content h1::before,
+.page-service .service .content h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    height: 5px;
+    border-radius: 0.25rem;
+    background-color: #00a859;
+}
+.page-service .service .content h3,
+.page-service .service .content h4 {
+    font-family: "Poppins SemiBold";
+    font-size: 1.125rem;
+    color: #272727;
+    margin-bottom: 0.5rem;
+}
+@media(min-width: 576px) {
+    .page-service .service .content h1,
+    .page-service .service .content h2 {
+        font-size: 1.875rem;
+        max-width: 450px;
+        margin: 0 0 2rem;
+    }
+    .page-service .service .content h3,
+    .page-service .service .content h4 {
+        font-size: 1.25rem;
+    }
+}
+@media(min-width: 768px) {
+    .page-service .service .image {
+        padding: 5rem 3rem;
+    }
+    .page-service .service .content h1,
+    .page-service .service .content h2 {
+        font-size: 2.25rem;
+        max-width: 540px;
+    }
+    .page-service .service .content h3,
+    .page-service .service .content h4 {
+        font-size: 1.5rem;
+    }
+}
+@media(min-width: 992px) {
+    .page-service .service .image {
+        padding: 4rem 2rem;
+    }
+}
+@media(min-width: 1200px) {
+    .page-service .service .image {
+        padding: 5rem 2.5rem;
+    }
+    .page-service .service .image::before {
+        background-position: right;
+    }
+}
+
+/* Como Funciona da Página Interna dos Serviços */
+.page-service .how-it-works {
+    padding-top: 4rem;
+}
+.page-service .how-it-works .content {
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+.page-service .how-it-works .card-group {
+    position: relative;
+    display: grid;
+    grid-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 270px));
+    grid-auto-columns: minmax(270px, 270px);
+    grid-auto-flow: column;
+    overflow-x: auto;
+    padding: 2rem 1rem;
+    scrollbar-color: #bababa #e3e3e3;
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+}
+.page-service .how-it-works .card-group::-webkit-scrollbar {
+    height: 11px;
+}
+.page-service .how-it-works .card-group::-webkit-scrollbar-thumb {
+    height: 11px;
+    background-color: #bababa;
+    border-radius: 5px;
+}
+.page-service .how-it-works .card-group .card {
+    border: 0;
+    border-radius: 1.25rem;
+    background-color: #FFFFFF;
+    padding: 7.75rem 1rem 1.5rem;
+    box-shadow: 0px 0px 9px 0.5px rgba(122, 122, 122, 0.3);
+}
+.page-service .how-it-works .card-group .card img {
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.page-service .how-it-works .card-group .card .card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+}
+.page-service .how-it-works .card-group .card .card-title h4 {
+    font-family: "Poppins SemiBold";
+    font-size: 1rem;
+    color: #100f0f;
+    margin-bottom: 0;
+    text-align: center;
+}
+.page-service .how-it-works .card-group .card .card-description span {
+    display: block;
+    color: #5d5d5d;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    text-align: center;
+}
+@media(min-width: 768px) {
+    .page-service .how-it-works .card-group .card .card-title {
+        height: 48px;
+    }
+    .page-service .how-it-works .card-group .card .card-title h4 {
+        font-size: 1.25rem;
+    }
+    .page-service .how-it-works .card-group .card .card-description span {
+        font-size: 1rem;
+    }
+}
+@media(min-width: 992px) {
+    .page-service .how-it-works .card-group {
+        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 3 - 1rem), 1fr));
+        grid-auto-columns: minmax(calc(100% / 3 - 1rem), 1fr);
+    }
+}
+@media(min-width: 1200px) {
+    .page-service .how-it-works .card-group {
+        grid-template-columns: repeat(auto-fill, minmax(calc(100% / 4 - 1.125rem), 1fr));
+        grid-auto-columns: minmax(calc(100% / 4 - 1.125rem), 1fr);
+    }
+}
+@media(min-width: 1400px) {
+    .page-service .how-it-works .card-group .card .card-description span {
+        max-width: 240px;
+        margin: 0 auto;
+    }
+}
+
+/* Botão Contratar Agora */
+.page-service .btn-green {
+    max-width: 270px;
+    margin: 3rem auto 5rem;
+}
+@media(min-width: 1200px) {
+    .page-service .btn-green {
+        max-width: 375px;
+        margin: 3rem auto 8rem;
+    }
+}

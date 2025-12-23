@@ -1,0 +1,70 @@
+<?php
+$page_back = "";
+$page_id = "artigos";
+
+$str_add_css = array();
+$str_add_js = array();
+
+$obj_artigo = new Artigo();
+$total = count($obj_artigo->listAll("A"));
+$qpp = QUANTIDADE_ARTIGO_PP;
+$numPaginas = ceil($total / $qpp);
+$pagina = (isset($_GET['pag'])) ? $_GET['pag'] : 1;
+
+$inicio = ($qpp * $pagina) - $qpp;
+$limit = $inicio . ',' . $qpp;
+
+$artigos = $obj_artigo->getLista("status='A'", "data_artigo DESC", $limit);
+
+include_once("header.phtml");
+?>
+    <div class="row fullContainer" id="breadcrumb">
+        <div class="columns">
+            <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Artigos</span>
+            <h1 class="titulo">Artigos</h1>
+        </div>
+    </div>
+    <div class="row fullContainer" id="publicacoes">
+        <?php
+        foreach ($artigos as $artigo) {
+            ?>
+            <div id="div-artigos" class="medium-6 large-3 columns">
+                <a href="<?php echo BASE_SITE_URL . "/artigos-detalhes/" . url_amigavel($artigo->titulo_artigo) . '-' . $artigo->id_artigo; ?>">
+                    <div class="imagem">
+                        <img src="<?php echo UPLOADS_URL . "/artigos/" . $artigo->imagem_capa_artigo; ?>"
+                             alt="<?php echo SITE_TITLE ?>">
+                    </div>
+                    <div class="data"><?php echo $obj_artigo->getDataArtigoByData($artigo->data_artigo); ?></div>
+                    <div class="titulo"><?php echo $artigo->titulo_artigo ?></div>
+                    <div class="texto"><?php echo $obj_artigo->getBreveDescricaoArtigo($artigo->descricao_artigo) ?></div>
+                    <span>+ Ver mais</span>
+                </a>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+    <div class="row fullContainer" id="paginacao">
+        <div class="columns text-center">
+            <?php
+            if ($pagina > 1 && $total > $qpp) {
+                ?>
+                <span class="anterior"><a href="<?php echo BASE_SITE_URL . "artigos/" . url_amigavel("paginacao") . '-' . ($pagina-1); ?>"></a>anterior</span>
+                <?php
+            }
+            ?>
+            <?php
+            echo paginacao($total, $pagina, $qpp, BASE_SITE_URL . "artigos/" . url_amigavel("paginacao") . '-');
+            ?>
+            <?php
+            if ($pagina < $numPaginas) {
+                ?>
+                <span class="proximo"><a href="<?php echo BASE_SITE_URL . "artigos/" . url_amigavel("paginacao") . '-' . ($pagina+1); ?>"></a>próxima</span>
+                <?php
+            }
+            ?>
+        </div>
+    </div>
+<?php
+include_once("footer.phtml");
+?>

@@ -1,0 +1,37 @@
+/* Formulário */
+.page-contact .form-contact {
+    max-width: 650px;
+    margin: 0 auto 7rem;
+}
+.page-contact .form-contact .form-label {
+    font-family: "Poppins Medium";
+    color: #272727;
+    margin-bottom: 0;
+}
+.page-contact .form-contact input {
+    height: 56px;
+}
+.page-contact .form-contact .form-control {
+    font-family: "Poppins";
+    font-size: 1rem;
+    color: #5d5d5d;
+    border-color: #B5B5B5;
+}
+.page-contact .form-contact .form-control:focus {
+    box-shadow: 0 0 0 0.20rem rgba(122 122 122 / 25%);
+}
+.page-contact .form-contact .btn-green {
+    max-width: 245px;
+    margin: 0 auto;
+}
+
+/* Modal */
+.modal .modal-content .modal-header .btn-close {
+    right: 0.75rem;
+}
+.modal .modal-content .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}

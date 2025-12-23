@@ -1,0 +1,61 @@
+<?php
+$page_back = "";
+$page_id = "nossos-servicos";
+
+$str_add_css = array();
+$str_add_js = array('scrollreveal.min');
+
+$texto = new Texto();
+$servico = new Servico();
+
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_NOSSOS_SERVICOS);
+$textos->getByCod();
+$servicos = $servico->listAll("A", "posicao");
+
+
+include_once("header.phtml");
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $textos->url_imagem; ?>" alt="<?php echo SITE_TITLE ?>">
+    </div>
+    <?php
+}
+?>
+<div class="row fullContainer" id="breadcrumb">
+    <div class="columns">
+        <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Nossos Serviços</span>
+        <h1 class="titulo"><?php echo $textos->titulo; ?></h1>
+    </div>
+</div>
+<div class="row fullContainer" id="servicos">
+    <?php
+    foreach ($servicos as $servico) {
+        ?>
+        <div class="medium-6 large-3 columns text-center end">
+            <a href="<?php echo BASE_SITE_URL . "/nosso-servico-detalhes/" . url_amigavel($servico->nome_servico) . '-' . $servico->id_servico; ?>">
+            <img style="height: 89px;" src="<?php echo UPLOADS_URL . "/servicos/" . $servico->icon_servico ?>"
+                 alt="<?php echo SITE_TITLE ?>">
+            <div class="titulo"><?php echo $servico->nome_servico; ?>
+            </div>
+            <div class="texto"><?php echo $servico->breve_descricao_servico; ?></div>
+            </a>
+        </div>
+        <?php
+    }
+    ?>
+</div>
+<?php
+include_once("footer.phtml");
+?>
+<script type="text/javascript">
+    window.sr = ScrollReveal({reset: false});
+    sr.reveal('#nossos-servicos #servicos div', {
+        origin: "top",
+        distance: "32px",
+        duration: 600,
+        delay: 300,
+        scale: 0
+    });
+</script>

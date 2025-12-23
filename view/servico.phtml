@@ -1,0 +1,103 @@
+<?php
+$page = "servicos";
+
+$id_servico = getRequest('id_servico');
+if (!$id_servico) {
+    header('Location: ' . BASE_SITE_URL);
+    die;
+}
+
+if ($id_servico == 1) {
+    $page = "abrir-empresa";
+}
+
+// Serviço
+$objServico = new Servico();
+$objServico->setIdTable($id_servico);
+$objServico->getByCod();
+
+// Título e Subtítulo do Complemento
+$complemento = $objServico->getInfoComplementoByIdServico($id_servico);
+
+// Itens do Complemento
+$complementosItens = $objServico->getComplementosItens($id_servico, $complemento->id_servico_complemento);
+
+$str_add_css = array('servicos');
+
+include_once("header.phtml");
+?>
+    <main class="page-service">
+        <section class="banner">
+            <picture>
+                <img src="<?php echo UPLOADS_URL . '/servicos/banners/' . $objServico->url_banner_topo ?>" class="img-fluid" alt="<?php echo $objServico->titulo ?>">
+            </picture>
+        </section>
+        <nav aria-label="breadcrumb">
+            <div class="container container-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL . '/servicos' ?>">Serviços</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><?php echo $objServico->titulo ?></li>
+                </ol>
+            </div>
+        </nav>
+        <section class="service overflow-hidden">
+            <div class="container">
+                <h3 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700"><?php echo $objServico->titulo ?></h3>
+                <?php if ($objServico->url_imagem_destaque != "") { ?>
+                    <div class="row gap-4 gap-lg-0 align-items-lg-center">
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                            <div class="image">
+                                <img src="<?php echo UPLOADS_URL . '/servicos/file/' . $objServico->url_imagem_destaque ?>" class="img-fluid" alt="<?php echo $objServico->titulo ?>">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 px-xl-5" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                            <div class="content">
+                                <?php echo $objServico->conteudo ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php } else { ?>
+                    <div class="content content-justify" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                        <?php echo $objServico->conteudo ?>
+                    </div>
+                <?php } ?>
+            </div>
+        </section>
+        <?php if ($complemento) { ?>
+        <section class="how-it-works overflow-hidden">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700"><?php echo $complemento->titulo ?></h2>
+                <h5 class="section-subtitle section-underline mb-4" data-aos="fade-up" data-aos-delay="400" data-aos-duration="700"><?php echo $complemento->subtitulo ?></h5>
+                <div class="content" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                    <div class="card-group">
+                    <?php
+                        if ($complementosItens) {
+                            foreach ($complementosItens as $infoComplementoItem) {
+                                ?>
+                                <div class="card">
+                                    <img src="<?php echo UPLOADS_URL . '/servicos/icones/' . $infoComplementoItem->url_icone ?>" class="img-fluid" alt="Icone <?php echo $infoComplementoItem->titulo ?>">
+                                    <div class="card-title mb-2">
+                                        <h4><?php echo $infoComplementoItem->titulo ?></h4>
+                                    </div>
+                                    <div class="card-description">
+                                        <span><?php echo $infoComplementoItem->subtitulo ?></span>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        }
+                    ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <?php } if (SITE_CELULAR) { ?>
+        <a href="https://wa.me/+55<?php echo $whatsapp ?>" class="btn btn-green" target="_blank" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">Contratar agora</a>
+        <?php } ?>
+    </main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
+  <meta name="author" content="Dheyson Wildny - Innovare Company" />
+  <title>LINNK - Painel Administrativo | Innovare Company</title>
+  <link href='<?php echo BASE_ADMIN_URL ?>/icone.ico' rel='shortcut' type='image/x-icon' />
+  <link href='<?php echo BASE_ADMIN_URL ?>/icone.ico' rel='icon' type='image/x-icon' />
+  <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/style.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/menu.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo ADMIN_CSS_URL ?>/smoothness/jquery-ui-1.9.2.custom.min.css" />
+  <?php
+    #adiciona caso exista arquivos css especificos
+    if (isset($str_add_css) && count($str_add_css) > 0) {
+      foreach ($str_add_css as $new_file_css)
+        print('<link rel="stylesheet" type="text/css" href="' . ADMIN_CSS_URL . '/' . $new_file_css . '.css" />' . chr(13));
+    }
+  ?>
+  <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/jquery.min.js"></script>
+  <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/jquery-ui-1.9.2.custom.min.js"></script>
+  <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/index.js"></script>
+  <?php
+    #adiciona caso exista arquivos js especificos
+    if (isset($str_add_js) && count($str_add_js) > 0) {
+      foreach ($str_add_js as $new_file_js)
+        print('<script type="text/javascript" src="' . ADMIN_JS_URL . '/' . $new_file_js . '.js"></script>' . chr(13));
+    }
+  ?>
+</head>
+<?php 
+// atualizando o perfil da sessao (em caso de mudança)
+if(getSession("id", "user") != "") { 
+  $obj_usuario = new UsuarioAdmin();
+  $obj_usuario->setIdTable(getSession("id", "user"));
+  $obj_usuario->getByCod();
+  setSession($obj_usuario->getIdPerfil(), "id_perfil", "user");
+}
+?>
+<body>
+<div id="page">
+<header>
+  <div id="header">
+    <div class="box_header">
+      <div class="logotipo left"><a href="<?php echo BASE_ADMIN_URL ?>"><img src="<?php echo ADMIN_IMAGES_URL ?>/logotipo.png" alt="LinnK - Logotipo" /></a></div>
+      <div class="informacoes right">
+        <div class="dados_acesso left">
+          <p class="nome_usuario"><?php echo getSession("nome", "user"); ?></p>
+          <p class="email_usuario"><?php echo getSession("email", "user"); ?></p>
+          <p class="ultimo_acesso">último acesso: <?php echo getSession("ultimo_acesso", "user"); ?></p>
+          <p class="ip_acesso">IP de acesso: <?php echo $_SERVER["REMOTE_ADDR"] ?></p>
+        </div>
+        <div class="botoes_top left">
+          <a href="<?php echo BASE_ADMIN_URL ?>/sair.html" title="Efetuar Logoff" class="btn_sair">Sair do Painel</a>
+          <a href="<?php echo BASE_SITE_URL ?>" title="Visualizar o Site" class="btn_ver_site" target="_blank">Ver o Site</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>  
+  </div>
+</header>
+<?php 
+  $pag_obj = new Pagina();
+  $grupos = $pag_obj->getGrupos();
+  $paginas = $pag_obj->getPaginas();
+?>
+<nav>
+  <div id="menu">
+    <ul id="lista_menu">
+      <li class="menu_div"><img src="<?php echo ADMIN_IMAGES_URL ?>/menu_div.jpg" width="1" height="30" alt="" /></li>
+      <li class="menu"><a href="<?php echo BASE_ADMIN_URL ?>" class="linkMenu">Home</a></li>
+      <?php foreach($grupos as $grupo) { ?>
+        <?php if(Perfil::testaPermissoes($pag_obj->getIdsByGrupo($grupo->nome))) { ?>
+          <li class="menu_div"><img src="<?php echo ADMIN_IMAGES_URL ?>/menu_div.jpg" width="1" height="30" alt="" /></li>
+          <li class="menu"><a href="#" onclick="return false;" class="linkMenu"><?php echo $grupo->nome ?></a>
+            <ul class="submenu1">
+              <?php foreach($paginas as $pagina) { ?>
+                <?php if($pagina->grupo == $grupo->nome && Perfil::testaPermissoes($pagina->id_pagina)) { ?>
+                  <li class="submenu"><a href="<?php echo BASE_ADMIN_URL."/".$pagina->nome ?>-lista.html" class="linkSubmenu"><?php echo $pagina->titulo ?></a></li>
+                <?php } ?>
+              <?php } ?>
+            </ul>
+          </li>
+        <?php } ?>
+      <?php } ?>
+      <li class="menu_div"><img src="<?php echo ADMIN_IMAGES_URL ?>/menu_div.jpg" width="1" height="30" alt="" /></li>          
+    </ul>
+  </div>
+</nav>
+<section id="conteudo">
+  <div id="main">

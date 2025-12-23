@@ -1,0 +1,99 @@
+<?php
+    // Newsletter
+    $objNewsletter = new Newsletter(true);
+
+    // Serviços
+    $servico = new Servico();
+    $servicos = $servico->listAll('A');
+
+    // Telefone Celular
+    if (SITE_CELULAR) {
+        $whatsapp = trim(str_replace('(', '', str_replace(')', '', str_replace(' ', '', removerCaracteres(SITE_CELULAR)))));
+    }
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="author" content="3dots"/>
+    <meta name="twitter:card" value="summary">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE"/>
+    <meta name="description" content="<?php echo html_entity_decode(SITE_DESCRIPTION) ?>"/>
+    <meta name="keywords" content="<?php echo html_entity_decode(SITE_KEYWORDS) ?>"/>
+    <title><?php echo html_entity_decode(SITE_TITLE) ?></title>
+    <link href='<?php echo BASE_IMAGES_URL ?>/favicon.ico' rel='shortcut' type='image/x-icon'/>
+    <link href='<?php echo BASE_IMAGES_URL ?>/favicon.png' rel='icon' type='image/png'/>
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_CSS_URL ?>/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_CSS_URL ?>/fonts.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_CSS_URL ?>/aos.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_CSS_URL ?>/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo BASE_CSS_URL ?>/style.css">
+    <?php
+    #adiciona caso exista arquivos css especificos
+    if (isset($str_add_css) && count($str_add_css) > 0) {
+        foreach ($str_add_css as $new_file_css) print('<link rel="stylesheet" type="text/css" href="' . BASE_CSS_URL . '/' . $new_file_css . '.css" />' . chr(13) . "\n");
+    }
+    ?>
+    <!-- Global site tag (gtag.js) - Google Ads: 814193638 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW814193638"></script>
+    <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-814193638'); </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MQH4KWK');</script>
+    <!-- End Google Tag Manager -->
+</head>
+<body <?php echo isset($page_id) && $page_id ? 'id="' . $page_id . '"' : '' ?>>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQH4KWK"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</head>
+<body id="body">
+    <header class="header">
+        <nav class="navbar navbar-expand-xl" id="navbar">
+            <div class="container justify-content-end">
+                <a href="<?php echo BASE_SITE_URL ?>" class="navbar-brand me-0 p-0">
+                    <img src="<?php echo UPLOADS_URL . '/tema/logotipo/' . SITE_LOGOTIPO ?>" class="img-fluid" alt="<?php echo SITE_TITLE ?>">
+                </a>
+                <button class="navbar-toggler menu-hamburger" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="navbar-collapse collapse" id="navbarToggler">
+                    <ul class="navbar-nav ms-xl-auto align-items-xl-center">
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo ($page == 'sobre') ? 'active' : ''?>" href="<?php echo BASE_SITE_URL . '/nossa-empresa' ?>">Sobre nós</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo ($page == 'abrir-empresa') ? 'active' : ''?>" href="<?php echo BASE_SITE_URL . '/servico/' . $servicos[0]->url_rewrite ?>"><?php echo $servicos[0]->titulo ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo ($page == 'migrar-empresa') ? 'active' : ''?>" href="<?php echo BASE_SITE_URL . '/migrar-minha-empresa' ?>">Migrar minha empresa</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle <?php echo ($page == 'servicos') ? 'active' : ''?>" href="#" role="button" id="dropdownServicos" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Serviços</a>
+                            <ul class="dropdown-menu animate slideIn" aria-labelledby="dropdownServicos">
+                            <?php foreach ($servicos as $infoServico) { ?>
+                                <li><a class="dropdown-item" href="<?php echo BASE_SITE_URL . '/servico/' . $infoServico->url_rewrite ?>"><?php echo $infoServico->titulo ?></a></li>
+                            <?php } ?>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo ($page == 'contato') ? 'active' : ''?>" href="<?php echo BASE_SITE_URL . '/contato' ?>">Contato</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://onvio.com.br/clientcenter/pt/auth?r=%2Fhome" target="_blank">Área do cliente</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>

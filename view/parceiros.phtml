@@ -1,0 +1,40 @@
+<?php
+$page = "parceiros";
+
+$parceiro = new Parceiro();
+$parceiros = $parceiro->listAll('A');
+
+$str_add_css = array('parceiros');
+
+include_once("header.phtml");
+?>
+    <main class="page-partners">
+        <nav aria-label="breadcrumb">
+            <div class="container container-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Parceiros</li>
+                </ol>
+            </div>
+        </nav>
+        <section class="partners overflow-hidden">
+            <div class="container">
+                <h3 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Parceiros</h3>
+                <div class="cards">
+                    <?php foreach ($parceiros as $infoParceiro) { ?>
+                    <div class="card" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                        <img src="<?php echo UPLOADS_URL . '/parceiros/' . $infoParceiro->url_imagem ?>" class="img-fluid" alt="<?php echo $infoParceiro->nome ?>">
+                        <?php if ($infoParceiro->link_site != "") { ?>
+                        <a href="<?php echo $infoParceiro->link_site ?>" target="_blank" class="stretched-link"></a>
+                        <?php } ?>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </section>
+    </main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

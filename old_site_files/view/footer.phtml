@@ -1,0 +1,102 @@
+<?php
+    $objeto_newsletter = new Newsletter();
+?>
+<footer>
+    <div class="fullWidth" id="info-contatos">
+        <div class="row fullContainer">
+            <div class="medium-6 large-3 columns contato">
+                <span class="icon telefone"></span>
+                <span class="titulo">TELEFONE</span><br/><?php echo SITE_TELEFONE?>
+            </div>
+            <div class="medium-6 large-3 columns contato">
+                <span class="icon Whatsapp"></span>
+                <span class="titulo">WHATSAPP</span><br/><?php echo SITE_WHATSAPP?>
+            </div>
+            <div class="medium-6 large-3 columns contato">
+                <span class="icon email"></span>
+                <span class="titulo">E-MAIL</span><br/><?php echo SITE_EMAIL?>
+            </div>
+            <div class="medium-6 large-3 columns contato">
+                <a target="_blank" href="<?php echo SOCIAL_FACEBOOK?>"><span class="icon facebook"></span></a>
+                <a target="_blank" href="<?php echo SOCIAL_TWITTER?>"><span class="icon twitter"></span></a>
+                <a target="_blank" href="<?php echo SOCIAL_INSTAGRAM?>"><span class="icon instagram"></span></a>
+                <a target="_blank" href="<?php echo SOCIAL_LINKEDIN?>"><span class="icon in"></span></a>
+                <a target="_blank" href="<?php echo SOCIAL_YOUTUBE?>"><span class="icon youtube"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="fullWidth" id="info-footer">
+        <div class="row fullContainer">
+            <div class="large-3 columns informacoes">
+                <div><?php echo SITE_TITLE?></div>
+                <span>CNPJ: <?php echo SITE_CNPJ?></span><br />
+                <span>CRC: <?php echo SITE_CRC?></span><br /><br />
+                <span><?php echo SITE_ENDERECO?></span>
+                <a target="_blank" href="<?php echo SITE_LINK_CERTIDAO?>"><span class="veja-certidao">Veja a Certidão de Regularidade</span></a>
+            </div>
+            <div class="large-3 columns diretorios">
+                <a href="<?php echo BASE_SITE_URL;?>/nossa-empresa"><span>> Nossa Empresa</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL?>/nossos-servicos"><span>> Nossos Serviços</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL?>/abrir-empresa"><span>> Abrir uma Empresa</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL;?>/migrar-minha-empresa"><span>> Migrar minha Empresa</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL;?>/perguntas-frequentes"><span>> Perguntas Frequentes</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL;?>/politica-privacidade"><span>> Política de Privacidade</span></a><br /><br />
+            </div>
+            <div class="large-3 columns diretorios">
+                <a href="<?php echo BASE_SITE_URL;?>/parceiros"><span>> Parceiros</span></a><br /><br />
+                <a href="<?php echo  BASE_SITE_URL?>/links-uteis"><span>> Links Úteis</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL;?>/artigos"><span>> Artigos</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL?>/nossa-equipe"><span>> Nossa Equipe</span></a><br /><br />
+                <a href="<?php echo BASE_SITE_URL?>/contato"><span>> Contato</span></a><br /><br />
+            </div>
+            <div class="large-3 columns Newsletter">
+                <div>Newsletter</div>
+                <span>Cadastre seu e-mail e receba nossas novidades</span><br /><br />
+                <form id="form-newsletter" name="form-newsletter" method="POST">
+                    <input type="text" id="email" name="email" placeholder="Seu e-mail" />
+                    <button type="submit" value="Enviar">ok</button>
+                </form>
+                <span id="feedback-newsletter" name="feedback-newsletter">Cadastro no Newsletter feito com sucesso!</span>
+            </div>
+        </div>
+    </div>
+    <div class="row fullWidth" id="desenvolvido">
+        <div class="columns text-center">
+            <div>© Ms Gestor Contábil Online. Todos os direitos reservados.</div>
+            <a href="<?php echo SITE_DESENVOLVIDO;?>" target="_blank"><span>Desenvolvido por</span></a>
+        </div>
+    </div>
+</footer>
+<?php
+if (!isset($_COOKIE['cookieDataIp'])) {
+    ?>
+    <div id="texto-cookie" class="text-center">
+        <div class="text">
+            Usamos cookies para melhorar a sua experiência em nosso site. Ao continuar navegando, você concorda com a
+            nossa. <a href="<?php echo BASE_SITE_URL . '/politica-privacidade' ?>">Política de Privacidade.</a>
+        </div>
+        <span>CONTINUAR E FECHAR</span>
+    </div>
+    <?php
+}
+?>
+<div id="botao"></div>
+<script type="text/javascript" src="<?php echo BASE_JS_URL ?>/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo BASE_JS_URL ?>/foundation.min.js"></script>
+<?php
+#adiciona caso exista arquivos js especificos
+if (isset($str_add_js) && count($str_add_js) > 0) {
+    foreach ($str_add_js as $new_file_js) print('<script type="text/javascript" src="' . BASE_JS_URL . '/' . $new_file_js . '.js"></script>' . chr(13));
+}
+?>
+<script type="text/javascript" src="<?php echo BASE_JS_URL ?>/index.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139941809-1"></script>
+<script type="text/javascript">
+    var site_url = '<?php echo BASE_SITE_URL?>';
+</script>
+
+
+<a href="https://api.whatsapp.com/send?l=pt&amp;phone=5516999881320" onclick="javascript:gtag('event', 'conversion', {'send_to': 'AW-814193638/kb1DCLH9_oEDEOa3noQD'});"><img src="https://i.imgur.com/ryESuZ5.png" style="height:64px; position:fixed; bottom: 25px; right:
+25px; z-index:99999;" data-selector="img"></a>
+</body>
+</html>

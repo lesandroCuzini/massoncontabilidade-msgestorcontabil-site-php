@@ -1,0 +1,111 @@
+<?php
+$page = "contato";
+
+$objContato = new Contato(true);
+
+$banner = new Banner();
+$bannerContato = $banner->getBannersByTipo('A', 4, 'posicao');
+
+$str_add_css = array("contato");
+
+include_once("header.phtml");
+?>
+<main class="page-contact">
+    <?php if ($bannerContato) { ?>
+    <section class="banner">
+        <picture>
+            <img src="<?php echo UPLOADS_URL . '/banners/' . $bannerContato[0]->url_imagem ?>" class="img-fluid" alt="<?php echo $bannerContato[0]->nome_banner ?>">
+        </picture>
+    </section>
+    <?php } ?>
+    <nav aria-label="breadcrumb">
+        <div class="container container-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Contato</li>
+            </ol>
+        </div>
+    </nav>
+    <section class="contact overflow-hidden">
+        <div class="container">
+            <h3 class="section-title" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Contato</h3>
+            <h5 class="section-subtitle section-underline" data-aos="fade-up" data-aos-delay="400" data-aos-duration="700">Preencha o formulário abaixo e clique em ENVIAR, em breve um de nossos consultores entrara em contato.</h5>
+            <form method="post" class="form-contact" id="form-contact" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700" novalidate>
+                <div class="row">
+                    <div class="position-relative col-sm-12 mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" name="nome" id="nome" class="form-control" required="required">
+                    </div>
+                    <div class="position-relative col-sm-12 mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" name="email" id="email" class="form-control" required="required">
+                    </div>
+                    <div class="position-relative col-sm-6 mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="text" name="telefone" id="telefone" class="form-control sp_celphones" required="required">
+                    </div>
+                    <div class="position-relative col-sm-6 mb-3">
+                        <label for="celular" class="form-label">Celular</label>
+                        <input type="text" name="celular" id="celular" class="form-control sp_celphones" required="required">
+                    </div>
+                    <div class="position-relative col-sm-12 mb-3">
+                        <label for="mensagem" class="form-label">Mensagem</label>
+                        <textarea name="mensagem" id="mensagem" class="form-control" rows="5" required="required"></textarea>
+                    </div>
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-green">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section class="location overflow-hidden mb-5">
+        <div class="container">
+            <h3 class="section-title">Onde estamos</h3>
+            <h5 class="section-subtitle section-underline">Rua General Osório, n&deg; 493 Estação - Franca/SP - CEP 14405-107</h5>
+        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5284.009663194813!2d-47.41398206613463!3d-20.532484530650112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b0a635323cb0bf%3A0x99d71e50309b1e3e!2sR.%20Gen.%20Os%C3%B3rio%2C%20493%20-%20Estacao%2C%20Franca%20-%20SP%2C%2014405-107!5e0!3m2!1spt-BR!2sbr!4v1699885272210!5m2!1spt-BR!2sbr" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <!-- Modal Success -->
+    <div class="modal fade" id="modalSuccess" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="<?php echo BASE_IMAGES_URL ?>/icones/icone-check.png" class="img-fluid mb-3" alt="Icone check">
+                    <h5 class="text-grey text-center mb-0">Mensagem enviada com sucesso!</h5>
+                    <h6 class="text-grey text-center mb-4">Em breve entraremos em contato.</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary fs-small fw-6 ls-1 m-0" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Fail -->
+    <div class="modal fade" id="modalFail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <i class="far fa-3x fa-times-circle mb-3" style="color: #8d1111;"></i>
+                    <h5 class="text-grey text-center mb-0">Houve um problema ao enviar!</h5>
+                    <h6 class="text-grey text-center mb-4">Tivemos um problema ao enviar sua mensagem, por favor atualize sua tela e tente novamente em alguns minutos.</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn fs-small fw-6 ls-1 m-0" style="background-color: #8d1111; color: #FFF; height: 48px;" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<?php
+$str_add_js = array("contato");
+
+include_once("footer.phtml");
+?>

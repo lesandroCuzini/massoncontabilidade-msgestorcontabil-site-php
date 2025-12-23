@@ -1,0 +1,9 @@
+    <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/bootstrap.min.js"></script>
+    <?php
+        #adiciona caso exista arquivos js especificos
+        if (isset($str_add_js) && count($str_add_js) > 0) {
+            foreach ($str_add_js as $new_file_js)
+                print('<script type="text/javascript" src="' . ADMIN_JS_URL . '/' . $new_file_js . '.js"></script>' . chr(13));
+        }
+    ?>
+    <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/innovarecompany.js"></script>

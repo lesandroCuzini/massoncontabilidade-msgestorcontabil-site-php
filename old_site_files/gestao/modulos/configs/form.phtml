@@ -1,0 +1,75 @@
+<?php
+#dados da página
+$page_name = "configs";
+$page_id = 1; // salvar na tabela página para gerar o ID
+$page_list = BASE_ADMIN_URL."/".$page_name."-lista.html";
+$page_url = $page_list;
+
+if(!Perfil::testaPermissoes($page_id)){
+  header("Location: home.html");
+  die;
+}
+
+$objeto = new Configuracao(true);
+
+#adiciona outros scripts especificos da pagina se necessario
+$str_add_css = array(
+  "jquery.validationEngine",
+  "forms"
+);
+$str_add_js = array(
+  "languages/jquery.validationEngine-pt_BR",
+  "jquery.validationEngine",
+  "jquery.maskedinput-1.3.min",
+  "forms"
+);
+
+#inclui o cabeçalho
+include_once("gestao/modulos/common/header.phtml");
+?>
+<div id="title_lista">
+  <div class="desc left"><h1>Configurações</h1></div>
+  <div class="botoes right">
+    <a href="<?php echo $page_list ?>" title="Cancelar" class="btn_cancelar">Cancelar</a>
+    <a href="#" onclick="$('#form_registro').submit();return false;" title="Salvar Registro" class="btn_salvar">Salvar</a>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+<?php if (getRequest("msg") != "") { ?>
+  <div id="msg">
+    <?php if (getRequest("msg") == "erro") { ?>
+      <div class="erro">Houve um problema ao executar a última ação. Por favor tente novamente!</div>
+    <?php } elseif (getRequest("msg") == "ok") { ?>
+      <div class="sucesso">Ação executada com sucesso!</div>
+    <?php } ?>
+  </div>
+<?php } ?>
+<div id="formulario">
+  <form name="form_registro" id="form_registro" method="post" action="<?php echo $page_url ?>" enctype="multipart/form-data">
+  <input type="hidden" name="acao" id="acao" value="alterar" />
+  <div class="aba" id="aba1">
+    <div class="input_form" style="width:920px;">
+      <label>Endereço do site:</label>
+      <input type="text" name="site_url" value="<?php echo $objeto->getField('site_url') ?>" class="validate[required] edit_form requerido" />
+    </div>
+    <div class="clear"></div>
+    <div class="input_form" style="width:350px;">
+      <label>Título:</label>
+      <input type="text" name="site_title" value="<?php echo $objeto->getField('site_title') ?>" class="validate[required] edit_form requerido" />
+    </div>
+    <div class="input_form" style="width:400px;">
+      <label>Email:</label>
+      <input type="text" name="site_email" value="<?php echo $objeto->getField('site_email') ?>" class="validate[required] edit_form requerido" />
+    </div>
+    <div class="input_form" style="width:130px;">
+      <label>Telefone:</label>
+      <input type="text" name="site_telefone" value="<?php echo $objeto->getField('site_telefone') ?>" class="validate[required] edit_form requerido" />
+    </div>
+  </div>
+  </form>
+</div>
+<?php
+#inclui o rodapé
+include_once("gestao/modulos/common/footer.phtml");
+?>

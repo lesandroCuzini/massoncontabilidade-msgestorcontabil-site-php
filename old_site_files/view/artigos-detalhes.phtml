@@ -1,0 +1,44 @@
+<?php
+$page_back = "";
+$page_id = "artigos-detalhes";
+
+$str_add_css = array();
+$str_add_js = array();
+
+$obj_artigo = new Artigo();
+$artigo = $obj_artigo->getArtigoById(getRequest("id_artigo"));
+
+$open_graph = array("url" => BASE_SITE_URL."artigos-detalhes/" . url_amigavel($artigo->titulo_artigo) . '-' . $artigo->id_artigo,
+    "title" => $artigo->titulo_artigo,
+    "description" => $obj_artigo->getBreveDescricaoArtigo($artigo->descricao_artigo),
+    "image" => UPLOADS_URL."/artigos/".$artigo->imagem_capa_artigo
+);
+include_once("header.phtml");
+?>
+    <div class="row fullContainer" id="breadcrumb">
+    <div class="columns">
+        <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <a href="<?php echo BASE_SITE_URL;?>/artigos">Artigos</a> |
+        <span><?php echo $artigo->titulo_artigo?></span>
+    </div>
+</div>
+<div class="row fullContainer" id="artigo-resumo">
+    <div class="columns text-center texto">
+        <h1><?php echo $artigo->titulo_artigo?></h1>
+        <?php echo $obj_artigo->getDataArtigoByData($artigo->data_artigo);?><br />
+        <?php echo $artigo->descricao_artigo;?>
+    </div>
+    <div class="columns redes-sociais" >
+        <hr/><br />
+        <span style="display: inline-block;vertical-align: super;">Compartilhar:</span>
+        <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo BASE_SITE_URL . "artigos-detalhes/" . url_amigavel($artigo->titulo_artigo) . '-' . $artigo->id_artigo; ?>"><span class="icon redes-sociais"></span></a>
+        <a target="_blank" href="https://twitter.com/intent/tweet?url=<?php echo BASE_SITE_URL . "artigos-detalhes/" . url_amigavel($artigo->titulo_artigo) . '-' . $artigo->id_artigo; ?>"><span class="icon redes-sociais twitter"></span></a>
+    </div>
+    <div class="columns" id="buttom">
+        <a href="<?php echo BASE_SITE_URL;?>/artigos">
+            <div>VOLTAR</div>
+        </a>
+    </div>
+</div>
+<?php
+include_once("footer.phtml");
+?>

@@ -1,0 +1,168 @@
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xl-3">
+                    <div class="d-flex justify-content-center justify-content-xl-start">
+                        <img src="<?php echo UPLOADS_URL . '/tema/logotipo/' . SITE_LOGOTIPO_RODAPE ?>" class="img-fluid" alt="<?php echo SITE_TITLE ?>">
+                    </div>
+                    <div class="socials">
+                        <ul class="nav justify-content-center justify-content-xl-start gap-3 gap-xl-2">
+                            <?php if (FACEBOOK) { ?>
+                            <li class="nav-item">
+                                <a href="<?php echo FACEBOOK ?>" class="icone icone-redondo icone-facebook" target="_blank"></a>
+                            </li>
+                            <?php } if (INSTAGRAM) { ?>
+                            <li class="nav-item">
+                                <a href="<?php echo INSTAGRAM ?>" class="icone icone-redondo icone-instagram" target="_blank"></a>
+                            </li>
+                            <?php } if (TWITTER) { ?>
+                            <li class="nav-item">
+                                <a href="<?php echo TWITTER ?>/" class="icone icone-redondo icone-twitter" target="_blank"></a>
+                            </li>
+                            <?php } if (LINKEDIN) { ?>
+                            <li class="nav-item">
+                                <a href="<?php echo LINKEDIN ?>" class="icone icone-redondo icone-linkedin" target="_blank"></a>
+                            </li>
+                            <?php } if (YOUTUBE) { ?>
+                            <li class="nav-item">
+                                <a href="<?php echo YOUTUBE ?>" class="icone icone-redondo icone-youtube" target="_blank"></a>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                    <?php if (SITE_CNPJ) { ?>
+                    <span class="d-block fs-small text-center text-xl-start text-white">CNPJ: <?php echo SITE_CNPJ ?></span>
+                    <?php } if (SITE_CRC) { ?>
+                    <span class="d-block fs-small text-center text-xl-start text-white">CRC: <?php echo SITE_CRC ?></span>
+                    <?php } if (SITE_CERTIDAO_REGULARIDADE) { ?>
+                    <a href="<?php echo SITE_CERTIDAO_REGULARIDADE ?>" class="btn-link mb-5 mb-xl-0" target="_blank">Veja a Certidão de Regularidade</a>
+                    <?php } ?>
+                </div>
+                <div class="col-sm-12 col-md-5 col-xl-4 ps-xl-5">
+                    <?php if (SITE_TELEFONE || SITE_CELULAR || SITE_EMAIL || SITE_ENDERECO) { ?>
+                    <span class="footer-title mb-3">Atendimento</span>
+                    <ul class="nav nav-info flex-column gap-3 mb-4">
+                        <?php if (SITE_TELEFONE) { ?>
+                        <li class="nav-item lh-1">
+                            <a href="tel:+55<?php echo str_replace(" ","", str_replace("(", "", str_replace(")", "", SITE_TELEFONE))) ?>" class="nav-link"><?php echo SITE_TELEFONE ?></a>
+                        </li>
+                        <?php } if (SITE_CELULAR) { ?>
+                        <li class="nav-item lh-1">
+                            <a href="https://wa.me/+55<?php echo $whatsapp ?>" class="nav-link"><?php echo SITE_CELULAR ?></a>
+                        </li>
+                        <?php } if (SITE_EMAIL) { ?>
+                        <li class="nav-item lh-1">
+                            <a href="mailto:<?php echo SITE_EMAIL ?>" class="nav-link text-break"><?php echo SITE_EMAIL ?></a>
+                        </li>
+                        <?php } if (SITE_ENDERECO) { ?>
+                        <li class="nav-item lh-1">
+                            <span class="nav-link"><?php echo SITE_ENDERECO ?></span>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                    <?php } ?>
+                    <span class="footer-title mb-3">Acompanhe as novidades</span>
+                    <form method="post" class="form-newsletter needs-validation mb-5 mb-md-0" id="formNewsletter" novalidate>
+                        <div class="input-group">
+                            <span class="input-group-text"></span>
+                            <input type="email" name="newsletter" id="newsletter" class="form-control" placeholder="Insira o seu e-mail" required>
+                            <button type="submit" class="input-group-text">OK</button>
+                        </div>
+                    </form>
+                    <!-- Alert JS -->
+                    <div id="liveAlertPlaceholder"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3">
+                    <span class="footer-title mb-3">Institucional</span>
+                    <ul class="nav nav-info flex-column gap-3 mb-3 mb-sm-0">
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/nossa-empresa' ?>" class="nav-link">Nossa Empresa</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/servicos' ?>" class="nav-link">Nossos Serviços</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/servico/' . $servicos[0]->url_rewrite ?>" class="nav-link"><?php echo $servicos[0]->titulo ?></a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/migrar-minha-empresa' ?>" class="nav-link">Migrar minha Empresa</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/perguntas-frequentes' ?>" class="nav-link">Perguntas Frequentes</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/politica-privacidade' ?>" class="nav-link">Política de Privacidade</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-3 col-xl-2">
+                    <span class="footer-title d-none d-sm-flex invisible mb-3">Links</span>
+                    <ul class="nav nav-info flex-column gap-3">
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/parceiros' ?>" class="nav-link">Parceiros</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/links-uteis' ?>" class="nav-link">Links Úteis</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/artigos' ?>" class="nav-link">Artigos</a>
+                        </li>
+                        <li class="nav-item lh-1">
+                            <a href="<?php echo BASE_SITE_URL . '/contato' ?>" class="nav-link">Contato</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                <div class="copyright">
+                    <span>&copy; Ms Gestor Contábil Online. Todos os direitos reservados.</span>
+                    <span>
+                        Desenvolvido por
+                        <a href="https://www.3dots.com.br/" target="_blank" class="text-decoration-none">
+                            <img src="<?php echo BASE_IMAGES_URL ?>/logo_3dots.png" class="img-fluid" alt="Logo 3dots">
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="buttons-floating">
+        <a href="#" class="btn-arrow-up mx-auto" id="back-to-top">
+            <i class="fa-solid fa-arrow-up-long"></i>
+        </a>
+        <?php if (SITE_CELULAR) { ?>
+            <a href="https://wa.me/+55<?php echo $whatsapp ?>" class="btn-whatsapp" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        <?php } ?>
+    </div>
+
+    <?php if (!getSession('aceite_cookie')) { ?>
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" autohide="false">
+        <div class="toast-body">
+            <span>Utilizamos cookies para melhorar a sua experiência em nosso site. Ao continuar navegando você concorda com a nossa <a href="<?php echo BASE_SITE_URL . '/politica-privacidade' ?>" target="_self">política de privacidade.</a></span>
+            <div class="buttons">
+                <a id="aceiteCookies" class="btn btn-toast" data-bs-dismiss="toast">Continuar e fechar</a>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+
+    <script type="text/javascript" src="<?php echo BASE_JS_URL ?>/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASE_JS_URL ?>/jquery.mask.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASE_JS_URL ?>/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASE_JS_URL ?>/aos.js"></script>
+    <?php
+        #adiciona caso exista arquivos js especificos
+        if (isset($str_add_js) && count($str_add_js) > 0) {
+            foreach ($str_add_js as $new_file_js) print('<script type="text/javascript" src="' . BASE_JS_URL . '/' . $new_file_js . '.js"></script>' . chr(13) . "\n");
+        }
+    ?>
+    <script type="text/javascript">
+        var site_url = '<?php echo BASE_SITE_URL ?>';
+    </script>
+    <script type="text/javascript" src="<?php echo BASE_JS_URL ?>/global.js"></script>
+</body>
+</html>

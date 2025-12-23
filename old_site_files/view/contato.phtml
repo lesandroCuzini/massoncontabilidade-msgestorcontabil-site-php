@@ -1,0 +1,112 @@
+<?php
+$page_back = "";
+$page_id = "contato";
+
+$str_add_css = array();
+$str_add_js = array('jquery.mask.min');
+
+if (isset($_POST["acao"])) {
+    $contato = new Contato(true);
+}
+
+$texto = new Texto();
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_CONTATO);
+$textos->getByCod();
+
+include_once("header.phtml"); ?>
+<?php
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $texto->url_imagem; ?>" alt="<?php echo SITE_TITLE ?>">
+    </div>
+    <?php
+}
+?>
+<div class="row fullContainer" id="breadcrumb">
+    <div class="columns">
+        <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Contato</span>
+        <h1 class="titulo"><?php echo $textos->titulo; ?></h1>
+        <div class="texto"><?php echo $textos->subtitulo; ?></div>
+    </div>
+</div>
+<div class="row fullContainer" id="formulario">
+    <div class="large-6 large-centered columns">
+        <?php
+        if (isset($_GET["msg"])) {
+            if ($_GET["msg"] == "ok") {
+                ?>
+                <div id="alert-feedback" name="alert-feedback" data-alert class="alert-box success radius">
+                    Contato feito com sucesso.
+                </div>
+                <?php
+            } else {
+                ?>
+                <div id="alert-feedback" name="alert-feedback" data-alert class="alert-box alert radius">
+                    Erro ao efetuar contato. Por favor tente novamente.
+                </div>
+                <?php
+            }
+        }
+        ?>
+        <form id="form-contato" method="POST" action="<?php echo BASE_SITE_URL . "/contato"; ?>"
+              onsubmit="return validaForm(this);">
+            <input type="hidden" id="acao" name="acao" value="incluir_site"/>
+            <div class="row">
+                <div class="columns">
+                    <label>Nome</label>
+                    <input type="text" id="nome" name="nome"/>
+                </div>
+                <div class="columns">
+                    <label>E-mail</label>
+                    <input type="email" id="email" name="email"/>
+                </div>
+                <div class="large-6 columns">
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" id="telefone">
+                </div>
+                <div class="large-6 columns">
+                    <label>Celular</label>
+                    <input type="text" name="celular" id="celular"/>
+                </div>
+                <div class="columns">
+                    <label>Mensagem</label>
+                    <textarea name="mensagem" id="mensagem"></textarea>
+                </div>
+                <div class="columns">
+                    <div class="g-recaptcha" data-sitekey="6LebzTsUAAAAAOPUuKjlkujl62b6NfcFZ_5JDDgZ"></div>
+                </div>
+                <div class="columns text-center">
+                    <button type="submit" value="Enviar" onclick="javascript:gtag('event', 'conversion', {'send_to': 'AW-814193638/kb1DCLH9_oEDEOa3noQD'});">
+                        ENVIAR
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row fullContainer" id="mapa">
+    <div class="columns text-center">
+        <h1 class="titulo">ONDE ESTAMOS</h1>
+        <div class="texto"><?php echo SITE_ENDERECO . "- CEP " . SITE_CEP_ENDERECO; ?></div>
+    </div>
+    <div class="columns">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3736.357917862945!2d-47.41175588473459!3d-20.53253148626931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b0a635320fdfc3%3A0x60ecab141de03fc5!2sR.+Gen.+Os%C3%B3rio%2C+493+-+Estacao%2C+Franca+-+SP%2C+14405-107!5e0!3m2!1spt-BR!2sbr!4v1508777793743"
+                width="100%" height="600px" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+</div>
+<?php
+include_once("footer.phtml");
+?>
+<script>
+    if ($("#alert-feedback").length) {
+        $('html, body').animate({
+            scrollTop: $("#alert-feedback").offset().top - 365
+        }, 2000);
+    }
+    setTimeout(function () {
+        $(".alert-box").slideUp();
+    }, 4000);
+</script>
+<script src='https://www.google.com/recaptcha/api.js'></script>

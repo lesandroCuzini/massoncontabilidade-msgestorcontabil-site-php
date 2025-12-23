@@ -1,0 +1,263 @@
+<?php
+$page_name = "nossa_empresa";
+$page_title = "Nossa Empresa";
+$page_id = 32; // salvar na tabela página para gerar o ID
+
+//URls
+$url_listagem = BASE_ADMIN_URL . '/' . $page_name . '-lista.html';
+$url_formulario = BASE_ADMIN_URL . '/' . $page_name . '-form.html';
+
+$objeto = new NossaEmpresa(true);
+
+//Informações da Página para BreadCrumb
+$pagina = new Pagina();
+$pagina->setIdTable($page_id);
+$pagina->getByCod();
+
+$grupo = new Pagina();
+$grupo->setIdTable($pagina->getIdParent());
+$grupo->getByCod();
+//End - Informações da Página para BreadCrumb
+
+//Verifica se é alteração ou inclusão para carregar os dados
+$id_registro = getRequest("id") ? getRequest("id") : 0;
+if ($id_registro > 0) {
+    $objeto->setIdTable($id_registro);
+    $objeto->getByCod();
+    $title = $pagina->getTitulo() . ": " . $id_registro . " | Painel Administrativo";
+} else {
+    $title = "Novo Registro | Painel Administrativo";
+}
+
+//Add JS e CSS
+$str_add_css = array('bootstrap-table',
+    'switchery',
+    'bootstrap-colorpicker.min');
+$str_add_js = array('bootstrap-table',
+    'switchery',
+    'jquery.inputmask.bundle',
+    'bootstrap-confirmation.min',
+    'bootstrap-colorpicker.min',
+    'tinymce2/tinymce.min');
+
+//BreadCrumb
+$breadcrumb = array(array("url" => BASE_ADMIN_URL,
+    "nome" => ' Home',
+    "icon" => '<svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg>'),
+    array("url" => "#",
+        "nome" => ' ' . $grupo->getTitulo(),
+        "icon" => '<i class="fa ' . $grupo->getIcone() . '" aria-hidden="true"></i>'),
+    array("url" => $url_listagem,
+        "nome" => ' Todos ' . $pagina->getTitulo(),
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'),
+    array("url" => $url_formulario,
+        "nome" => ' ' . $page_title,
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'));
+
+//Add Header
+include_once('gestao/header.phtml');
+?>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <?php
+            //Add BreadCrumb
+            include_once('gestao/breadcrumb.phtml');
+            ?>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <h1 class="page-header"><?php echo $page_title ?></h1>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-right">
+                <a href="<?php echo $url_listagem ?>" class="btn_admin btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <?php
+                $retorno = getRequest('msg');
+                if ($retorno != "" && $retorno == "ok") {
+                    ?>
+                    <div class="alert alert-success">
+                        <strong><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Ok...</strong> Os dados foram salvos com sucesso!
+                    </div>
+                    <?php
+                } elseif ($retorno != "" && $retorno == "erro") {
+                    ?>
+                    <div class="alert alert-danger">
+                        <strong><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> Falha...</strong> Houve algum problema ao salvar os dados, por favor tente novamente!
+                    </div>
+                    <?php
+                }
+                ?>
+                <div class="clearfix"></div>
+                <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="acao" value="<?php echo $id_registro > 0 ? 'alterar' : 'incluir' ?>"/>
+                    <input type="hidden" name="acao_posterior" id="acao_posterior" value=""/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-2 input_form">
+                                    <label for="id_registro">código</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="id_registro" name="id_registro" id="id_registro" value="<?php echo $objeto->getIdTable() ?>" readonly="readonly"/>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-xs-12 col-md-12 input_form">
+                                    <label for="descricao_nossa_empresa">descrica nossa empresa</label>
+                                    <textarea class="tinymce" aria-describedby="descricao_nossa_empresa"
+                                              name="descricao_nossa_empresa"
+                                              id="descricao_nossa_empresa"><?php echo $objeto->descricao_nossa_empresa; ?></textarea>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-lg-6 input_form">
+                                    <label for="foto_nossa_empresa">foto nossa empresa: 640px x 760px</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                                        <input type="file" class="form-control" placeholder="" aria-describedby="foto_nossa_empresa" name="foto_nossa_empresa" id="foto_nossa_empresa" <?php if ($id_registro <= 0) { ?>required="required" data-error="Selecione uma imagem"<?php } ?> />
+                                    </div>
+                                    <?php
+                                    if ($objeto->getFotoNossaEmpresa()) {
+                                        ?>
+                                        <div class="box_imagem_admin">
+                                            <span class="apagar-imagem" data-imagem-home="false" data-id-texto="<?php echo (isset($id_registro)) ? $id_registro : 0; ?>">apagar imagem</span>
+                                            <img src="<?php echo UPLOADS_URL . '/nossa-empresa/' . $objeto->getFotoNossaEmpresa() ?>" alt="" style="padding-top:5px" width="100%"/>
+                                        </div>
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="line-buttons">
+                                <?php
+                                if ($id_registro) {
+                                    ?>
+                                    <a href="#" class="btn btn-warning" data-toggle="confirmation_cancel" data-title="Deseja Realmente Cancelar?" data-content="Todas alterações não salvas serão perdidas."><i class="fa fa-ban"></i> Cancelar</a>
+                                    <?php
+                                }
+                                ?>
+                                <a href="#" class="btn btn-success btn_submit_form"><i class="fa fa-floppy-o"></i> Salvar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $(".apagar-imagem").on("click", function () {
+                var id_empresa = $("input#id_registro").val();
+                var este = $(this);
+                if (typeof id_empresa != "undefined" && id_empresa > 0) {
+                    if (confirm("Deseja realmente apagar esta imagem?")) {
+                        $.ajax({
+                            url: window.location.href,
+                            method: 'post',
+                            data: {
+                                acao: 'apagar-imagem-nossa-empresa',
+                                campo: 'foto_nossa_empresa',
+                                id_empresa: id_empresa
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response == 1) {
+                                    este.parent().find("img").fadeOut(500);
+                                }
+                                else {
+                                    alert('Houve um problema, tente novamente mais tarde!');
+                                }
+                            }
+                        })
+                    }
+                }
+
+            });
+            $('.mask_time').inputmask("99:99"); //mask hora
+
+            if ($('#cp_menu').length > 0) {
+                $('#cp_menu').colorpicker();
+            }
+
+            //Checkbox personalizado
+            $('#restricoes_horarios').change(function () {
+                if (this.checked) {
+                    $('div.horarios_restritos').slideDown();
+                } else {
+                    $('div.horarios_restritos').slideUp();
+                }
+            });
+
+            //Confirma a exclusão
+            $('[data-toggle=confirmation_delete]').confirmation({
+                rootSelector: '[data-toggle=confirmation_delete]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim, Excluir!',
+                        onClick: function () {
+                            var codigo = $('#id_registro').val();
+                            $.ajax({
+                                method: "POST",
+                                url: "<?php echo $url_formulario ?>",
+                                data: {
+                                    'acao': 'excluir',
+                                    'id': codigo
+                                },
+                                success: function (retorno) {
+                                    if (retorno == 'ok') {
+                                        window.location = '<?php echo $url_listagem ?>?del=ok';
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                    }
+                ]
+            });
+
+
+            //Confirma o cancelamento
+            $('[data-toggle=confirmation_cancel]').confirmation({
+                rootSelector: '[data-toggle=confirmation_cancel]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim',
+                        onClick: function () {
+                            location.reload();
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+<?php
+//Add Footer
+include_once('gestao/footer.phtml');

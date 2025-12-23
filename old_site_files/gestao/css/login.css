@@ -1,0 +1,16 @@
+html, body { height:100% }
+body {
+	background:url('../images/bg_login.jpg') no-repeat bottom;
+	background-size:100% auto;
+}
+.row { margin:0; }
+.logo_login {
+	text-align:center;
+	margin:100px 0 20px 0;
+}
+.logo_login img {
+	max-width:50%;
+}
+div.alert {
+	display:none;
+}

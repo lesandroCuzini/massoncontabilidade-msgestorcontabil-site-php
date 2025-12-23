@@ -1,0 +1,25 @@
+<?php
+$page_back = "";
+$page_id = "404";
+
+$str_add_css = array();
+$str_add_js = array();
+?>
+<?php
+include_once("view/header.phtml");
+?>
+<div class="row fullContainer" id="pagina-erro">
+    <div class="columns text-center">
+        <h1 class="titulo">página não encontrada</h1>
+        <div class="sub-titulo">Ooops!</div>
+        <div class="texto">A página que você procura não foi encontrada. Tente novamente.</div>
+    </div>
+    <div class="columns" id="buttom">
+        <a href="<?php echo BASE_SITE_URL?>">
+            <div>IR PARA PÁGINA INICIAL</div>
+        </a>
+    </div>
+</div>
+<?php
+include_once("view/footer.phtml");
+?>

@@ -1,0 +1,598 @@
+<?php
+$page_name = "configuracoes";
+$page_title = "Configurações do Site";
+$page_id = 14; // salvar na tabela página para gerar o ID
+
+//URls
+$url_listagem = BASE_ADMIN_URL . '/' . $page_name . '-lista.html';
+$url_formulario = BASE_ADMIN_URL . '/' . $page_name . '-form.html';
+
+$objeto = new Configuracao(true);
+
+//Informações da Página para BreadCrumb
+$pagina = new Pagina();
+$pagina->setIdTable($page_id);
+$pagina->getByCod();
+
+$grupo = new Pagina();
+$grupo->setIdTable($pagina->getIdParent());
+$grupo->getByCod();
+//End - Informações da Página para BreadCrumb
+
+//Verifica se é alteração ou inclusão para carregar os dados
+$title = "Configurações | Painel Administrativo";
+
+//Add JS e CSS
+$str_add_css = array('bootstrap-table',
+    'switchery',
+    'bootstrap-colorpicker.min',
+    'bootstrap-wysiwyg');
+$str_add_js = array('bootstrap-table',
+    'switchery',
+    'jquery.inputmask.bundle',
+    'bootstrap-confirmation.min',
+    'bootstrap-colorpicker.min',
+    'jquery.mask',
+    'bootstrap-wysiwyg.min');
+
+//BreadCrumb
+$breadcrumb = array(array("url" => BASE_ADMIN_URL,
+    "nome" => ' Home',
+    "icon" => '<svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg>'),
+    array("url" => "#",
+        "nome" => ' ' . $grupo->getTitulo(),
+        "icon" => '<i class="fa ' . $grupo->getIcone() . '" aria-hidden="true"></i>'),
+    array("url" => $url_listagem,
+        "nome" => ' ' . $page_title,
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'));
+
+$texto = new Texto();
+$textos = $texto->listAll("A", "titulo ASC");
+
+//Add Header
+include_once('gestao/header.phtml');
+?>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <?php
+        //Add BreadCrumb
+        include_once('gestao/breadcrumb.phtml');
+        ?>
+    </div>
+    <div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-8">
+        <h1 class="page-header"><?php echo $page_title ?></h1>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 text-right">
+        <a href="<?php echo $url_listagem ?>" class="btn_admin btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</a>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-lg-12">
+        <?php
+        $retorno = getRequest('msg');
+        if ($retorno != "" && $retorno == "ok") {
+            ?>
+            <div class="alert alert-success">
+                <strong><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Ok...</strong> Os dados foram salvos com sucesso!
+            </div>
+            <?php
+        } elseif ($retorno != "" && $retorno == "erro") {
+            ?>
+            <div class="alert alert-danger">
+                <strong><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> Falha...</strong> Houve algum problema ao salvar os dados, por favor tente novamente!
+            </div>
+            <?php
+        }
+        ?>
+        <div class="clearfix"></div>
+        <div class="tabs">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#tab_gerais" data-toggle="tab">Configurações Gerais</a></li>
+                <li><a href="#tab_seo" data-toggle="tab">SEO</a></li>
+                <li><a href="#tab_tema" data-toggle="tab">Tema</a></li>
+                <li><a href="#tab_sociais" data-toggle="tab">Redes Sociais</a></li>
+                <li><a href="#tab_textos" data-toggle="tab">Textos</a></li>
+                <li><a href="#tab_simulacao_mensalidade" data-toggle="tab">Simulação Mensalidade</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab_gerais">
+                    <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="acao" value="alterar"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-lg-4 input_form">
+                                        <label for="SITE_EMAIL">e-mail principal do site:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_EMAIL" name="SITE_EMAIL" id="SITE_EMAIL" value="<?php echo SITE_EMAIL; ?>"/>
+                                    </div>
+                                    <div class="col-lg-4 input_form">
+                                        <label for="SITE_TELEFONE">telefones:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_TELEFONE" name="SITE_TELEFONE" id="SITE_TELEFONE" value="<?php echo SITE_TELEFONE; ?>"/>
+                                    </div>
+                                    <div class="col-lg-4 input_form">
+                                        <label for="SITE_WHATSAPP">whatsapp:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_WHATSAPP" name="SITE_WHATSAPP" id="SITE_WHATSAPP" value="<?php echo SITE_WHATSAPP; ?>"/>
+                                    </div>
+                                    <div class="col-lg-4 input_form">
+                                        <label for="SITE_CNPJ">cnpj:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_CNPJ" name="SITE_CNPJ" id="SITE_CNPJ" value="<?php echo SITE_CNPJ; ?>"/>
+                                    </div>
+                                    <div class="col-lg-4 input_form">
+                                        <label for="SITE_CRC">crc:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_CRC" name="SITE_CRC" id="SITE_CRC" value="<?php echo SITE_CRC; ?>"/>
+                                    </div>
+                                    <div class="col-lg-4 input_form">
+                                        <label for="SITE_LINK_CERTIDAO">link certidao:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_LINK_CERTIDAO" name="SITE_LINK_CERTIDAO" id="SITE_LINK_CERTIDAO" value="<?php echo SITE_LINK_CERTIDAO; ?>"/>
+                                    </div>
+                                    <div class="col-lg-12 input_form">
+                                        <label for="SITE_LINK_AREA_CLIENTE">link da área de cliente:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_LINK_AREA_CLIENTE" name="SITE_LINK_AREA_CLIENTE" id="SITE_LINK_AREA_CLIENTE" value="<?php echo SITE_LINK_AREA_CLIENTE; ?>"/>
+                                    </div>
+                                    <div class="col-lg-12 input_form">
+                                        <label for="SITE_CEP_ENDERECO">cep:</label>
+                                        <input type="text" class="form-control" placeholder="" aria-describedby="SITE_CEP_ENDERECO" name="SITE_CEP_ENDERECO" id="SITE_CEP_ENDERECO" value="<?php echo SITE_CEP_ENDERECO; ?>"/>
+                                    </div>
+                                    <div class="col-lg-12 input_form">
+                                        <label for="SITE_ENDERECO">endereço:</label>
+                                        <textarea  required="required" class="form-control" aria-describedby="SITE_ENDERECO" name="SITE_ENDERECO" id="SITE_ENDERECO" cols="30" rows="5"><?php echo SITE_ENDERECO; ?></textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <div class="line-buttons">
+                                    <button class="btn btn-success"><i class="fa fa-floppy-o"></i> Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade in" id="tab_seo">
+                    <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="acao" value="alterar"/>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-lg-12 input_form">
+                                        <label for="SITE_TITLE">meta título padrão do site (SEO)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-keyboard-o" aria-hidden="true"></i></span>
+                                            <input class="form-control contador" placeholder="meta título padrão do site" aria-describedby="SITE_TITLE" name="SITE_TITLE" id="SITE_TITLE" value="<?php echo SITE_TITLE ?>">
+                                            <span id="count_caracteres" class="input-group-addon" data-total="70"><?php echo(SITE_TITLE == "" ? "70" : 70 - strlen(SITE_TITLE)) ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 input_form">
+                                        <label for="SITE_DESCRIPTION">meta descrição padrão do site (SEO)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-keyboard-o" aria-hidden="true"></i></span>
+                                            <textarea class="form-control contador" placeholder="meta descricao padrão do site" aria-describedby="SITE_DESCRIPTION" name="SITE_DESCRIPTION" id="SITE_DESCRIPTION" rows="3"><?php echo SITE_DESCRIPTION ?></textarea>
+                                            <span id="count_caracteres" class="input-group-addon" data-total="160"><?php echo(SITE_DESCRIPTION == "" ? "160" : 160 - strlen(SITE_DESCRIPTION)) ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 input_form">
+                                        <label for="SITE_KEYWORDS">meta keywords padrão do site (SEO)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-keyboard-o" aria-hidden="true"></i></span>
+                                            <textarea class="form-control contador" placeholder="meta keywords padrão do site" aria-describedby="SITE_KEYWORDS" name="SITE_KEYWORDS" id="SITE_KEYWORDS" rows="3"><?php echo SITE_KEYWORDS ?></textarea>
+                                            <span id="count_caracteres" class="input-group-addon" data-total="160"><?php echo(SITE_KEYWORDS == "" ? "160" : 160 - strlen(SITE_KEYWORDS)) ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 text-right">
+                            <div class="line-buttons">
+                                <button class="btn btn-success"><i class="fa fa-floppy-o"></i> Salvar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade in" id="tab_tema">
+                    <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="acao" value="alterar"/>
+                        <div class="row">
+                            <div class="col-lg-6 input_form">
+                                <label for="SITE_LOGOTIPO">logotipo atual: 548px x 128px</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                                    <input type="file" class="form-control" placeholder="" aria-describedby="SITE_LOGOTIPO" name="SITE_LOGOTIPO" id="SITE_LOGOTIPO"/>
+                                </div>
+                                <br>
+                                <?php
+                                if (SITE_LOGOTIPO) {
+                                    ?>
+                                    <div class="box_imagem_admin">
+                                        <img src="<?php echo UPLOADS_URL . '/tema/' . SITE_LOGOTIPO; ?>" alt="" style="padding-top:5px" width="100%"/>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                            <div class="col-lg-6 input_form">
+                                <label for="SITE_IMAGEM_HEADER_HOME">Banner Cabeçalho: 1920px x 550px</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                                    <input type="file" class="form-control" placeholder="" aria-describedby="SITE_IMAGEM_HEADER_HOME" name="SITE_IMAGEM_HEADER_HOME" id="SITE_IMAGEM_HEADER_HOME"/>
+                                </div>
+                                <br>
+                                <?php
+                                if (SITE_IMAGEM_HEADER_HOME) {
+                                    ?>
+                                    <div class="box_imagem_admin">
+                                        <span class="apagar-imagem">">apagar imagem</span>
+                                        <img src="<?php echo UPLOADS_URL . '/tema/' . SITE_IMAGEM_HEADER_HOME; ?>" alt="" style="padding-top:5px" width="100%"/>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                            <div class="col-lg-6 input_form">
+                                <label for="SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK">Imagem Compartilhamento Facebook: 200px x 200px</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                                    <input type="file" class="form-control" placeholder="" aria-describedby="SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK" name="SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK" id="SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK"/>
+                                </div>
+                                <br>
+                                <?php
+                                if (SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK) {
+                                    ?>
+                                    <div class="box_imagem_admin">
+                                        <img src="<?php echo UPLOADS_URL . '/tema/' . SITE_IMAGEM_PADRAO_COMPARTILHAMENTO_FACEBOOK; ?>" alt="" style="padding-top:5px" width="100%"/>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <div class="line-buttons">
+                                    <button class="btn btn-success"><i class="fa fa-floppy-o"></i> Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade in" id="tab_sociais">
+                    <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="acao" value="alterar"/>
+                        <div class="row">
+                            <div class="input_form col-lg-4">
+                                <label>Facebook: (Pra url vazia preecha com '#')</label>
+                                <input type="text" class="form-control" placeholder="Facebook" aria-describedby="social_facebook" name="social_facebook" id="social_facebook" value="<?php echo $objeto->getField('social_facebook') ?>"/>
+                            </div>
+                            <div class="col-lg-4 input_form">
+                                <label>Instagram: (Pra url vazia preecha com '#')</label>
+                                <input type="text" class="form-control" placeholder="Instagram" aria-describedby="social_instagram" name="social_instagram" id="social_instagram" value="<?php echo $objeto->getField('social_instagram') ?>"/>
+                            </div>
+                            <div class="col-lg-4 input_form">
+                                <label>Twitter: (Pra url vazia preecha com '#')</label>
+                                <input type="text" class="form-control" placeholder="Twitter" aria-describedby="social_twitter" name="social_twitter" id="social_twitter" value="<?php echo $objeto->getField('social_twitter') ?>"/>
+                            </div>
+                            <div class="col-lg-4 input_form">
+                                <label>Youtube: (Pra url vazia preecha com '#')</label>
+                                <input type="text" class="form-control" placeholder="Youtube" aria-describedby="social_youtube" name="social_youtube" id="social_youtube" value="<?php echo $objeto->getField('social_youtube') ?>"/>
+                            </div>
+                            <div class="col-lg-4 input_form">
+                                <label>Linkedin: (Pra url vazia preecha com '#')</label>
+                                <input type="text" class="form-control" placeholder="Youtube" aria-describedby="social_linkedin" name="social_linkedin" id="social_linkedin" value="<?php echo $objeto->getField('social_linkedin') ?>"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <div class="line-buttons">
+                                    <button class="btn btn-success"><i class="fa fa-floppy-o"></i> Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade in" id="tab_textos">
+                    <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="acao" value="alterar"/>
+                        <div class="row">
+                            <div class="input_form col-lg-3">
+                                <label>texto nossa empresa</label>
+                                <select name="site_texto_nossa_empresa" id="site_texto_nossa_empresa" class="form-control" aria-describedby="site_texto_sobre">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_NOSSA_EMPRESA) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto nossos serviços</label>
+                                <select name="site_texto_nossos_servicos" id="site_texto_nossos_servicos" class="form-control" aria-describedby="site_texto_nossos_servicos">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_NOSSOS_SERVICOS) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto abrir uma empresa</label>
+                                <select name="site_texto_abrir_uma_empresa" id="site_texto_abrir_uma_empresa" class="form-control" aria-describedby="site_texto_abrir_uma_empresa">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_ABRIR_UMA_EMPRESA) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto migrar minha empresa</label>
+                                <select name="site_texto_migrar_minha_empresa" id="site_texto_migrar_minha_empresa" class="form-control" aria-describedby="site_texto_migrar_minha_empresa">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_MIGRAR_MINHA_EMPRESA) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto perguntas frequentes</label>
+                                <select name="site_texto_perguntas_frequentes" id="site_texto_perguntas_frequentes" class="form-control" aria-describedby="site_texto_perguntas_frequentes">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_PERGUNTAS_FREQUENTES) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto parceiros</label>
+                                <select name="site_texto_parceiros" id="site_texto_parceiros" class="form-control" aria-describedby="site_texto_parceiros">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_PARCEIROS) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto links úteis</label>
+                                <select name="site_texto_links_uteis" id="site_texto_links_uteis" class="form-control" aria-describedby="site_texto_links_uteis">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_LINKS_UTEIS) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto nossa equipe</label>
+                                <select name="site_texto_nossa_equipe" id="site_texto_nossa_equipe" class="form-control" aria-describedby="site_texto_nossa_equipe">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_NOSSA_EQUIPE) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto contato</label>
+                                <select name="site_texto_contato" id="site_texto_contato" class="form-control" aria-describedby="site_texto_contato">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_CONTATO) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input_form col-lg-3">
+                                <label>texto política de privacidade. </label>
+                                <select name="SITE_TEXTO_POLITICA" id="SITE_TEXTO_POLITICA" class="form-control" aria-describedby="SITE_TEXTO_POLITICA">
+                                    <option value="">Selecione</option>
+                                    <?php
+                                    if ($textos != "") {
+                                        foreach ($textos as $infoTexto) {
+                                            ?>
+                                            <option <?php echo ($infoTexto->id_texto == SITE_TEXTO_POLITICA) ? 'selected' : false; ?> value="<?php echo $infoTexto->id_texto; ?>"><?php echo $infoTexto->titulo; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <div class="line-buttons">
+                                    <button class="btn btn-success"><i class="fa fa-floppy-o"></i> Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade in" id="tab_simulacao_mensalidade">
+                    <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="acao" value="alterar"/>
+                        <div class="col-xs-12 input_form">
+                            <label for="status">Mostrar a Simulação de Mensalidade?</label>
+                            <div style="position:relative">
+                                <div class="form-group">
+                                    <input type="checkbox" id="mostrar_calculadora_simulacao_mensalidade"
+                                           name="mostrar_calculadora_simulacao_mensalidade"
+                                           aria-describedby="mostrar_calculadora_simulacao_mensalidade"
+                                           <?php if ($objeto->getField('mostrar_calculadora_simulacao_mensalidade') == "S") { ?>checked="checked"<?php } ?>
+                                           class="js-switch flag_form" value="S" data-active="Sim"
+                                           data-inactive="Não"/>
+                                    <span class="label_flag"><?php echo $objeto->getField('mostrar_calculadora_simulacao_mensalidade') == "S" ? "Sim" : "Não" ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <div class="line-buttons">
+                                    <button class="btn btn-success"><i class="fa fa-floppy-o"></i> Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".apagar-imagem").on("click", function () {
+                var este = $(this);
+                    if (confirm("Deseja realmente apagar esta imagem?")) {
+                        $.ajax({
+                            url: window.location.href,
+                            method: 'post',
+                            data: {
+                                acao: 'apagar-imagem-header',
+                            },
+                            dataType: "html",
+                            success: function (response) {
+                                console.log(response);
+                                if (response == 1) {
+                                    este.parent().find("img").fadeOut(500);
+                                }
+                                else {
+                                    alert('Houve um problema, tente novamente mais tarde!');
+                                }
+                            }
+                        })
+                    }
+            });
+            if ($('#cp_menu').length > 0) {
+                $('#cp_menu').colorpicker();
+            }
+
+            //Verifica item selecionado
+            $("#tipo_banner option:selected").each(function () {
+                $('.tamanho_img span').html($(this).data('width') + 'px X ' + $(this).data('height') + 'px');
+            });
+            $("#tipo_banner").change(function () {
+                $("#tipo_banner option:selected").each(function () {
+                    $('.tamanho_img span').html($(this).data('width') + 'px X ' + $(this).data('height') + 'px');
+                });
+            });
+
+            //Checkbox personalizado
+            $('#restricoes_horarios').change(function () {
+                if (this.checked) {
+                    $('div.horarios_restritos').slideDown();
+                } else {
+                    $('div.horarios_restritos').slideUp();
+                }
+            });
+
+            //Confirma a exclusão
+            $('[data-toggle=confirmation_delete]').confirmation({
+                rootSelector: '[data-toggle=confirmation_delete]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim, Excluir!',
+                        onClick: function () {
+                            var codigo = $('#id_registro').val();
+                            $.ajax({
+                                method: "POST",
+                                url: "<?php echo $url_formulario ?>",
+                                data: {
+                                    'acao': 'excluir',
+                                    'id': codigo
+                                },
+                                success: function (retorno) {
+                                    if (retorno == 'ok') {
+                                        window.location = '<?php echo $url_listagem ?>?del=ok';
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                    }
+                ]
+            });
+
+            //Confirma o cancelamento
+            $('[data-toggle=confirmation_cancel]').confirmation({
+                rootSelector: '[data-toggle=confirmation_cancel]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim',
+                        onClick: function () {
+                            location.reload();
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+<?php
+//Add Footer
+include_once('gestao/footer.phtml');

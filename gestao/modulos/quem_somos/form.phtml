@@ -1,0 +1,419 @@
+<?php
+$page_name = "quem-somos";
+$page_title = "Quem Somos";
+$page_id = 12; // salvar na tabela página para gerar o ID
+
+//URls
+$url_listagem = BASE_ADMIN_URL . '/' . $page_name . '-lista.html';
+$url_formulario = BASE_ADMIN_URL . '/' . $page_name . '-form.html';
+
+$objeto = new QuemSomos(true);
+
+//Informações da Página para BreadCrumb
+$pagina = new Pagina();
+$pagina->setIdTable($page_id);
+$pagina->getByCod();
+
+$grupo = new Pagina();
+$grupo->setIdTable($pagina->getIdParent());
+$grupo->getByCod();
+//End - Informações da Página para BreadCrumb
+
+//Verifica se é alteração ou inclusão para carregar os dados
+$id_registro = getRequest("id") ? getRequest("id") : 0;
+if ($id_registro > 0) {
+    $objeto->setIdTable($id_registro);
+    $objeto->getByCod();
+    $title = $pagina->getTitulo() . ": " . $id_registro . " | Painel Administrativo";
+} else {
+    $title = "Novo Registro | Painel Administrativo";
+}
+
+//Add JS e CSS
+$str_add_css = array(
+    'bootstrap-table',
+    'switchery',
+    'dropzone',
+    'bootstrap-colorpicker.min'
+);
+$str_add_js = array(
+    'bootstrap-table',
+    'switchery',
+    'dropzone',
+    'uploads',
+    'tinymce2/tinymce.min',
+    'jquery.inputmask.bundle',
+    'bootstrap-confirmation.min',
+    'bootstrap-colorpicker.min'
+);
+
+//BreadCrumb
+$breadcrumb = array(
+    array(
+        "url" => BASE_ADMIN_URL,
+        "nome" => ' Home',
+        "icon" => '<i class="fas fa-home fontawesome"></i>'
+    ),
+    array(
+        "url" => "#",
+        "nome" => ' ' . $grupo->getTitulo(),
+        "icon" => '<i class="fa ' . $grupo->getIcone() . '" aria-hidden="true"></i>'
+    ),
+    array(
+        "url" => $url_listagem,
+        "nome" => ' Todos ' . $pagina->getTitulo(),
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'
+    ),
+    array(
+        "url" => $url_formulario,
+        "nome" => ' ' . $page_title,
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'
+    )
+);
+
+//Add Header
+include_once('gestao/header.phtml');
+?>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <?php
+            //Add BreadCrumb
+            include_once('gestao/breadcrumb.phtml');
+            ?>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <h1 class="page-header"><?php echo $page_title ?></h1>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-right">
+                <a href="<?php echo $url_listagem ?>" class="btn_admin btn btn-default">
+                    <i class="fa fa-undo" aria-hidden="true"></i>
+                    Voltar</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <?php
+                $retorno = getRequest('msg');
+                if ($retorno != "" && $retorno == "ok") {
+                    ?>
+                    <div class="alert alert-success">
+                        <strong><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Ok...</strong> Os dados foram
+                        salvos com sucesso!
+                    </div>
+                    <?php
+                } elseif ($retorno != "" && $retorno == "erro") {
+                    ?>
+                    <div class="alert alert-danger">
+                        <strong><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> Falha...</strong> Houve algum
+                        problema ao salvar os dados, por favor tente novamente!
+                    </div>
+                    <?php
+                }
+                ?>
+                <div class="clearfix"></div>
+                <form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="acao" value="alterar"/>
+                    <input type="hidden" name="acao_posterior" id="acao_posterior" value=""/>
+                    <div class="tabs">
+                        <ul class="nav nav-pills">
+                            <li class="active"><a href="#tab_conteudo" data-toggle="tab">Conteúdo</a></li>
+                            <li><a href="#tab_sobre_nos" data-toggle="tab">Sobre Nós</a></li>
+                            <li><a href="#tab_nosso_diferencial" data-toggle="tab">Nosso Diferencial</a></li>
+                            <li><a href="#tab_como_funciona" data-toggle="tab">Como Funciona</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab_conteudo">
+                                <div class="row">
+                                    <div class="col-md-2 col-lg-2 input_form">
+                                        <label for="id_registro">Código</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-hashtag" aria-hidden="true"></i></span>
+                                            <input type="text" class="form-control" placeholder=""
+                                                   aria-describedby="id_registro" name="id_registro" id="id_registro"
+                                                   value="<?php echo $objeto->getIdTable() ?>" readonly="readonly"/>
+                                        </div>
+                                    </div>
+                                    <?php if ($id_registro) { ?>
+                                        <div class="col-md-4 col-lg-3 input_form">
+                                            <label for="datahora_cadastro">Data/Hora do Cadastro</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                                <input type="text" class="form-control" placeholder="Data/Hora Cadastro"
+                                                       name="datahora_cadastro" id="datahora_cadastro" readonly="readonly"
+                                                       value="<?php echo $objeto->getDatahoraCadastro() ?>" />
+                                            </div>
+                                        </div>
+                                        <?php if ($objeto->getDatahoraAtualizacao() != '00/00/0000 00:00:00' &&
+                                            $objeto->getDatahoraAtualizacao() != '01/01/1970 00:00:00') { ?>
+                                            <div class="col-md-4 col-lg-3 input_form">
+                                                <label for="datahora_atualizacao">Data/Hora da Atualização</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                                    <input type="text" class="form-control" placeholder="Data/Hora Cadastro"
+                                                           name="datahora_atualizacao" id="datahora_atualizacao" readonly="readonly"
+                                                           value="<?php echo $objeto->getDatahoraAtualizacao() ?>" />
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10 col-lg-8 input_form">
+                                        <label for="nome_pagina">Nome da página</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-align-left" aria-hidden="true"></i>
+                                            </span>
+                                            <input type="text" class="form-control" required="required"
+                                                   name="nome_pagina" id="nome_pagina"
+                                                   value="<?php echo $objeto->getNomePagina() ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10 col-lg-8 input_form">
+                                        <label for="descricao_home">Descrição da página inicial</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-align-left" aria-hidden="true"></i>
+                                            </span>
+                                            <textarea class="form-control tinymce" name="descricao_home" id="descricao_home"
+                                                      required="required"><?php echo $objeto->getDescricaoHome() ?></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="tab_sobre_nos">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 input_form">
+                                                <label for="titulo_sobre">Título Sobre a MS Contabilidade</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" required="required"
+                                                           name="titulo_sobre" id="titulo_sobre"
+                                                           value="<?php echo $objeto->getTituloSobre() ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 input_form">
+                                                <label for="descricao_sobre">Descrição Sobre a MS Contabilidade</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                                    </span>
+                                                    <textarea class="form-control tinymce" name="descricao_sobre" id="descricao_sobre"
+                                                              required="required"><?php echo $objeto->getDescricaoSobre() ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 input_form">
+                                                <label for="url_imagem_sobre">Imagem Sobre a MS Contabilidade [JPG/PNG]: 720px x 480px em 72 dpi</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input type="file" class="form-control" name="url_imagem_sobre" id="url_imagem_sobre"
+                                                           <?php if (!$objeto->getUrlImagemSobre()) { ?>required="required"<?php } ?> />
+                                                </div>
+                                                <?php if ($objeto->getUrlImagemSobre()) { ?>
+                                                    <small style="display: block; margin-top: 0.375rem; margin-bottom: 1.5rem;">A imagem atual será excluida após substituí-la por outra.</small>
+                                                    <div class="box_banner_home_png">
+                                                        <img src="<?php echo UPLOADS_URL . '/quem-somos/' . $objeto->getUrlImagemSobre() ?>"
+                                                             class="imagem_bg" style="max-width: 100%;" alt="" />
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="tab_nosso_diferencial">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 input_form">
+                                                <label for="titulo_nosso_diferencial">Título Nosso Diferencial</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input class="form-control"
+                                                           name="titulo_nosso_diferencial" id="titulo_nosso_diferencial"
+                                                           value="<?php echo $objeto->getTituloNossoDiferencial() ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 input_form">
+                                                <label for="descricao_nosso_diferencial">Descrição Nosso Diferencial</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                                    </span>
+                                                    <textarea name="descricao_nosso_diferencial" id="descricao_nosso_diferencial"
+                                                              class="form-control tinymce"><?php echo $objeto->getDescricaoNossoDiferencial() ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 input_form">
+                                                <label for="url_imagem_nosso_diferencial">Imagem Nosso Diferencial [JPG/PNG]: 720px x 480px em 72 dpi</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input type="file" class="form-control" name="url_imagem_nosso_diferencial" id="url_imagem_nosso_diferencial"/>
+                                                </div>
+                                                <?php if ($objeto->getUrlImagemNossoDiferencial()) { ?>
+                                                    <small style="display: block; margin-top: 0.375rem; margin-bottom: 1.5rem;">A imagem atual será excluida após substituí-la por outra.</small>
+                                                    <div class="box_banner_home_png">
+                                                        <img src="<?php echo UPLOADS_URL . '/quem-somos/' . $objeto->getUrlImagemNossoDiferencial() ?>"
+                                                             class="imagem_bg" style="max-width: 100%;" alt="" />
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="tab_como_funciona">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 input_form">
+                                                <label for="titulo_como_funciona">Título Como Funciona</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input class="form-control"
+                                                           name="titulo_como_funciona" id="titulo_como_funciona"
+                                                           value="<?php echo $objeto->getTituloComoFunciona() ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 input_form">
+                                                <label for="descricao_como_funciona">Descrição Como Funciona</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-align-left" aria-hidden="true"></i>
+                                                    </span>
+                                                    <textarea name="descricao_como_funciona" id="descricao_como_funciona"
+                                                              class="form-control tinymce"><?php echo $objeto->getDescricaoComoFunciona() ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12 input_form">
+                                                <label for="url_imagem_como_funciona">Imagem Como Funciona [JPG/PNG]: 720px x 480px em 72 dpi</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                                    </span>
+                                                    <input type="file" class="form-control" name="url_imagem_como_funciona" id="url_imagem_como_funciona"/>
+                                                </div>
+                                                <?php if ($objeto->getUrlImagemComoFunciona()) { ?>
+                                                    <small style="display: block; margin-top: 0.375rem; margin-bottom: 1.5rem;">A imagem atual será excluida após substituí-la por outra.</small>
+                                                    <div class="box_banner_home_png">
+                                                        <img src="<?php echo UPLOADS_URL . '/quem-somos/' . $objeto->getUrlImagemComoFunciona() ?>"
+                                                             class="imagem_bg" style="max-width: 100%;" alt="" />
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-right">
+                            <div class="line-buttons">
+                                <?php if ($id_registro) { ?>
+                                    <a href="#" class="btn btn-warning"
+                                       data-toggle="confirmation_cancel"
+                                       data-title="Deseja Realmente Cancelar?"
+                                       data-content="Todas alterações não salvas serão perdidas.">
+                                        <i class="fa fa-ban"></i> Cancelar</a>
+                                <?php } ?>
+                                <a href="#" class="btn btn-success btn_submit_form">
+                                    <i class="fa fa-floppy-o"></i>
+                                    Salvar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Confirma a exclusão
+            $('[data-toggle=confirmation_delete]').confirmation({
+                rootSelector: '[data-toggle=confirmation_delete]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim, Excluir!',
+                        onClick: function () {
+                            var codigo = $('#id_registro').val();
+                            $.ajax({
+                                method: "POST",
+                                url: "<?php echo $url_formulario ?>",
+                                data: {
+                                    'acao': 'excluir',
+                                    'id': codigo
+                                },
+                                success: function (retorno) {
+                                    if (retorno == 'ok') {
+                                        window.location = '<?php echo $url_listagem ?>?del=ok';
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                    }
+                ]
+            });
+
+            // Confirma o cancelamento
+            $('[data-toggle=confirmation_cancel]').confirmation({
+                rootSelector: '[data-toggle=confirmation_cancel]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim',
+                        onClick: function () {
+                            location.reload();
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+<?php
+//Add Footer
+include_once('gestao/footer.phtml');

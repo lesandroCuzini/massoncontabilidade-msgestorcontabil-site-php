@@ -1,0 +1,140 @@
+<?php
+global $id_registro, $objeto;
+?>
+<form name="form_admin" id="form_admin" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="acao" value="<?php echo $id_registro > 0 ? 'alterar' : 'incluir' ?>"/>
+    <input type="hidden" name="acao_posterior" id="acao_posterior" value=""/>
+    <div class="row">
+        <div class="col-md-2 input_form">
+            <label for="id_registro">Código</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                <input type="text" class="form-control" placeholder=""
+                       aria-describedby="id_registro" name="id_registro" id="id_registro"
+                       value="<?php echo $objeto->getIdTable() ?>" readonly="readonly"/>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-3 input_form">
+            <label for="datahora_cadastro">Data/Hora do Cadastro</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                <input type="text" class="form-control" placeholder="Data/Hora Cadastro"
+                       name="datahora_cadastro" id="datahora_cadastro" readonly="readonly"
+                       value="<?php echo $objeto->getDatahoraCadastro() ?>" />
+            </div>
+        </div>
+        <?php if ($objeto->getDatahoraAtualizacao() != '00/00/0000 00:00:00' &&
+            $objeto->getDatahoraAtualizacao() != '01/01/1970 00:00:00') { ?>
+            <div class="col-md-4 col-lg-3 input_form">
+                <label for="datahora_atualizacao">Data/Hora da Atualização</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                    <input type="text" class="form-control" placeholder="Data/Hora Cadastro"
+                           name="datahora_atualizacao" id="datahora_atualizacao" readonly="readonly"
+                           value="<?php echo $objeto->getDatahoraAtualizacao() ?>" />
+                </div>
+            </div>
+        <?php } ?>
+        <div class="col-md-2 input_form">
+            <label for="status">Status</label>
+            <div style="position:relative">
+                <div class="form-group">
+                    <input type="checkbox" id="status" name="status"
+                           <?php if ($objeto->getStatus() == "A" || $id_registro == '') { ?>checked="checked"<?php } ?>
+                           class="js-switch flag_form" value="A" data-active="Ativo"
+                           data-inactive="Inativo"/>
+                    <span class="label_flag"><?php echo $objeto->getStatus() == "A" || $id_registro == '' ? "Ativo" : "Inativo" ?></span>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-lg-7">
+            <div class="row">
+                <div class="col-lg-12 input_form">
+                    <label for="titulo">Título da Página</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                        <input type="text" class="form-control" placeholder="Título da Página"
+                               name="titulo" id="titulo" required="required"
+                               value="<?php echo $objeto->getTitulo() ?>" />
+                    </div>
+                </div>
+                <div class="col-lg-12 input_form">
+                    <label for="subtitulo">Subtítulo da Página</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                        <input type="text" class="form-control" placeholder="Subtítulo da Página"
+                               name="subtitulo" id="subtitulo"
+                               value="<?php echo $objeto->getSubtitulo() ?>" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="row">
+                <div class="col-lg-12 input_form">
+                    <label for="meta_titulo">Meta Título da Página (SEO)</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
+                        <input class="form-control contador" placeholder="Meta Título da Página" name="meta_titulo" id="meta_titulo" value="<?php echo html_entity_decode($objeto->getMetaTitulo()) ?>">
+                        <span id="count_caracteres" class="input-group-addon" data-total="70"><?php echo(html_entity_decode($objeto->getMetaTitulo()) == "" ? "70" : 70 - strlen(html_entity_decode($objeto->getMetaTitulo()))) ?></span>
+                    </div>
+                </div>
+                <div class="col-lg-12 input_form">
+                    <label for="meta_descricao">Meta Descrição da Página (SEO)</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-keyboard-o"></i></span>
+                        <textarea class="form-control contador" placeholder="Meta Descrição da Página" name="meta_descricao" id="meta_descricao" rows="3"><?php echo html_entity_decode($objeto->getMetaDescricao()) ?></textarea>
+                        <span id="count_caracteres" class="input-group-addon" data-total="160"><?php echo(html_entity_decode($objeto->getMetaDescricao()) == "" ? "160" : 160 - strlen(html_entity_decode($objeto->getMetaDescricao()))) ?></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 input_form">
+            <label for="conteudo">Conteúdo da Página</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                <textarea id="conteudo" name="conteudo" class="form-control tinymce"
+                          required="required"><?php echo $objeto->getConteudo()?></textarea>
+            </div>
+        </div>
+
+        <div class="col-lg-7 input_form">
+            <br/>
+            <strong>BANNER DO TOPO DA PÁGINA</strong>
+            <br/>
+            <label for="url_banner_topo">Imagem [JPG]: 1920px x 400px em 72 dpi</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                <input type="file" class="form-control"
+                       name="url_banner_topo" id="url_banner_topo"
+                       <?php if (!$objeto->getUrlBannerTopo()){?>required="required"<?php }?>/>
+            </div>
+            <?php if ($objeto->getUrlBannerTopo()) { ?>
+                <small>A imagem atual será excluida após substituí-la por outra.</small>
+                <div class="box_url_imagem">
+                    <?php if ($objeto->getUrlBannerTopo()) { ?>
+                        <img style="max-width: 100%;" src="<?php echo UPLOADS_URL . '/institucionais/banners/' . $objeto->getUrlBannerTopo() ?>"
+                             alt="" class="imagem_bg"/>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 text-right">
+            <div class="line-buttons">
+                <?php if ($id_registro) { ?>
+                    <a href="#" class="btn btn-warning"
+                       data-toggle="confirmation_cancel"
+                       data-title="Deseja Realmente Cancelar?"
+                       data-content="Todas alterações não salvas serão perdidas.">
+                        <i class="fa fa-ban"></i> Cancelar</a>
+                <?php } ?>
+                <a href="#" class="btn btn-success btn_submit_form"><i class="fa fa-floppy-o"></i> Salvar</a>
+            </div>
+        </div>
+    </div>
+</form>

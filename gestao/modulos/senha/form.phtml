@@ -1,0 +1,183 @@
+<?php
+$page_name = "senha";
+$page_title = "Alterar Senha";
+$page_id = 9; // salvar na tabela página para gerar o ID
+
+//URls
+$url_listagem = BASE_ADMIN_URL . '/' . $page_name . '-lista.html';
+$url_formulario = BASE_ADMIN_URL . '/' . $page_name . '-form.html';
+
+$objeto = new UsuarioAdmin(true);
+
+//Informações da Página para BreadCrumb
+$pagina = new Pagina();
+$pagina->setIdTable($page_id);
+$pagina->getByCod();
+
+$grupo = new Pagina();
+$grupo->setIdTable($pagina->getIdParent());
+$grupo->getByCod();
+//End - Informações da Página para BreadCrumb
+
+//Verifica se é alteração ou inclusão para carregar os dados
+$id_registro = getSession("id_usuario", "info_user");
+if ($id_registro > 0) {
+    $objeto->setIdTable($id_registro);
+    $objeto->getByCod();
+    $title = $pagina->getTitulo() . ": " . $id_registro . " | Painel Administrativo";
+}
+
+//Add JS e CSS
+$str_add_css = array(
+    'bootstrap-table',
+    'switchery'
+);
+$str_add_js = array(
+    'bootstrap-table',
+    'switchery',
+    'jquery.inputmask.bundle',
+    'bootstrap-confirmation.min'
+);
+
+//BreadCrumb
+$breadcrumb = array(
+    array(
+        "url" => BASE_ADMIN_URL,
+        "nome" => ' Home',
+        "icon" => '<i class="fas fa-home fontawesome"></i>'
+    ),
+    array(
+        "url" => "#",
+        "nome" => ' ' . $grupo->getTitulo(),
+        "icon" => '<i class="fa ' . $grupo->getIcone() . '" aria-hidden="true"></i>'
+    ),
+    array(
+        "url" => $url_listagem,
+        "nome" => ' Todos ' . $pagina->getTitulo(),
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'
+    ),
+    array(
+        "url" => $url_formulario,
+        "nome" => ' ' . $page_title,
+        "icon" => '<i class="fa ' . $pagina->getIcone() . '" aria-hidden="true"></i>'
+    )
+);
+
+//Add Header
+include_once('gestao/header.phtml');
+?>
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <?php
+            //Add BreadCrumb
+            include_once('gestao/breadcrumb.phtml');
+            ?>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <h1 class="page-header"><?php echo $page_title ?></h1>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-right">
+                <a href="<?php echo BASE_ADMIN_URL ?>" class="btn_admin btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</a>
+            </div>
+            <div class="col-lg-12">
+                <?php
+                $retorno = getRequest('msg');
+                if ($retorno != "" && $retorno == "ok") {
+                    ?>
+                    <div class="alert alert-success">
+                        <strong><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Ok...</strong> Os dados foram salvos com sucesso!
+                    </div>
+                    <?php
+                } elseif ($retorno != "" && $retorno == "erro") {
+                    ?>
+                    <div class="alert alert-danger">
+                        <strong><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> Falha...</strong> Houve algum problema ao salvar os dados, por favor tente novamente!
+                    </div>
+                    <?php
+                }
+                ?>
+
+                <div class="tab-pane fade in active" id="tab_dados_usuario">
+                    <form name="form_admin" id="form_admin" method="post">
+                        <input type="hidden" name="acao" value="alterar_senha"/>
+                        <input type="hidden" name="id_registro" id="id_registro" value="<?php echo $id_registro ?>"/>
+                        <input type="hidden" name="acao_posterior" id="acao_posterior" value=""/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3 input_form">
+                                        <label for="senha">senha atual</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                            <input type="password" class="form-control" placeholder="" aria-describedby="senha" name="senha" id="senha" value="" <?php if ($id_registro <= 0) { ?>required="required" data-error="Preencha este campo corretamente"<?php } ?> />
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-3 input_form">
+                                        <label for="nova_senha">nova senha</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                            <input type="password" class="form-control" placeholder="" aria-describedby="nova_senha" name="nova_senha" id="nova_senha" value="" <?php if ($id_registro <= 0) { ?>required="required" data-error="Preencha este campo corretamente"<?php } ?> />
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-3 input_form">
+                                        <label for="confirmacao">confirme a nova senha</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                            <input type="password" class="form-control" placeholder="" aria-describedby="confirmacao" name="confirmacao" id="confirmacao" value="" <?php if ($id_registro <= 0) { ?>required="required" data-error="Preencha este campo corretamente"<?php } ?> />
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-right">
+                                <div class="line-buttons">
+                                    <a href="#" class="btn btn-warning" data-toggle="confirmation_cancel" data-title="Deseja Realmente Cancelar?" data-content="Todas alterações não salvas serão perdidas."><i class="fa fa-ban"></i> Cancelar</a>
+                                    <a href="#" class="btn btn-success btn_submit_form"><i class="fa fa-floppy-o"></i> Salvar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            //Confirma o cancelamento
+            $('[data-toggle=confirmation_cancel]').confirmation({
+                rootSelector: '[data-toggle=confirmation_cancel]',
+                buttons: [
+                    {
+                        class: 'btn btn-primary',
+                        icon: 'glyphicon glyphicon-remove',
+                        label: 'Não',
+                        onClick: function () {
+                            return false;
+                        }
+                    },
+                    {
+                        class: 'btn btn-danger',
+                        icon: 'glyphicon glyphicon-ok',
+                        label: 'Sim',
+                        onClick: function () {
+                            window.location = '<?php echo $url_listagem ?>';
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+<?php
+//Add Footer
+include_once('gestao/footer.phtml');

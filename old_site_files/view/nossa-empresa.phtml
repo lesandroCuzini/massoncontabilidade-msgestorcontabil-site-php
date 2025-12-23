@@ -1,0 +1,100 @@
+<?php
+$page_back = "";
+$page_id = "nossa-empresa";
+
+$str_add_css = array();
+$str_add_js = array();
+
+$obj_nossa_empresa = new NossaEmpresa();
+$obj_nossa_equipe = new NossaEquipe();
+
+$nossa_equipe = $obj_nossa_equipe->listAll("A", "posicao");
+$nossa_empresa = $obj_nossa_empresa->listAll("A");
+
+$texto = new Texto();
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_NOSSA_EMPRESA);
+$textos->getByCod();
+
+include_once("header.phtml");
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $texto->url_imagem; ?>" alt="<?php echo SITE_TITLE ?>">
+    </div>
+    <?php
+}
+?>
+    <div class="row fullContainer" id="breadcrumb">
+        <div class="columns">
+            <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Nossa Empresa</span>
+            <h1 class="titulo">nossa empresa</h1>
+        </div>
+    </div>
+    <div class="row fullContainer" id="informativo">
+        <div class="columns">
+            <?php
+            if ($nossa_empresa[0]->foto_nossa_empresa != "") {
+                ?>
+                <img src="<?php echo UPLOADS_URL . "/nossa-empresa/" . $nossa_empresa[0]->foto_nossa_empresa; ?>"
+                     alt="<?php echo SITE_TITLE ?>">
+                <?php
+            }
+            ?>
+            <div class="texto"><?php echo $nossa_empresa[0]->descricao_nossa_empresa; ?></div>
+        </div>
+    </div>
+    <div class="row fullContainer" id="pessoas">
+        <div class="columns text-center">
+            <h1 class="titulo">nossa equipe</h1>
+        </div>
+        <?php
+        foreach ($nossa_equipe as $equipe) {
+            ?>
+            <div id="div-integrante-equipe" class="medium-6 large-3 columns text-center">
+                <img src="<?php echo UPLOADS_URL . "/nossa-equipe/" . $equipe->foto; ?>"
+                     alt="<?php echo $equipe->nome ?>">
+                <div class="nome"><?php echo $equipe->nome; ?></div>
+                <div class="cargo"><?php echo $equipe->funcao; ?></div>
+                <div class="redes-sociais">
+                    <?php
+                    if ($equipe->link_facebook != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_facebook; ?>"><span
+                                    class="icon facebook"></span></a>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ($equipe->link_twitter != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_twitter; ?>"><span
+                                    class="icon twitter"></span></a>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ($equipe->link_linkedin != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_linkedin; ?>"><span
+                                    class="icon in"></span></a>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ($equipe->link_google_plus != "#") {
+                        ?>
+                        <a target="_blank" href="<?php echo $equipe->link_google_plus; ?>"><span
+                                    class="icon google-mais"></span></a>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+    </div>
+<?php
+include_once("footer.phtml");
+?>

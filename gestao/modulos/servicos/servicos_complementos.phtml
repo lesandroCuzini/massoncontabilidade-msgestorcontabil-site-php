@@ -1,0 +1,180 @@
+<?php
+global $url_formulario, $id_registro, $objeto;
+
+$infoComplementos = $objeto->getComplementosByIdServico($id_registro);
+?>
+<form action="<?php echo $url_formulario ?>" enctype="multipart/form-data" class="form-flex" data-form="form-imagem" method="post">
+    <input type="hidden" name="acao" id="acao" value="addComplemento" />
+    <input type="hidden" name="id_servico" id="id_servico" value="<?php echo $id_registro ?>" />
+    <h2 class="subtitulo" style="margin-top: 15px; margin-bottom: 0;">Título do Complemento</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="input_form">
+                <label for="titulo">Título do Complemento</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                    <input type="text" class="form-control" placeholder="Título do Complemento"
+                           name="titulo" id="titulo" required="required" value="" />
+                </div>
+            </div>
+            <div class="input_form">
+                <label for="subtitulo">Subtítulo do Complemento</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                    <input type="text" class="form-control" placeholder="Subtítulo do Complemento"
+                           name="subtitulo" id="subtitulo" required="required" value="" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" name="btnEnviarComplemento" id="btnEnviarComplemento" class="btn btn-primary" style="margin-top: 16px;">
+                <i class="fa fa-floppy-o"></i>
+                Salvar Título
+            </button>
+        </div>
+    </div>
+</form>
+
+<br />
+
+<div id="complementos">
+    <?php
+        $complementos = $objeto->getComplementosByIdServico($id_registro);
+        if (count($complementos) && is_array($complementos)) {
+            ?>
+            <div class="row hidden-md linhaTitulo">
+                <div class="col-lg-10 text-uppercase"><b>Informações</b></div>
+                <div class="col-lg-2 text-uppercase"><b>Ação</b></div>
+            </div>
+            <?php
+            foreach ($complementos as $infoComplemento) {
+                ?>
+                <div class="row linhaComplemento <?php echo $infoComplemento->i % 2 == 0 ? 'even' : 'odd' ?>">
+                    <div class="col-lg-10">
+                        <b><?php echo $infoComplemento->titulo ?></b>
+                        <br />
+                        <?php echo $infoComplemento->subtitulo ?>
+                    </div>
+                    <div class="col-lg-2">
+                        <span class="apagarComplemento" data-id-complemento="<?php echo $infoComplemento->id_servico_complemento; ?>"><i class="fa fa-trash"></i> Apagar</span>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            ?>
+            <div class="row">
+                <div class="col-xs-12 container-img"><b>Nenhum título de complemento foi cadastrado até momento!</b></div>
+            </div>
+            <?php
+        }
+    ?>
+</div>
+
+<br />
+<hr style="border-color: #CCC;">
+<br />
+
+<form action="<?php echo $url_formulario ?>" enctype="multipart/form-data" class="form-flex" data-form="form-imagem" method="post">
+    <input type="hidden" name="acao" id="acao" value="addComplementoItem" />
+    <input type="hidden" name="id_servico" id="id_servico" value="<?php echo $id_registro ?>" />
+    <h2 class="subtitulo" style="margin-top: 0; margin-bottom: 0;">Item do Complemento</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="id_servico_complemento">Título do Complemento</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i style="font-family: FontAwesome;" class="fa fa-align-left" aria-hidden="true"></i>
+                        </span>
+                        <select class="form-control" id="id_servico_complemento" name="id_servico_complemento" required="required">
+                            <option value="">Selecione</option>
+                            <?php foreach ($infoComplementos as $infoComplemento) { ?>
+                                <option value="<?php echo $infoComplemento->id_servico_complemento ?>"><?php echo $infoComplemento->titulo ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <label for="titulo">Título do Item do Complemento</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                        <input type="text" class="form-control" placeholder="Título do Item do Complemento"
+                               name="titulo" id="titulo" required="required" value="" />
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <label for="subtitulo">Subtítulo do Item do Complemento</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-align-left"></i></span>
+                        <input type="text" class="form-control" placeholder="Subtítulo do Item do Complemento"
+                               name="subtitulo" id="subtitulo" required="required" value="" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="url_icone">Icone [png]: 59px x 61px em 72 dpi</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-picture-o"></i></span>
+                        <input type="file" class="form-control" placeholder=""
+                               name="url_icone" id="url_icone" required="required" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" name="btnEnviarItemComplemento" id="btnEnviarItemComplemento" class="btn btn-primary" style="margin-top: 16px;">
+                        <i class="fa fa-floppy-o"></i>
+                        Salvar Item
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<br />
+
+<div id="complementos">
+    <?php
+    $complementosItens = $objeto->getComplementosItens($id_registro, $infoComplementos[0]->id_servico_complemento);
+    if (count($complementosItens) && is_array($complementosItens)) {
+        ?>
+        <div class="row hidden-md linhaTitulo">
+            <div class="col-lg-2 text-uppercase"><b>Ícone</b></div>
+            <div class="col-lg-8 text-uppercase"><b>Informações</b></div>
+            <div class="col-lg-2 text-uppercase"><b>Ação</b></div>
+        </div>
+        <?php
+        foreach ($complementosItens as $infoComplementoItem) {
+            ?>
+            <div class="row linhaComplemento <?php echo $infoComplementoItem->i % 2 == 0 ? 'even' : 'odd' ?>">
+                <div class="col-lg-2">
+                    <div class="boxIconeComplemento">
+                        <img src="<?php echo $infoComplementoItem->url_icone_complemento ?>" class="icone_complemento" />
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <b><?php echo $infoComplementoItem->titulo ?></b>
+                    <br />
+                    <?php echo $infoComplementoItem->subtitulo ?>
+                </div>
+                <div class="col-lg-2">
+                    <span class="apagarComplementoItem" data-id-complemento-item="<?php echo $infoComplementoItem->id_servico_complemento_item; ?>"><i class="fa fa-trash"></i> Apagar</span>
+                </div>
+            </div>
+            <?php
+        }
+    } else {
+        ?>
+        <div class="row">
+            <div class="col-xs-12 container-img"><b>Nenhum item do complemento foi cadastrado até o momento!</b></div>
+        </div>
+        <?php
+    }
+    ?>
+</div>
+
+<br />

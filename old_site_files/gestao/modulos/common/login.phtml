@@ -1,0 +1,66 @@
+<?php
+$page_name = "login";
+$usuario = new UsuarioAdmin(true);
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Login - Painel Administrativo</title>
+    <link href='<?php echo BASE_IMAGES_URL ?>/icon.ico' rel='shortcut' type='image/x-icon'/>
+    <link href='<?php echo BASE_IMAGES_URL ?>/icon.png' rel='icon' type='image/png'/>
+
+    <link rel="stylesheet" href="<?php echo ADMIN_CSS_URL ?>/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?php echo ADMIN_CSS_URL ?>/login.css" />
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/jquery-1.11.1.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="<?php echo ADMIN_JS_URL ?>/html5shiv.js"></script>
+    <script src="<?php echo ADMIN_JS_URL ?>/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        var site_url = '<?php echo BASE_ADMIN_URL ?>';
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+        <div class="logo_login">
+            <img src="<?php echo ADMIN_IMAGES_URL ?>/logotipo.jpg" alt="<?php echo SITE_TITLE ?>" />
+        </div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+        <div class="alert bg-danger text-center"></div>
+        <div class="login panel panel-default">
+            <div class="panel-heading">Acesso Restrito - <?php echo SITE_TITLE ?></div>
+            <div class="panel-body">
+                <form name="form_login" id="form_login" method="post">
+                    <fieldset>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Login" name="login" id="login" autofocus="" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Senha" name="senha" id="senha" value="" />
+                        </div>
+                        <!--<div class="g-recaptcha" data-sitekey="<?php /*echo CAPTCHA_SITE_KEY */?>" style="display:<?php /*echo (isset($_SESSION['erros_login']) && $_SESSION['erros_login'] >= 3 ? 'block !important' : 'none !important') */?>;"></div>-->
+                        <br />
+                        <input type="submit" name="enviar" id="enviar" value="Acessar Painel" class="btn btn-primary" />
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+        <div class="text-center">
+            <br />Esqueceu sua senha?<br />Entre em contato com <a href="https://www.innovarecompany.com.br" target="_blank">Innovare Company</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo ADMIN_JS_URL ?>/login.js"></script>
+</body>
+</html>

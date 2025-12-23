@@ -1,0 +1,50 @@
+<?php
+$page_back = "";
+$page_id = "perguntas-frequentes";
+
+$str_add_css = array();
+$str_add_js = array();
+
+$texto = new Texto();
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_PERGUNTAS_FREQUENTES);
+$textos->getByCod();
+$pergunta_frequente = new PerguntaFrequente();
+$perguntas_frequentes = $pergunta_frequente->listAll("A", "posicao");
+
+
+include_once("header.phtml");
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $textos->url_imagem ?>" alt="<?php echo $textos->titulo; ?>">
+    </div>
+    <?php
+}
+?>
+    <div class="row fullContainer" id="breadcrumb">
+        <div class="columns">
+            <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Perguntas Frequentes</span>
+            <h1 class="titulo"><?php echo $textos->titulo ?></h1>
+        </div>
+    </div>
+    <div class="row fullContainer" id="selecao">
+        <?php
+        $contador = 1;
+        foreach ($perguntas_frequentes as $pergunta_frequente) {
+            ?>
+            <div class="columns">
+                <div class="pergunta"><?php echo $contador ?>
+                    . <?php echo $pergunta_frequente->pergunta_frequente ?></div>
+                <div class="resposta"><?php echo $pergunta_frequente->resposta_pergunta_frequente ?></div>
+                <br/>
+                <br/>
+            </div>
+            <?php
+            $contador++;
+        }
+        ?>
+    </div>
+<?php
+include_once("footer.phtml");
+?>

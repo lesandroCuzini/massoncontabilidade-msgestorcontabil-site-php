@@ -1,0 +1,244 @@
+<?php
+$page = "home";
+
+$objInstitucional = new Institucional();
+
+$perguntasFrequentes = $objInstitucional;
+$perguntasFrequentes->setIdTable(2);
+$perguntasFrequentes->getByCod();
+
+$banner = new Banner();
+$bannersHome = $banner->getBannersByTipo('A', 1, 'posicao');
+
+$servico = new Servico();
+$servicosDestaques = $servico->getServicosDestaques('S', 'A');
+
+$quemSomos = new QuemSomos();
+$quemSomos->setIdTable(1);
+$quemSomos->getByCod();
+
+$str_add_css = array('swiper-bundle.min', 'home');
+$str_add_js = array('swiper-bundle.min', 'jquery.maskMoney.min', 'home');
+
+include_once("header.phtml");
+?>
+    <main class="page-home">
+        <?php if ($bannersHome) { ?>
+        <section class="banner overflow-hidden">
+            <div class="swiper swiper-banner">
+                <div class="swiper-wrapper">
+                    <?php foreach ($bannersHome as $infoBannerHome) { ?>
+                    <div class="swiper-slide" style="background-image: url('<?php echo UPLOADS_URL . '/banners/' . $infoBannerHome->url_imagem ?>'); background-repeat: no-repeat; background-size: cover;">
+                        <div class="container">
+                            <div class="wrap" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                                <h1 class="title">Contabilidade online, fácil e segura para sua empresa.</h1>
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <span>Fazemos a contabilidade da sua empresa de forma segura e econômica.</span>
+                                    </li>
+                                    <li class="nav-item">
+                                        <span>Controle sua empresa através de uma plataforma totalmente digital.</span>
+                                    </li>
+                                    <li class="nav-item">
+                                        <span>Atendimento especializado via WhatsApp, Telefone e E-mail.</span>
+                                    </li>
+                                </ul>
+                                <div class="d-flex flex-column flex-sm-row gap-3">
+                                    <a href="<?php echo BASE_SITE_URL . '/servico/' . $servicos[0]->url_rewrite ?>" class="btn btn-outline-green">Abrir Empresa</a>
+                                    <a href="<?php echo BASE_SITE_URL . '/migrar-minha-empresa' ?>" class="btn btn-green">Migrar de Contador</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </section>
+        <?php } if ($servicosDestaques) { ?>
+        <section class="our-services overflow-hidden">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Conheça a Contabilidade Online para pessoa física e jurídica de pequeno e médio porte</h2>
+                <h5 class="section-subtitle section-underline" data-aos="fade-up" data-aos-delay="400" data-aos-duration="700">Somos uma contabilidade completa que une experiência, confiabilidade, inovação, baixo custo e tecnologia ao seu alcance.</h5>
+                <div class="content">
+                    <div class="card-group" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                        <?php foreach ($servicosDestaques as $infoServicoDestaque) { ?>
+                        <div class="card mb-0">
+                            <a href="<?php echo BASE_SITE_URL . '/servico/' . $infoServicoDestaque->url_rewrite ?>" class="stretched-link"></a>
+                            <img src="<?php echo UPLOADS_URL . '/servicos/icones/' . $infoServicoDestaque->url_icone ?>" class="img-fluid" alt="<?php echo $infoServicoDestaque->titulo ?>">
+                            <div class="card-title mb-2">
+                                <h4><?php echo $infoServicoDestaque->titulo ?></h4>
+                            </div>
+                            <div class="card-description">
+                                <span><?php echo $infoServicoDestaque->subtitulo ?></span>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+                <?php if (SITE_CELULAR) { ?>
+                <a href="https://wa.me/+55<?php echo $whatsapp ?>" target="_blank" class="btn btn-green" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">Contratar agora</a>
+                <?php } ?>
+            </div>
+        </section>
+        <?php } ?>
+        <section class="simulator overflow-hidden">
+            <?php
+            //Tipos de Serviços da Calculadora
+            $objTipoServicoCalculadora = new TipoServicoCalculadora();
+            $tiposServicosCalculadoras = $objTipoServicoCalculadora->listAll('A');
+            $calculadora_faturamento = $objTipoServicoCalculadora->getValoresFaturamenteByTipoServico($tiposServicosCalculadoras[0]->id_tipo_servico_calculadora);
+            ?>
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Simule sua mensalidade agora</h2>
+                <h5 class="section-subtitle section-underline" data-aos="fade-up" data-aos-delay="400" data-aos-duration="700">Nossos clientes economizam em média 90% em contabilidade.</h5>
+                <form id="formulario-simular-mensalidade">
+                    <div class="wrap" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                        <div class="card">
+                            <div class="mb-3">
+                                <select class="form-select" id="tipo-simulacao">
+                                    <?php
+                                    foreach ($tiposServicosCalculadoras as $tsc) {
+                                        ?>
+                                        <option value="<?php echo $tsc->id_tipo_servico_calculadora ?>" <?php if ($tsc->i == 0) { ?>selected="selected"<?php }?>><?php echo $tsc->nome_tipo_servico_calculadora ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="preco" class="form-label">Quanto você paga de contabilidade por mês?</label>
+                                <input type="text" id="preco" class="form-control" value="0,00">
+                            </div>
+                            <div class="mb-3">
+                                <label for="socios" class="form-label">Quantos sócios têm sua empresa?</label>
+                                <input type="number" id="socios" class="form-control" min="0" value="1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="funcionarios" class="form-label">Quantos funcionários?</label>
+                                <input type="number" id="funcionarios" class="form-control" min="0" value="0">
+                            </div>
+                            <div class="mb-3">
+                                <label for="faturamento" class="form-label">Qual o faturamento mensal?</label>
+                                <select class="form-select" id="faturamento">
+                                    <?php
+                                    $countCf = 0;
+                                    foreach ($calculadora_faturamento as $cf) {
+                                        ?>
+                                        <option value="<?php echo $cf->valor ?>" <?php if ($countCf == 0) { ?>selected="selected"<?php }?>><?php echo $cf->descricao_faturamento; ?></option>
+                                        <?php
+                                        $countCf++;
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="container-valores-simulacao" class="card">
+                            <h5 class="card-title">O valor de sua mensalidade será:</h5>
+                            <span id="valor_mensalidade" class="card-price">0,00</span>
+                            <hr>
+                            <h5 class="card-title">Você irá economizar:</h5>
+                            <span id="valor_economia" class="card-price">0,00</span>
+                            <div class="card-text mt-3">
+                                <span>*Para empresas sujeitas ao fator R e <br> enquadradas no anexo IV.</span>
+                                <span>os valores simulados estarão sujeitos a alterações.</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <a href="<?php echo BASE_SITE_URL . '/migrar-minha-empresa' ?>" class="btn btn-green" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">Quero migrar minha empresa</a>
+            </div>
+        </section>
+        <section class="customer-service overflow-hidden">
+            <div class="container">
+                <div class="row gap-4 gap-lg-0 align-items-lg-center">
+                    <div class="col-lg-6 px-xl-5">
+                        <div class="image" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                            <img src="<?php echo BASE_IMAGES_URL . '/atendimento-ao-cliente.png' ?>" class="img-fluid" alt="Atendimento personalizado">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 px-xl-5">
+                        <h2 class="title" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Atendimento personalizado, <br> pelo canal que preferir</h2>
+                        <h5 class="subtitle" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Nosso time de atendimento ao cliente está disponível de segunda a sexta-feira para auxiliar nas suas dúvidas, independente do seu plano de serviços.</h5>
+                        <?php if (SITE_TELEFONE || SITE_CELULAR || SITE_EMAIL) { ?>
+                        <div class="channels">
+                            <?php if (SITE_CELULAR) { ?>
+                            <a href="https://wa.me/+55<?php echo $whatsapp ?>" target="_blank" class="icon icon-whatsapp" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700"></a>
+                            <?php } if (SITE_TELEFONE) { ?>
+                            <a href="tel:+55<?php echo str_replace(" ","", str_replace("(", "", str_replace(")", "", SITE_TELEFONE))) ?>" class="icon icon-phone" data-aos="fade-up" data-aos-delay="700" data-aos-duration="700"></a>
+                            <?php } if (SITE_EMAIL) { ?>
+                            <a href="mailto:<?php echo SITE_EMAIL ?>" class="icon icon-email" data-aos="fade-up" data-aos-delay="900" data-aos-duration="700"></a>
+                            <?php } ?>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <?php if ($quemSomos) { ?>
+        <section class="about overflow-hidden">
+            <div class="container">
+                <div class="row align-items-lg-center">
+                    <div class="col-lg-6 px-xl-5" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                        <h2 class="title section-underline"><?php echo $quemSomos->titulo_sobre ?></h2>
+                        <div class="description">
+                            <span><?php echo $quemSomos->descricao_home ?></span>
+                        </div>
+                        <a href="<?php echo BASE_SITE_URL . '/nossa-empresa' ?>" class="btn btn-outline-green">Saiba mais</a>
+                    </div>
+                    <div class="col-lg-6 px-xl-5" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                        <div class="image">
+                            <img src="<?php echo UPLOADS_URL . '/quem-somos/' . $quemSomos->url_imagem_sobre ?>" class="img-fluid" alt="<?php echo $quemSomos->titulo_sobre ?>">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <?php } ?>
+        <section class="plans overflow-hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                        <h2 class="title ff-bold">Somos um escritório de <br> Contabilidade Online</h2>
+                        <h5 class="subtitle">Se você já tem uma empresa e deseja trazer sua contabilidade, fale com os nossos especialistas agora mesmo.</h5>
+                        <a href="https://wa.me/+55<?php echo $whatsapp ?>" target="_blank" class="btn btn-white d-none d-md-flex">Entrar em contato</a>
+                    </div>
+                    <div class="col-md-6 d-flex flex-column" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">
+                        <h2 class="title ff-semibold">Planos mensais <br> que cabem no seu bolso!</h2>
+                        <a href="https://wa.me/+55<?php echo $whatsapp ?>" target="_blank" class="btn btn-white d-md-none">Entrar em contato</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <?php if ($perguntasFrequentes) { ?>
+        <section class="faq overflow-hidden">
+            <div class="container">
+                <h2 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700"><?php echo $perguntasFrequentes->titulo ?></h2>
+                <div class="accordion mb-5" id="accordionFaq">
+                    <?php
+                        $complementos = $perguntasFrequentes->getComplementosByIdInstitucional(2);
+
+                        foreach ($complementos as $infoComplemento) {
+                            ?>
+                            <div class="accordion-item" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $infoComplemento->id_institucional_complemento ?>" aria-expanded="false" aria-controls="collapse<?php echo $infoComplemento->id_institucional_complemento ?>">
+                                        <?php echo $infoComplemento->titulo ?>
+                                    </button>
+                                </h2>
+                                <div id="collapse<?php echo $infoComplemento->id_institucional_complemento ?>" class="accordion-collapse collapse" data-bs-parent="#accordionFaq">
+                                    <div class="accordion-body">
+                                        <?php echo $infoComplemento->conteudo ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    ?>
+                </div>
+                <a href="<?php echo BASE_SITE_URL . '/perguntas-frequentes' ?>" class="btn btn-outline-green" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">Saiba mais</a>
+            </div>
+        </section>
+        <?php } ?>
+    </main>
+<?php
+include_once("footer.phtml");

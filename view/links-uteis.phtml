@@ -1,0 +1,60 @@
+<?php
+$page = "links-uteis";
+
+$banner = new Banner();
+$bannerLinksUteis = $banner->getBannersByTipo('A', 5, 'posicao');
+
+$link = new Link();
+
+// Links Pessoa Física
+$linksPf = $link->getLinksByTipo('1', 'A', 'posicao');
+
+// Links Pessoa Jurídica
+$linksPj = $link->getLinksByTipo('2', 'A', 'posicao');
+
+$str_add_css = array('links');
+
+include_once("header.phtml");
+?>
+    <main class="page-links">
+        <?php if ($bannerLinksUteis) { ?>
+        <section class="banner">
+            <picture>
+                <img src="<?php echo UPLOADS_URL . '/banners/' . $bannerLinksUteis[0]->url_imagem ?>" class="img-fluid" alt="">
+            </picture>
+        </section>
+        <?php } ?>
+        <nav aria-label="breadcrumb">
+            <div class="container container-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_SITE_URL ?>">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Links Úteis</li>
+                </ol>
+            </div>
+        </nav>
+        <section class="links overflow-hidden mb-5">
+            <div class="container">
+                <h3 class="section-title section-underline" data-aos="fade-up" data-aos-delay="300" data-aos-duration="700">Links úteis</h3>
+                <?php if ($linksPf) { ?>
+                <div class="list-group list-group-pf" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                    <a href="#" class="list-group-item list-group-item-action disabled">Pessoa Física</a>
+                    <?php foreach ($linksPf as $infoLinkPf) { ?>
+                    <a href="<?php echo $infoLinkPf->url ?>" target="_blank" class="list-group-item list-group-item-action"><?php echo $infoLinkPf->nome ?></a>
+                    <?php } ?>
+                </div>
+                <?php } if ($linksPj) { ?>
+                <div class="list-group list-group-pj" data-aos="fade-up" data-aos-delay="500" data-aos-duration="700">
+                    <a href="#" class="list-group-item list-group-item-action disabled">Pessoa Jurídica</a>
+                    <?php foreach ($linksPj as $infoLinkPj) { ?>
+                    <a href="<?php echo $infoLinkPj->url ?>" target="_blank" class="list-group-item list-group-item-action"><?php echo $infoLinkPj->nome ?></a>
+                    <?php } ?>
+                </div>
+                <?php } ?>
+            </div>
+        </section>
+    </main>
+<?php
+$str_add_js = array();
+
+include_once("footer.phtml");
+?>

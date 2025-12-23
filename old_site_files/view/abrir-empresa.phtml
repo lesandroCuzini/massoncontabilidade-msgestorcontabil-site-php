@@ -1,0 +1,40 @@
+<?php
+$page_back = "";
+$page_id = "abrir-empresa";
+
+$str_add_css = array();
+$str_add_js = array();
+
+$texto = new Texto();
+$textos = $texto;
+$textos->setIdTable(SITE_TEXTO_ABRIR_UMA_EMPRESA);
+$textos->getByCod();
+
+include_once("header.phtml");
+if ($textos->url_imagem != "") {
+    ?>
+    <div class="row fullWidth" id="banner">
+        <img src="<?php echo UPLOADS_URL . "/textos/" . $textos->url_imagem; ?>" alt="<?php echo SITE_TITLE ?>">
+    </div>
+    <?php
+}
+?>
+    <div class="row fullContainer" id="breadcrumb">
+        <div class="columns">
+            <a href="<?php echo BASE_SITE_URL; ?>">Home</a> | <span>Abrir Empresa</span>
+            <h1 class="titulo"><?php echo $textos->titulo; ?></h1>
+        </div>
+    </div>
+    <div class="row fullContainer" id="conteudo-informacoes">
+        <div class="columns">
+            <?php echo $textos->descricao; ?>
+        </div>
+        <div class="columns" id="buttom">
+            <a href="<?php echo BASE_SITE_URL ?>/contato">
+                <div>ENTRE EM CONTATO</div>
+            </a>
+        </div>
+    </div>
+<?php
+include_once("footer.phtml");
+?>

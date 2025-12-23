@@ -1,0 +1,29 @@
+.page-partners .partners {
+    margin-bottom: 5rem;
+}
+.page-partners .partners .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+.page-partners .partners .cards .card {
+    max-width: 250px;
+    flex-basis: 100%;
+    border-radius: 0;
+}
+@media(min-width: 576px) {
+    .page-partners .partners .cards .card {
+        flex-basis: calc(100% / 2 - 0.5rem);
+    }
+}
+@media(min-width: 992px) {
+    .page-partners .partners .cards .card {
+        flex-basis: calc(100% / 3 - 1rem);
+    }
+}
+@media(min-width: 1200px) {
+    .page-partners .partners {
+        margin-bottom: 7.5rem;
+    }
+}
